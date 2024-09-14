@@ -20,19 +20,19 @@ jobs:
 
       - name: Build Frontend Image
         run: |
-          docker build -t yourusername/frontend:latest -f ./docker/Dockerfile.frontend .
+          docker build -t yourusername/pet-adoption-frontend:latest -f ./docker/pet-adoption-frontend.Dockerfile .
 
       - name: Build Backend Image
         run: |
-          docker build -t yourusername/backend:latest -f ./docker/Dockerfile.backend .
+          docker build -t yourusername/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
 
       - name: Push Frontend Image
         run: |
-          docker push yourusername/frontend:latest
+          docker push yourusername/pet-adoption-frontend:latest
 
       - name: Push Backend Image
         run: |
-          docker push yourusername/backend:latest
+          docker push yourusername/pet-adoption-api:latest
 
       - name: Deploy to Production
         env:
@@ -40,8 +40,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no your_user@your_production_server << 'EOF'
             # Pull the latest images
-            docker pull yourusername/frontend:latest
-            docker pull yourusername/backend:latest
+            docker pull yourusername/pet-adoption-frontend:latest
+            docker pull yourusername/pet-adoption-api:latest
             
             # Stop the old containers
             docker compose -f /path/to/docker-compose.prod.yml down
