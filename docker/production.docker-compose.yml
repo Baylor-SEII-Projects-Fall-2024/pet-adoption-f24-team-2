@@ -3,16 +3,16 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./
-      dockerfile: ./pet-adoption-frontend.Dockerfile
+      context: ../pet-adoption-frontend
+      dockerfile: ./docker/pet-adoption-frontend.Dockerfile
     ports:
       - "80:80"
     restart: always
 
   backend:
     build:
-      context: ./
-      dockerfile: ./pet-adoption-api.Dockerfile
+      context: ../pet-adoption-api
+      dockerfile: ./docker/pet-adoption-api.Dockerfile
     ports:
       - "8080:8080"
     restart: always
