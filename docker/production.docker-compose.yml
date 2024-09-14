@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.4.2
+    command: --mysql-native-password=ON --performance-schema=ON --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - '3307:3306' # This should be restricted for internal use, in prod, consider removing this or using a VPN
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Use environment variables for sensitive data
+      MYSQL_DATABASE: petadoption
+      MYSQL_USER: ${MYSQL_USER} # Create a non-root user for better security
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - internal
+
+volumes:
+  mysql-data:
+    driver: local # Use local or configure an external driver for remote storage
+
+networks:
+  internal:
+    driver: bridge # Isolate the database in a private network to limit external access
