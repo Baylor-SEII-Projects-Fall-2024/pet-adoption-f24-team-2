@@ -4,7 +4,10 @@ WORKDIR /build
 COPY pet-adoption-api/ ./
 RUN ./gradlew build --no-daemon -p .
 
-# Verify the build artifacts
+# Verify the directory structure
+RUN ls -la /build/
+RUN ls -la /build/pet-adoption-api/
+RUN ls -la /build/pet-adoption-api/build/
 RUN ls -la /build/pet-adoption-api/build/libs/
 
 # Copy the build artifacts
