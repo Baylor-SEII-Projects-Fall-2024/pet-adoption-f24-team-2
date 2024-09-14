@@ -2,14 +2,14 @@
 FROM node:20 AS build
 WORKDIR /build
 
-# Copy only package.json and yarn.lock first for better caching
-COPY ../package.json ../yarn.lock ./
+# Copy package.json and yarn.lock from the parent directory
+COPY package.json yarn.lock ./
 
 # Install dependencies
 RUN yarn install
 
-# Copy the rest of the application code
-COPY .. .
+# Copy the rest of the application code from the parent directory
+COPY . .
 
 # Build the frontend project
 RUN yarn run build
