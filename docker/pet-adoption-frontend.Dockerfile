@@ -17,7 +17,7 @@ RUN yarn run build
 # Copy the build artifacts to a clean image
 FROM node:20
 WORKDIR /app
-COPY --from=build /build/dist ./dist
+COPY --from=build /build/.next ./.next
 
 # Run the app
 ENTRYPOINT ["yarn", "start"]
