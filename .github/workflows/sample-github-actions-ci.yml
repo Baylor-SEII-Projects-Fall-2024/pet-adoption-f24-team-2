@@ -34,6 +34,12 @@ jobs:
       #   run: |
       #     docker push wesley_goyette/pet-adoption-api:latest
 
+    # how Brendon would do this:
+    # In your production.docker-compose.yml, instead of doing this push/pull this, 
+    # you can actually point to Docker files and have it build them when you run docker compose up --build
+    # That way, you can get rid off all other steps but "Deploy to Production".
+    # Relevant link: https://docs.docker.com/reference/compose-file/build/
+
       - name: Deploy to Production
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

@@ -2,13 +2,17 @@ version: '3.8'
 
 services:
   frontend:
-    image: wesley_goyette/frontend:latest
+    build:
+      context: ./pet-adoption-frontend
+      dockerfile: ./docker/pet-adoption-frontend.Dockerfile
     ports:
       - "80:80"
     restart: always
 
   backend:
-    image: wesley_goyette/backend:latest
+    build:
+      context: ./pet-adoption-api
+      dockerfile: ./docker/pet-adoption-api.Dockerfile
     ports:
       - "8080:8080"
     restart: always
