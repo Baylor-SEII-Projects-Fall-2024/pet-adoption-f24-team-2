@@ -6,14 +6,12 @@ RUN ./gradlew build --no-daemon -p .
 
 # Verify the directory structure
 RUN ls -la /build/
-RUN ls -la /build/pet-adoption-api/
-RUN ls -la /build/pet-adoption-api/build/
-RUN ls -la /build/pet-adoption-api/build/libs/
+RUN ls -la /build/libs/
 
 # Copy the build artifacts
 FROM openjdk:22
 WORKDIR /app
-COPY --from=build /build/pet-adoption-api/build/libs/pet-adoption-api-1.0.0-SNAPSHOT.jar app.jar
+COPY --from=build /build/libs/pet-adoption-api-1.0.0-SNAPSHOT.jar app.jar
 
 # Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
