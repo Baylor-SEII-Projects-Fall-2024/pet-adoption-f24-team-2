@@ -2,14 +2,14 @@
 FROM node:20 AS build
 WORKDIR /build
 
-# Copy package.json and yarn.lock from the parent directory
-COPY package.json yarn.lock ./
+# Copy package.json and yarn.lock from the pet-adoption-frontend directory
+COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
 
 # Install dependencies
 RUN yarn install
 
-# Copy the rest of the application code from the parent directory
-COPY . .
+# Copy the rest of the application code from the pet-adoption-frontend directory
+COPY pet-adoption-frontend ./
 
 # Build the frontend project
 RUN yarn run build
