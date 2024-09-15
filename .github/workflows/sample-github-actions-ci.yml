@@ -39,28 +39,3 @@ jobs:
     # you can actually point to Docker files and have it build them when you run docker compose up --build
     # That way, you can get rid off all other steps but "Deploy to Production".
     # Relevant link: https://docs.docker.com/reference/compose-file/build/
-
-      - name: Deploy to Production
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_USER }}          # SSH username
-          SSH_HOST: ${{ secrets.SSH_HOST }}          # SSH host (production server IP or domain)
-        run: |
-          # mkdir -p ~/.ssh
-          # echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
-
-          # ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.SSH_USER }}@${{ env.SSH_HOST }} << 'EOF'
-          #   # Pull the latest images
-          #   docker pull wesley_goyette/pet-adoption-frontend:latest
-          #   docker pull wesley_goyette/pet-adoption-api:latest
-            
-            # Stop the old containers
-            docker compose -f docker/production.docker-compose.yml down
-            
-            # Start the new containers with updated images
-            docker compose -f docker/production.docker-compose.yml up -d --build
-            
-            # Clean up unused Docker images
-            docker image prune -af
-          # EOF
