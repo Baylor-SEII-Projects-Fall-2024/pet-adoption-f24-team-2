@@ -1,22 +1,13 @@
-# Build stage
-FROM node:20 AS build
-WORKDIR /build
+FROM node:20
 
-COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
-RUN yarn install
-
-COPY pet-adoption-frontend ./
-RUN yarn build
-
-# Production stage
-FROM node:20-alpine AS production
 WORKDIR /app
 
-# Copy built files and necessary package filess
-COPY --from=build /build/.next ./.next
-COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
+COPY yarn.lock package.json ./
 
-# Install dependencies for production
-RUN yarn install --production
+RUN yarn install
 
-ENTRYPOINT ["yarn", "start"]
+COPY . .
+
+EXPOSE 3000
+
+CMD ["yarn", "dev", "--host", "0.0.0.0"]
