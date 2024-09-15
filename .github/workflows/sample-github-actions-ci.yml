@@ -28,16 +28,27 @@ jobs:
         
       - name: Start Frontend Container
         run: |
-          docker rm -f pet-adoption-frontend
+          docker rm -f pet-adoption-frontend || echo "No existing frontend container"
           docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
 
       - name: Start Backend Container
         run: |
-          docker rm -f pet-adoption-backend
+          docker rm -f pet-adoption-backend || echo "No existing backend container"
           docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
 
-    # how Brendon would do this:
-    # In your production.docker-compose.yml, instead of doing this push/pull this, 
-    # you can actually point to Docker files and have it build them when you run docker compose up --build
-    # That way, you can get rid off all other steps but "Deploy to Production".
-    # Relevant link: https://docs.docker.com/reference/compose-file/build/
+      - name: Start MySQL Container
+        run: |
+          docker rm -f pet-adoption-db || echo "No existing MySQL container"
+          docker run -d \
+            --name pet-adoption-db \
+            -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
+            -e MYSQL_DATABASE=petadoption \
+            -e MYSQL_USER=${{ secrets.MYSQL_USER }} \
+            -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
+            -v mysql-data:/var/lib/mysql \
+            -p 3306:3306 \
+            mysql:8.0
+
+    volumes:
+      mysql-data:
+        driver: local
