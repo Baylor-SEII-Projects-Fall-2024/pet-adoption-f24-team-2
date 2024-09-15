@@ -12,7 +12,7 @@ RUN yarn build
 FROM node:20-alpine AS production
 WORKDIR /app
 
-# Copy built files and necessary package files
+# Copy built files and necessary package filess
 COPY --from=build /build/.next ./.next
 COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
 
