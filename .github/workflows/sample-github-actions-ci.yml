@@ -22,27 +22,27 @@ jobs:
         run: |
           docker build -t wesley_goyette/pet-adoption-frontend:latest -f ./docker/pet-adoption-frontend.Dockerfile .
 
-      - name: Build Backend Image
-        run: |
-          docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
+    #   - name: Build Backend Image
+    #     run: |
+    #       docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
 
-      - name: Start MySQL Container
-        run: |
-          docker rm -f pet-adoption-db || echo "No existing database container"
-          docker run -d \
-            --name pet-adoption-db \
-            -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-            -e MYSQL_DATABASE=petadoption \
-            -p 3306:3306 \
-            -v mysql-data:/var/lib/mysql \
-            mysql:8.0
+    #   - name: Start MySQL Container
+    #     run: |
+    #       docker rm -f pet-adoption-db || echo "No existing database container"
+    #       docker run -d \
+    #         --name pet-adoption-db \
+    #         -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+    #         -e MYSQL_DATABASE=petadoption \
+    #         -p 3306:3306 \
+    #         -v mysql-data:/var/lib/mysql \
+    #         mysql:8.0
         
       - name: Start Frontend Container
         run: |
           docker rm -f pet-adoption-frontend || echo "No existing frontend container"
           docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
 
-      - name: Start Backend Container
-        run: |
-          docker rm -f pet-adoption-backend || echo "No existing backend container"
-          docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
+    #   - name: Start Backend Container
+    #     run: |
+    #       docker rm -f pet-adoption-backend || echo "No existing backend container"
+    #       docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
