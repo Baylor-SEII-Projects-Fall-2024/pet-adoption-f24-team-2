@@ -20,7 +20,7 @@ COPY --from=build /build/public ./public
 
 # Install production dependencies
 COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
-RUN yarn install --production
+RUN yarn install --production --frozen-lockfile
 
 # Expose port and start the application
 EXPOSE 3000
