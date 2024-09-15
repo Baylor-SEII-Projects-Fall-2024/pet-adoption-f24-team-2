@@ -1,4 +1,4 @@
-FROM node:21-alpine3.19
+FROM node:20
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ RUN yarn install
 
 COPY ./pet-adoption-frontend .
 
-EXPOSE 3000
+RUN yarn build
 
+EXPOSE 3000
 ENTRYPOINT exec yarn start
