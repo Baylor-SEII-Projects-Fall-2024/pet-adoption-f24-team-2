@@ -17,16 +17,14 @@ services:
       - "8080:8080"
     restart: always
     environment:
-      DATABASE_URL: mysql://db:3306/petadoption
+      DATABASE_URL: mysql://root:@db:3306/petadoption
 
   db:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ""
       MYSQL_DATABASE: petadoption
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
