@@ -10,4 +10,4 @@ COPY ./pet-adoption-frontend .
 
 EXPOSE 3000
 
-CMD ["yarn", "dev"]
+ENTRYPOINT exec yarn start
