@@ -25,14 +25,14 @@ jobs:
       - name: Build Backend Image
         run: |
           docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
+        
+      - name: Start Frontend Container
+        run: |
+          docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
 
-      # - name: Push Frontend Image
-      #   run: |
-      #     docker push wesley_goyette/pet-adoption-frontend:latest
-
-      # - name: Push Backend Image
-      #   run: |
-      #     docker push wesley_goyette/pet-adoption-api:latest
+      - name: Start Backend Container
+        run: |
+          docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
 
     # how Brendon would do this:
     # In your production.docker-compose.yml, instead of doing this push/pull this, 
