@@ -28,10 +28,12 @@ jobs:
         
       - name: Start Frontend Container
         run: |
+          docker rm -f pet-adoption-frontend
           docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
 
       - name: Start Backend Container
         run: |
+          docker rm -f pet-adoption-backend
           docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
 
     # how Brendon would do this:
