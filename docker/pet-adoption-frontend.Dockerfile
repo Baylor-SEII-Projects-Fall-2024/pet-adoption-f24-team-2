@@ -1,27 +1,23 @@
-# Stage 1: Build
+# Create a build of the project
 FROM node:20 AS build
 WORKDIR /build
 
-# Copy package.json and yarn.lock
+# Copy package.json and yarn.lock from the pet-adoption-frontend directory
 COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
+
+# Install dependencies
 RUN yarn install
 
-# Copy the rest of the application code and build
+# Copy the rest of the application code from the pet-adoption-frontend directory
 COPY pet-adoption-frontend ./
-RUN yarn build
 
-# Stage 2: Production
-FROM node:20-alpine AS production
+# Build the frontend project
+RUN yarn run build
+
+# Copy the build artifacts to a clean image
+FROM node:20
 WORKDIR /app
-
-# Copy build artifacts from the build stage
 COPY --from=build /build/.next ./.next
-COPY --from=build /build/public ./public
 
-# Install production dependencies
-COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
-RUN yarn install --production --frozen-lockfile
-
-# Expose port and start the application
-EXPOSE 3000
-CMD ["yarn", "start"]
+# Run the app
+ENTRYPOINT ["yarn", "start"]
