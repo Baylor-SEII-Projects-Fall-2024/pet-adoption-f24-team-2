@@ -6,7 +6,7 @@ COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
 
 RUN yarn install
 
-COPY . .
+COPY ./pet-adoption-frontend .
 
 EXPOSE 3000
 
