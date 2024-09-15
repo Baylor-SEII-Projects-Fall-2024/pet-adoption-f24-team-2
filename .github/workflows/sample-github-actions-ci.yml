@@ -38,17 +38,13 @@ jobs:
 
       - name: Start MySQL Container
         run: |
-          docker rm -f pet-adoption-db || echo "No existing MySQL container"
+          docker rm -f pet-adoption-db || echo "No existing database container"
           docker run -d \
             --name pet-adoption-db \
             -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
             -e MYSQL_DATABASE=petadoption \
             -e MYSQL_USER=${{ secrets.MYSQL_USER }} \
             -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
-            -v mysql-data:/var/lib/mysql \
             -p 3306:3306 \
+            -v mysql-data:/var/lib/mysql \
             mysql:8.0
-
-    volumes:
-      mysql-data:
-        driver: local
