@@ -23,7 +23,7 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: petadoption
     volumes:
       - mysql-data:/var/lib/mysql
