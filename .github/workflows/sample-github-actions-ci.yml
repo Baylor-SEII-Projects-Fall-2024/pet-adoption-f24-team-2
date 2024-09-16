@@ -18,6 +18,24 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
+      - name: Cleanup Docker Resources
+        run: |
+          echo "Stopping and removing all containers"
+          docker stop $(docker ps -aq) || true
+          docker rm $(docker ps -aq) || true
+
+          echo "Removing all images"
+          docker rmi $(docker images -q) || true
+
+          echo "Removing all volumes"
+          docker volume rm $(docker volume ls -q) || true
+
+          echo "Removing all networks"
+          docker network rm $(docker network ls -q) || true
+
+          echo "Cleaning up build cache"
+          docker builder prune -a -f
+
       - name: Build Frontend Image
         run: |
           docker build -t wesley_goyette/pet-adoption-frontend:latest -f ./docker/pet-adoption-frontend.Dockerfile .
@@ -33,7 +51,7 @@ jobs:
             --name pet-adoption-db \
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -e MYSQL_DATABASE=petadoption \
-            -p 3306:3306 \
+            -p 3307:3307 \
             -v mysql-data:/var/lib/mysql \
             mysql:8.0
         
