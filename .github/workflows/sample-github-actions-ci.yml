@@ -18,23 +18,38 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Build and start containers
-        run: |
-          docker-compose -f ci.docker-compose.yml build
-          docker-compose -f ci.docker-compose.yml up -d
+    #   - name: Cleanup Docker Resourcess
+    #     run: |
+    #       echo "Stopping and removing all containers"
+    #       docker stop $(docker ps -aq) || true
+    #       docker rm $(docker ps -aq) || true
 
-      - name: Wait for MySQL to be ready
-        run: |
-          timeout 60s bash -c 'until docker exec $(docker-compose -f ci.docker-compose.yml ps -q db) mysqladmin ping -h localhost -u root -ppassword --silent; do echo "Waiting for MySQL to be ready..."; sleep 2; done'
+    #       echo "Removing all images"
+    #       docker rmi $(docker images -q) || true
 
-      - name: Check running containers
-        run: docker ps
+    #       echo "Removing all volumes"
+    #       docker volume rm $(docker volume ls -q) || true
 
-      - name: Check logs
+    #       echo "Removing all networks"
+    #       docker network rm $(docker network ls -q) || true
+
+        #   echo "Cleaning up build cache"
+        #   docker builder prune -a -f
+
+      - name: Build Frontend Image
         run: |
-          echo "Frontend logs:"
-          docker-compose -f ci.docker-compose.yml logs frontend
-          echo "Backend logs:"
-          docker-compose -f ci.docker-compose.yml logs api
-          echo "Database logs:"
-          docker-compose -f ci.docker-compose.yml logs db
+          docker build -t wesley_goyette/pet-adoption-frontend:latest -f ./docker/pet-adoption-frontend.Dockerfile .
+
+      - name: Build Backend Image
+        run: |
+          docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
+        
+      - name: Start Frontend Container
+        run: |
+          docker rm -f pet-adoption-frontend || echo "No existing frontend container"
+          docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
+
+      - name: Start Backend Container
+        run: |
+          docker rm -f pet-adoption-backend || echo "No existing backend container"
+          docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
