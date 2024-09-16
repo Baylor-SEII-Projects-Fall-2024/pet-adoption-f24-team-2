@@ -33,8 +33,8 @@ jobs:
     #       echo "Removing all networks"
     #       docker network rm $(docker network ls -q) || true
 
-          echo "Cleaning up build cache"
-          docker builder prune -a -f
+        #   echo "Cleaning up build cache"
+        #   docker builder prune -a -f
 
       - name: Build Frontend Image
         run: |
