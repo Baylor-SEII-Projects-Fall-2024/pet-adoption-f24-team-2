@@ -8,6 +8,8 @@ services:
     ports:
       - "80:80"
     restart: always
+    networks:
+      - default
 
   backend:
     build:
@@ -17,8 +19,27 @@ services:
       - "8080:8080"
     restart: always
     environment:
-      DATABASE_URL: jdbc:mysql://localhost:3306/petadoption?user=root&password=password
+      DATABASE_URL: jdbc:mysql://mysql:3306/petadoption?user=root&password=password
+    networks:
+      - default
+
+  mysql:
+    image: mysql:8.4.2
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: petadoption
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - default
 
 volumes:
   mysql-data:
     driver: local
+
+networks:
+  default:
+    external:
+      name: docker_default
