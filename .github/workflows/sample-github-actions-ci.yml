@@ -1,4 +1,4 @@
-name: Build and Deploy Frontend & Backend
+name: Sample Build & Deploy
 
 on:
   push:
@@ -8,29 +8,39 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
-      - name: Build and start services
+      - name: Build
+        # This step builds both the frontend and backend docker images using
+        # Docker Compose. To change how the images are built or their actual
+        # buildscripts, modify the corresponding files in the docker/ directory.
+        #
+        # You will need to point this command to the correct Docker Compose file.
         run: |
-          docker-compose -f docker/production.docker-compose.yml build
-          docker-compose -f docker/production.docker-compose.yml up -d
+          docker compose -f docker/production.docker-compose.yml build
 
-      - name: Check running containers
-        run: docker ps
-
-      - name: Check logs
+      - name: Deploy
+        # This script simply runs the images that were built in the previous step.
+        # This uses the same Docker Compose file in the previous step.
+        #
+        # If the frontend and backend are already running on the VM, we first
+        # need to stop them to free the port and delete them to free the
+        # container name before trying to start the new versions
+        #
+        # It is important you prune your docker repository after all containers
+        # are deployed. This is because all images used in the build stages are
+        # saved by docker; this can quickly consume a lot of memory after a few
+        # builds. Using `docker image prune -af` here will free up some space, but
+        # you may want to consider running `docker system prune -f` on your
+        # GCP instance to free up additional cached objects if you are running
+        # out of storage space.
+        #
+        # This command assumes that the docker compose is also set up to properly
+        # manage a MYSQL server.
+        #
+        # You will need to point these commands to the correct Docker Compose file.
         run: |
-          echo "API Logs:"
-          docker-compose -f docker/production.docker-compose.yml logs api
-          echo "Database Logs:"
-          docker-compose -f docker/production.docker-compose.yml logs db
-          echo "Frontend Logs:"
-          docker-compose -f docker/production.docker-compose.yml logs frontend
+          docker compose -f docker/production.docker-compose.yml down
+          docker compose -f docker/production.docker-compose.yml up -d --build
+          docker image prune -af
