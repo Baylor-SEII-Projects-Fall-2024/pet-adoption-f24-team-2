@@ -43,17 +43,6 @@ jobs:
       - name: Build Backend Image
         run: |
           docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
-
-      - name: Start MySQL Container
-        run: |
-          docker rm -f pet-adoption-db || echo "No existing database container"
-          docker run -d \
-            --name pet-adoption-db \
-            -e MYSQL_ROOT_PASSWORD=password \
-            -e MYSQL_DATABASE=petadoption \
-            -p 3307:3306 \
-            -v mysql-data:/var/lib/mysql \
-            mysql:8.0
         
       - name: Start Frontend Container
         run: |
