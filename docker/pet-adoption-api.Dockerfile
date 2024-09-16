@@ -11,4 +11,5 @@ ENV MYSQL_HOST=localhost
 ENV MYSQL_USER=root
 ENV MYSQL_PASSWORD=
 
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
