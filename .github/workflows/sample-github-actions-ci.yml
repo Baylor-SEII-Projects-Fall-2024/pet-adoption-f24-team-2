@@ -18,38 +18,19 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-    #   - name: Cleanup Docker Resourcess
-    #     run: |
-    #       echo "Stopping and removing all containers"
-    #       docker stop $(docker ps -aq) || true
-    #       docker rm $(docker ps -aq) || true
-
-    #       echo "Removing all images"
-    #       docker rmi $(docker images -q) || true
-
-    #       echo "Removing all volumes"
-    #       docker volume rm $(docker volume ls -q) || true
-
-    #       echo "Removing all networks"
-    #       docker network rm $(docker network ls -q) || true
-
-        #   echo "Cleaning up build cache"
-        #   docker builder prune -a -f
-
-      - name: Build Frontend Image
+      - name: Build and start services
         run: |
-          docker build -t wesley_goyette/pet-adoption-frontend:latest -f ./docker/pet-adoption-frontend.Dockerfile .
+          docker-compose -f production.docker-compose.yml build
+          docker-compose -f production.docker-compose.yml up -d
 
-      - name: Build Backend Image
-        run: |
-          docker build -t wesley_goyette/pet-adoption-api:latest -f ./docker/pet-adoption-api.Dockerfile .
-        
-      - name: Start Frontend Container
-        run: |
-          docker rm -f pet-adoption-frontend || echo "No existing frontend container"
-          docker run -d --name pet-adoption-frontend -p 3000:3000 wesley_goyette/pet-adoption-frontend:latest
+      - name: Check running containers
+        run: docker ps
 
-      - name: Start Backend Container
+      - name: Check logs
         run: |
-          docker rm -f pet-adoption-backend || echo "No existing backend container"
-          docker run -d --name pet-adoption-backend -p 8080:8080 wesley_goyette/pet-adoption-api:latest
+          echo "API Logs:"
+          docker-compose -f production.docker-compose.yml logs api
+          echo "Database Logs:"
+          docker-compose -f production.docker-compose.yml logs db
+          echo "Frontend Logs:"
+          docker-compose -f production.docker-compose.yml logs frontend
