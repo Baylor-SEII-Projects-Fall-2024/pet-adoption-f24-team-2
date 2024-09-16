@@ -30,7 +30,7 @@ jobs:
     #       echo "Removing all volumes"
     #       docker volume rm $(docker volume ls -q) || true
 
-    #       echo "Removing all networks"
+    #       echo "Removing all networkss"
     #       docker network rm $(docker network ls -q) || true
 
         #   echo "Cleaning up build cache"
