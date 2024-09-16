@@ -1,6 +1,6 @@
 FROM gradle:8.9.0-jdk22 AS build
 WORKDIR /build
-COPY pet-adoption-api/ ./
+COPY . .
 RUN ./gradlew build --no-daemon -p .
 
 FROM openjdk:22

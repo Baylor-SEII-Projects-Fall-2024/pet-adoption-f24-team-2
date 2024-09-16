@@ -2,11 +2,11 @@ FROM node:20
 
 WORKDIR /app
 
-COPY pet-adoption-frontend/package.json pet-adoption-frontend/yarn.lock ./
+COPY package.json yarn.lock ./
 
 RUN yarn install
 
-COPY ./pet-adoption-frontend .
+COPY . .
 
 RUN yarn build
 
