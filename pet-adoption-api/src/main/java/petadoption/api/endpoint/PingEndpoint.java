@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PingEndpoint {
     @GetMapping("/ping")
     public String ping() {
-        return "poop!";
+        return "pong!";
     }
 
     @GetMapping("/memory-ping")
