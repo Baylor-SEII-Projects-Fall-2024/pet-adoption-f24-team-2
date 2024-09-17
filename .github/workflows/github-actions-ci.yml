@@ -17,7 +17,9 @@ jobs:
       
       - name: Deploy
         run: |
-          docker rollout -f docker/production.docker-compose.yml db api frontend
+          docker rollout -f docker/production.docker-compose.yml db
+          docker rollout -f docker/production.docker-compose.yml api
+          docker rollout -f docker/production.docker-compose.yml frontend
 
       - name: Prune
         run: |
