@@ -1,4 +1,4 @@
-name: Zero Downtime Build & Deploy
+name: Sample Build & Deploy
 
 on:
   push:
@@ -14,19 +14,11 @@ jobs:
       - name: Build Docker images
         run: |
           docker compose -f docker/production.docker-compose.yml build
-
-      - name: Deploy new version without downtime
+      
+      - name: Deploy
         run: |
-          docker compose -f docker/production.docker-compose.yml up -d --no-deps --build --scale frontend=2 --scale api=2
-
-      - name: wait for new instances to be up and running
-        run: |
-          sleep 10
-
-      - name: Remove old instances after new ones are verified
-        run: |
-          docker compose -f docker/production.docker-compose.yml up -d --no-deps --scale frontend=1 --scale api=1
-          docker compose -f docker/production.docker-compose.yml down --remove-orphans
+          docker compose -f docker/production.docker-compose.yml down
+          docker compose -f docker/production.docker-compose.yml up -d
 
       - name: Prune
         run: |
