@@ -26,6 +26,7 @@ export default function App({ Component, pageProps }) {
         <PetAdoptionThemeProvider>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+          
 
           <Component {...pageProps} />
         </PetAdoptionThemeProvider>
