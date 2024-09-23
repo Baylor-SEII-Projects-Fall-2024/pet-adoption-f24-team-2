@@ -1,15 +1,9 @@
-# Create a build of the project
-FROM node:20 AS build
-WORKDIR /build
-COPY . .
-
-RUN yarn install
-RUN yarn run build
-
-# Copy the build artifacts
 FROM node:20
 WORKDIR /app
-COPY --from=build /build .
-
-# Run the app
+COPY package.json yarn.lock ./
+ENV YARN_NETWORK_TIMEOUT=100000
+RUN yarn install
+COPY . .
+RUN yarn build
+EXPOSE 3000
 ENTRYPOINT exec yarn start

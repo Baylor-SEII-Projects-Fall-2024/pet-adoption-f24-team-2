@@ -1,0 +1,26 @@
+name: Sample Build & Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker images
+        run: |
+          docker compose -f docker/production.docker-compose.yml build
+      
+      - name: Deploy
+        run: |
+          docker compose -f docker/production.docker-compose.yml down
+          docker compose -f docker/production.docker-compose.yml up -d
+
+      - name: Prune
+        run: |
+          docker image prune -af
+          docker builder prune

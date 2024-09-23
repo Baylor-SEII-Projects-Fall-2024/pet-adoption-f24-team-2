@@ -35,6 +35,9 @@ dependencies {
 	// Utility libraries
 	implementation 'com.google.guava:guava:33.0.0-jre'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+	// .env support
+	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 }
 
 tasks.named('test') {
