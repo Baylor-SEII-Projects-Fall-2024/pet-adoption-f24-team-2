@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public UserDto login(CredentialsDto credentialsDto) {
-        User user = userRepository.findByEmailAddress(credentialsDto.getEmail())
+        User user = userRepository.findByEmailAddress(credentialsDto.getEmailAddress())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword() )) {
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public UserDto register(SignUpDto registration) {
-        Optional<User> optionalUser = userRepository.findByEmailAddress(registration.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmailAddress(registration.getEmailAddress());
 
         if( optionalUser.isPresent() ) {
             throw new AppException("Email already exists", HttpStatus.BAD_REQUEST);

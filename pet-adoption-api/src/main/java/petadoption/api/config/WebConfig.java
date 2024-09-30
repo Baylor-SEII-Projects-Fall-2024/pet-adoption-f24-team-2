@@ -20,7 +20,7 @@ public class WebConfig {
     // This is used to configure the CORS policy and set what is allowed to
     // come from our frontend application
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         // Allow the frontend to send credentials and accept them
@@ -51,10 +51,6 @@ public class WebConfig {
         // Set this configuration for all requests
         source.registerCorsConfiguration("/**", config);
 
-        // Set this config to run before all other filters
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(-102);
-
-        return bean;
+        return new CorsFilter(source);
     }
 }

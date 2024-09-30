@@ -22,9 +22,9 @@ public class UserEndpoint {
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
 
-    @GetMapping("/users/{id}")
-    public User findUserById(@PathVariable Long id) {
-        var user = userService.findUser(id).orElse(null);
+    @GetMapping("/users/{email}")
+    public UserDto findByEmail(@PathVariable String email) {
+        UserDto user = userService.findByEmail(email);
 
         if (user == null) {
             log.warn("User not found");
@@ -38,7 +38,7 @@ public class UserEndpoint {
         UserDto user = userService.login(credentialsDto);
 
         // Provide a fresh JWT token on login
-        user.setToken(userAuthProvider.createToken(user.getEmail()));
+        user.setToken(userAuthProvider.createToken(user.getEmailAddress()));
         return ResponseEntity.ok(user);
     }
 
@@ -46,7 +46,7 @@ public class UserEndpoint {
     public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto) {
         UserDto user = userService.register(signUpDto);
         // Return a fresh JWT token on registration
-        user.setToken(userAuthProvider.createToken(user.getEmail()));
+        user.setToken(userAuthProvider.createToken(user.getEmailAddress()));
 
         // Return 201 Created code and the URL to find the created entity
         return ResponseEntity.created(URI.create("/users/" + user.getId()))

@@ -3,3 +3,7 @@
   grid-template: 1fr 1fr / 1fr 1fr;
   row-gap: 10px;
 }
+
+.userTypeLabel {
+  grid-column: 1 / 3;
+}

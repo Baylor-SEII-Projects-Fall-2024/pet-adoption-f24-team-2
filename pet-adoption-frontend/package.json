@@ -17,10 +17,13 @@
     "@mui/material-nextjs": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.7.3",
+    "cookies": "^0.9.1",
+    "jwt-decode": "^4.0.0",
     "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.0.4",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "universal-cookie": "^7.2.0"
   }
 }
