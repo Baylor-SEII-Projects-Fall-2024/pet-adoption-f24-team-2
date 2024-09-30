@@ -1,36 +1,160 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Head from 'next/head'
-import { Button, Card, CardContent, Stack, Typography } from '@mui/material'
-import styles from '@/styles/Home.module.css'
+import {Button, Card, CardContent, Stack, Typography} from '@mui/material'
+import { clearCookies, setAuthenticatedUser, request } from '@/axios_helper';
+import styles from '@/styles/Login.module.css';
+import Router from 'next/router';
 
-export default function HomePage() {
-  const onButtonPress = () => {
-    alert('You pressed a button!');
+export default function Login() {
+  const [active, setActive] = useState("Login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("Potential Adopter")
+
+  function activateLogin() {
+    setEmail("")
+    setPassword("")
+    setActive("Login");
+  };
+
+  function activateRegister() {
+    setEmail("")
+    setPassword("")
+    setActive("Register");
+  };
+
+  function onChangeEmail(event) {
+    setEmail(event.target.value);
+  };
+
+  function onChangePassword(event) {
+    setPassword(event.target.value);
+  };
+
+  function onChangeUserType(event) {
+    setUserType(event.target.value);
+  }
+
+  function onSubmitLogin(e) {
+    e.preventDefault();
+    submitLogin(email, password);
+  };
+
+  function submitLogin(email, password) {
+    clearCookies()
+    request("POST",
+            "/login",
+            {emailAddress: email, password: password}
+    ).then((response) => {
+      console.log(response.data);
+      setAuthenticatedUser(response.data);
+      Router.push('/UserHomePage')
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  function onSubmitRegister(e) {
+    e.preventDefault()
+    submitRegister(email, password, userType)
+  }
+
+  function submitRegister(email, password, userType) {
+    clearCookies();
+    let user = {emailAddress: email, password: password, userType: userType}
+    console.log(user);
+
+    request("POST",
+      "/register",
+      user
+    ).then((response) => {
+      setAuthenticatedUser(response.data)
+      Router.push('/UserHomePage');
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    console.log(user);
   }
 
   return (
-    <>
-      <Head>
-        <title>Home Page</title>
-      </Head>
+  <>
+    <Head>
+      <title>Furry Friends {active}</title>
+    </Head>
 
-      <main>
-        <Stack sx={{ paddingTop: 4 }} alignItems='center' gap={2}>
-          <Card sx={{ width: 600 }} elevation={4}>
-            <CardContent>
-              <Typography variant='h3' align='center'>Pet Adoption Fall 2024</Typography>
-              <Typography variant='body1' color='text.secondary'>This is your template project for the Fall 2024 Baylor Software Engineering II class project! See the README for insturctions on how to set this project up and run it locally.</Typography>
-            </CardContent>
-          </Card>
-          <Stack direction="row">
-            {/* There are multiple ways to apply styling to Material UI components. One way is using the `sx` prop: */}
-            <Button variant='contained' onClick={onButtonPress} sx={{ width: 200 }}>I am a button</Button>
-
-            {/* Another way is by creating a dedicated CSS file and using the styles from there: */}
-            <Button variant='contained' color="secondary" onClick={onButtonPress} className={styles.wideButton}>I am a wider button</Button>
-          </Stack>
+    <main>
+      <Stack sx={{ paddingTop: 6 }} alignItems='center'>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant='h3' align='center' sx={{paddingBottom: 2}}>{active}</Typography>
+            { active === "Login" && 
+            <form onSubmit={onSubmitLogin}>
+              <div className={styles.loginGrid}>
+                <label htmlFor="email"><Typography>Email:</Typography></label>
+                <input 
+                    type="text"
+                    id="email"
+                    name="email"
+                    onChange={onChangeEmail}
+                    />
+                <label htmlFor="pw"><Typography>Password:</Typography></label>
+                <input 
+                    type="password"
+                    id="pw"
+                    name="password"
+                    onChange={onChangePassword}
+                    />
+                </div>
+                <button type="submit">Sign in</button>
+            </form> }
+            { active === "Register" && 
+            <form onSubmit={onSubmitRegister}>
+            <div className={styles.loginGrid}>
+              <label htmlFor="email"><Typography>Email:</Typography></label>
+              <input 
+                  type="text"
+                  id="email"
+                  name="email"
+                  onChange={onChangeEmail}
+                  />
+              <label htmlFor="pw"><Typography>Password:</Typography></label>
+              <input 
+                  type="password"
+                  id="pw"
+                  name="password"
+                  onChange={onChangePassword}
+                  />
+              <div className={styles.userTypeLabel}>User Type:</div>
+              <label>
+                <input 
+                    type="radio"
+                    value="Potential Adopter"
+                    checked={userType === 'Potential Adopter'}
+                    onChange={onChangeUserType}
+                    />
+                Potential Adopter
+              </label>
+              <label>
+                <input 
+                    type="radio"
+                    value="Adoption Center"
+                    checked={userType === 'Adoption Center'}
+                    onChange={onChangeUserType}
+                    />
+                Adoption Center
+              </label>
+                
+              </div>
+              <button type="submit">{active === Login ? "Sign in" : "Register"}</button>
+          </form>}
+          </CardContent>
+        </Card>
+        <Stack direction="row">
+          <Button onClick={activateLogin}>Login</Button>
+          <Button onClick={activateRegister}>Register</Button>
         </Stack>
-      </main>
-    </>
-  );
+      </Stack>
+    </main>
+  </>)
 }
