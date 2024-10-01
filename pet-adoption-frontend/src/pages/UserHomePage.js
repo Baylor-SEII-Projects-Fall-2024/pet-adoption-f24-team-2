@@ -10,15 +10,19 @@ export default function UserHomePage() {
 
   return (
     <>
-      {console.log(user)}
       <h1>User Profile Page</h1>
       <h2>Welcome {user.emailAddress}</h2>
-      {user === null ? <button onClick={getUser}>Load User</button> :
+      
       <div>
+        <div>Name: {user.name}</div>
         <div>Email Address: {user.emailAddress}</div>
+        <div>Phone Number: {user.phone}</div>
         <div>Account Type: {user.userType}</div>
+        <div>Description: {user.description}</div>
+        {user.userType === "Adoption Center" &&
+          <div>Address: {user.address}</div>
+        }
       </div>
-      }
     </>
   )
 }

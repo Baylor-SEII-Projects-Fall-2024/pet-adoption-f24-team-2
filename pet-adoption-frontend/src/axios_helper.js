@@ -39,7 +39,16 @@ export const setAuthenticatedUser = (user) => {
     expires: new Date(decoded.exp * 1000)
   });
 
-  cookies.set("user", {emailAddress: user.emailAddress, userType: user.userType}, {
+  let savedUser = {emailAddress: user.emailAddress, 
+    password: user.password, 
+    userType: user.userType,
+    phone: user.phone,
+    name: user.name,
+    description: user.description,
+    address: user.address
+  }
+
+  cookies.set("user", savedUser, {
     expires:new Date(decoded.exp * 1000)
   })
 }
