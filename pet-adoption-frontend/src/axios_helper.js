@@ -22,7 +22,6 @@ export const request = (method, url, data) => {
 };
 
 export const clearCookies = () => {
-  cookies.remove("user");
   cookies.remove("jwt_authorization");
 }
 
@@ -38,15 +37,13 @@ export const setAuthenticatedUser = (user) => {
     expires: new Date(decoded.exp * 1000)
   });
 
-  cookies.set("userID", user.id, {
-    expires:new Date(decoded.exp * 1000)
-  })
+  sessionStorage.setItem("userID", user.id);
 }
 
 export const getUserID = () => {
-  return cookies.get("userID");
+  return sessionStorage.getItem("userID");
 }
 
 export const clearToken = () => {
-  cookies.remove("jwt_authorixation");
+  cookies.remove("jwt_authorization");
 };

@@ -41,6 +41,29 @@ export default function UserHomePage() {
   function saveChanges(e) {
     e.preventDefault();
     setIsEditing(false);
+    
+    const newUserInfo = {
+      emailAddress: user.emailAddress,
+      role: user.role,
+      name: name,
+      address: address,
+      description: description,
+      phone: phone,
+    }
+
+    request("PUT", `/users/${getUserID()}`,  newUserInfo)
+      .then((response) => {
+        setUser(response.data);
+        setName(response.data.name);
+        setEmail(response.data.emailAddress);
+        setPhone(response.data.phone);
+        setUserType(response.data.role === "PET_OWNER" ? "Pet Owner" : "Adoption Center");
+        setDescription(response.data.description);
+        setAddress(response.data.address);
+      }).catch((error) => {
+        console.log(error);
+      })
+
   }
 
   function startEditing(e) {
