@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import petadoption.api.dto.UserDto;
 import petadoption.api.user.UserService;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -32,15 +33,16 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String email) {
+    public String createToken(UserDto user) {
         // Jwt token valid for ope hour after being issued
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3_600_000);
 
         return JWT.create()
-                .withIssuer(email)
+                .withIssuer(user.getEmailAddress())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
+                .withClaim("role", user.getRole().name())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
@@ -53,6 +55,6 @@ public class UserAuthProvider {
 
         UserDto user = userService.findByEmail(decoded.getIssuer());
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(user.getRole()));
     }
 }

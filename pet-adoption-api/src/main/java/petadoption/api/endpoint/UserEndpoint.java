@@ -13,6 +13,7 @@ import petadoption.api.user.User;
 import petadoption.api.user.UserService;
 
 import java.net.URI;
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -22,15 +23,15 @@ public class UserEndpoint {
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
 
-    @GetMapping("/users/{email}")
-    public UserDto findByEmail(@PathVariable String email) {
-        UserDto user = userService.findByEmail(email);
+    @GetMapping("/users/{id}")
+    public UserDto findByID(@PathVariable Long id) {
+        System.out.println(id);
+        return userService.findUser(id);
+    }
 
-        if (user == null) {
-            log.warn("User not found");
-        }
-
-        return user;
+    @PutMapping("/users/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
+        return userService.updateUser(id, user);
     }
 
     @PostMapping("/login")
@@ -38,7 +39,7 @@ public class UserEndpoint {
         UserDto user = userService.login(credentialsDto);
 
         // Provide a fresh JWT token on login
-        user.setToken(userAuthProvider.createToken(user.getEmailAddress()));
+        user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.ok(user);
     }
 
@@ -46,12 +47,11 @@ public class UserEndpoint {
     public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto) {
         UserDto user = userService.register(signUpDto);
         // Return a fresh JWT token on registration
-        user.setToken(userAuthProvider.createToken(user.getEmailAddress()));
+        user.setToken(userAuthProvider.createToken(user));
 
         // Return 201 Created code and the URL to find the created entity
         return ResponseEntity.created(URI.create("/users/" + user.getId()))
                 .body(user);
-
     }
 
     @PostMapping("/users")

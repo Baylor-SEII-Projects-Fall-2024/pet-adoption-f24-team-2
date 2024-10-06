@@ -3,6 +3,11 @@ package petadoption.api.user;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import petadoption.api.enums.Role;
+import petadoption.api.pet.Pet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,6 +44,13 @@ public class User {
     @Column(name = "DESCRIPTION")
     String description;
 
-    @Column(name = "USER_TYPE")
-    String userType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    Role role;
+
+    @OneToMany(mappedBy = "adoptionCenter")
+    List<Pet> pets;
+
+    @OneToMany(mappedBy = "owner")
+    List<Pet> adoptedPets;
 }

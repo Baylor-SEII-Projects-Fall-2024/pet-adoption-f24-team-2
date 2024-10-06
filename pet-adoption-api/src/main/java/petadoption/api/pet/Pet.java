@@ -2,6 +2,7 @@ package petadoption.api.pet;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import petadoption.api.user.User;
 
 @Data
 @Entity
@@ -17,18 +18,39 @@ public class Pet {
     @Column(name = "PET_ID")
     Long id;
 
+    @Column(name = "NAME")
+    String name;
+
     @Column(name = "SPECIES")
     String species;
 
-    @Column(name = "AGE")
-    Long age;
+    @Column(name = "BREED")
+    String breed;
 
-    @Column(name = "FUR_COLOR")
-    String furColor;
+    @Column(name = "PHOTO")
+    String photoUrl;
+
+    @Column(name = "COLOR")
+    String color;
+
+    @Column(name = "DESCRIPTION")
+    String description;
 
     @Column(name = "FUR_LENGTH")
-    Long furLength;
+    int furLength;
+
+    @Column(name = "AGE")
+    int age;
 
     @Column(name = "GENDER")
     boolean gender;
+
+    @ManyToOne
+    @JoinColumn(name = "ADOPTION_CENTER_ID")
+    User adoptionCenter;
+
+    @ManyToOne
+    @JoinColumn(name = "OWNER_ID")
+    User owner;
+
 }

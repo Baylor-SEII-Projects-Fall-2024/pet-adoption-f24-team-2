@@ -21,8 +21,11 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public Optional<User> findUser(Long userId) {
-        return userRepository.findById(userId);
+    public UserDto findUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        return userMapper.toUserDto(user);
     }
 
     public User saveUser(User user) {
@@ -34,6 +37,7 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword() )) {
+            System.out.println(user);
             return userMapper.toUserDto(user);
         }
 
@@ -60,6 +64,15 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+
         return userMapper.toUserDto(user);
+    }
+
+    public UserDto updateUser(Long id, UserDto user) {
+        user.setId(id);
+        User newUser = userMapper.userDtoToUser(user);
+        User savedUser = userRepository.save(newUser);
+
+        return userMapper.toUserDto(savedUser);
     }
 }
