@@ -9,7 +9,7 @@ export default function Login() {
   const [active, setActive] = useState("Login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("Pet Owner")
+  const [userType, setUserType] = useState("Pet_Owner")
   const [phoneNumber, setPhoneNumber] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -82,7 +82,7 @@ export default function Login() {
     clearCookies();
     let user = {emailAddress: email, 
                 password: password, 
-                userType: userType,
+                role: userType.toUpperCase(),
                 phone: phoneNumber,
                 name: name,
                 description: description,
@@ -139,8 +139,8 @@ export default function Login() {
                 <label>
                   <input 
                     type="radio"
-                    value="Pet Owner"
-                    checked={userType === 'Pet Owner'}
+                    value="Pet_Owner"
+                    checked={userType === 'Pet_Owner'}
                     onChange={onChangeUserType}
                     />
                   Pet Owner
@@ -148,8 +148,8 @@ export default function Login() {
                 <label>
                   <input 
                     type="radio"
-                    value="Adoption Center"
-                    checked={userType === 'Adoption Center'}
+                    value="Adoption_Center"
+                    checked={userType === 'Adoption_Center'}
                     onChange={onChangeUserType}
                     />
                   Adoption Center
@@ -190,7 +190,7 @@ export default function Login() {
                 name="description"
                 rows={4}
                 />
-              {userType === "Adoption Center" &&
+              {userType === "Adoption_Center" &&
                 <>
                   <label htmlFor="address"><Typography>Address:</Typography></label>
                   <input 

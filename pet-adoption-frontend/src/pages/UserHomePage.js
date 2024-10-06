@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getUser} from "@/axios_helper";
+import { request, getUserID } from "@/axios_helper";
 
 export default function UserHomePage() {
-  const user = getUser();
+  const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -12,23 +12,30 @@ export default function UserHomePage() {
   const [address, setAddress] = useState();
 
   useEffect( () => {
-    setName(user.name);
-    setEmail(user.emailAddress);
-    setPhone(user.phone);
-    setUserType(user.userType);
-    setDescription(user.description);
-    setAddress(user.address);
+      request("GET", `/users/${getUserID()}`, null)
+        .then((response) => {
+          setUser(response.data)
+          setName(response.data.name);
+          setEmail(response.data.emailAddress);
+          setPhone(response.data.phone);
+          setUserType(response.data.role === "PET_OWNER" ? "Pet Owner" : "Adoption Center");
+          setDescription(response.data.description);
+          setAddress(response.data.address);
+        }).catch((error) => {
+          console.log(error);
+        })
+    
   }, [])
   
   function discardChanges(e) {
     e.preventDefault();
     setIsEditing(false);
     setName(user.name);
-    setEmail(user.emailAddress);
     setPhone(user.phone);
-    setUserType(user.userType);
     setDescription(user.description);
-    setAddress(user.address);
+    if( userType === "Pet Owner" ) {
+      setAddress(user.address);
+    }
   }
 
   function saveChanges(e) {
@@ -39,6 +46,22 @@ export default function UserHomePage() {
   function startEditing(e) {
     e.preventDefault();
     setIsEditing(true);
+  }
+
+  function onChangePhone(event) {
+    setPhoneNumber(event.target.value);
+  }
+
+  function onChangeName(event) {
+    setName(event.target.value);
+  }
+
+  function onChangeDescription(event) {
+    setDescription(event.target.value);
+  }
+
+  function onChangeAddress(event) {
+    setAddress(event.target.value);
   }
 
   return (
@@ -59,6 +82,7 @@ export default function UserHomePage() {
             {isEditing ? (
               <input
                 value={name}
+                onChange={onChangeName}
               />
             ) : (
               <span>{name}</span>
@@ -71,7 +95,9 @@ export default function UserHomePage() {
             Phone Number:{" "} {
               isEditing ? (
                 <input 
-                  value={phone}/>
+                  value={phone}
+                  onChange={onChangePhone}
+                  />
               ) : (
                 <span>{phone}</span>
               )
@@ -82,8 +108,11 @@ export default function UserHomePage() {
           <label>
             Description:{" "} {
               isEditing ? (
-                <input 
-                  value={description}/>
+                <textarea
+                  rows={4} 
+                  value={description}
+                  onChange={onChangeDescription}
+                  />
               ) : (
                 <span>{description}</span>
               )
@@ -96,7 +125,9 @@ export default function UserHomePage() {
               Address:{" "} {
                 isEditing ? (
                   <input 
-                    value={address}/>
+                    value={address}
+                    onChange={onChangeAddress}
+                    />
                 ) : (
                   <span>{address}</span>
                 )

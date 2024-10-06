@@ -11,7 +11,6 @@ export const request = (method, url, data) => {
   let headers = {};
   if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
       headers = {"Authorization": `Bearer ${getAuthToken()}`}
-      console.log(getAuthToken());
   }
 
   return axios({
@@ -39,22 +38,13 @@ export const setAuthenticatedUser = (user) => {
     expires: new Date(decoded.exp * 1000)
   });
 
-  let savedUser = {emailAddress: user.emailAddress, 
-    password: user.password, 
-    userType: user.userType,
-    phone: user.phone,
-    name: user.name,
-    description: user.description,
-    address: user.address
-  }
-
-  cookies.set("user", savedUser, {
+  cookies.set("userID", user.id, {
     expires:new Date(decoded.exp * 1000)
   })
 }
 
-export const getUser = () => {
-  return cookies.get("user")
+export const getUserID = () => {
+  return cookies.get("userID");
 }
 
 export const clearToken = () => {
