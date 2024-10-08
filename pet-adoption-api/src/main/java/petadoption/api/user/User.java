@@ -1,12 +1,12 @@
 package petadoption.api.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import petadoption.api.enums.Role;
 import petadoption.api.pet.Pet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -48,9 +48,11 @@ public class User {
     @Column(nullable = false)
     Role role;
 
+    @JsonManagedReference(value = "adoptionCenter-pets")
     @OneToMany(mappedBy = "adoptionCenter")
     List<Pet> pets;
 
+    @JsonManagedReference(value = "owner-pets")
     @OneToMany(mappedBy = "owner")
     List<Pet> adoptedPets;
 }

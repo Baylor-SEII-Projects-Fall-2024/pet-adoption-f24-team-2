@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import Router from 'next/router';
 
 const cookies = new Cookies();
 
@@ -9,6 +10,10 @@ axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export const request = (method, url, data) => {
   let headers = {};
+  if( (url !== "/login" && url !== "/register") && getAuthToken() === undefined ) {
+    Router.push("/");
+  }
+
   if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
       headers = {"Authorization": `Bearer ${getAuthToken()}`}
   }
@@ -26,7 +31,8 @@ export const clearCookies = () => {
 }
 
 export const getAuthToken = () => {
-  return cookies.get("jwt_authorization");
+  let token = cookies.get("jwt_authorization");
+  return token;
 };
 
 export const setAuthenticatedUser = (user) => {
@@ -41,7 +47,7 @@ export const setAuthenticatedUser = (user) => {
 }
 
 export const getUserID = () => {
-  return sessionStorage.getItem("userID");
+  return sessionStorage.getItem("userID");;
 }
 
 export const clearToken = () => {

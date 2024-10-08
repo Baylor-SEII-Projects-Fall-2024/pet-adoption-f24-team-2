@@ -7,7 +7,6 @@ import petadoption.api.enums.Role;
 @NoArgsConstructor
 @Builder
 @Data
-@ToString
 public class UserDto {
     private Long id;
     private String emailAddress;
