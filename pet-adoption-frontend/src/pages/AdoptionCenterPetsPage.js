@@ -38,6 +38,14 @@ export default function AdoptionCenterPetsPage() {
   };
 
   const handleClose = () => {
+    setIsMale(true);
+    setName("");
+    setSpecies("");
+    setBreed("");
+    setColor("");
+    setFurLength(0);
+    setAge(0);
+    setDescription("");
     setOpen(false);
   };
 

@@ -1,9 +1,13 @@
 package petadoption.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import petadoption.api.user.User;
 
 @AllArgsConstructor
@@ -21,6 +25,4 @@ public class PetDto {
     int furLength;
     int age;
     boolean gender;
-    User adoptionCenter;
-    User owner;
 }

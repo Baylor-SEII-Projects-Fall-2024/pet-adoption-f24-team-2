@@ -1,5 +1,6 @@
 package petadoption.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,7 +13,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = User.TABLE_NAME)
-@ToString
 public class User {
     public static final String TABLE_NAME = "USERS";
 

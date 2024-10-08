@@ -37,7 +37,6 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword() )) {
-            System.out.println(user);
             return userMapper.toUserDto(user);
         }
 

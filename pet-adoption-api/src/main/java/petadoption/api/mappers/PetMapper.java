@@ -6,5 +6,5 @@ import petadoption.api.pet.Pet;
 
 @Mapper(componentModel = "spring")
 public interface PetMapper {
-    PetDto toPetDto(Pet pet);
+    Pet toPet(PetDto petDto);
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, Typography, Button } from "@mui/material";
 import { useState } from "react";
 import { request } from "@/axios_helper";
+import { getUserID } from "@/axios_helper";
 
 function PetDisplayCard(props) {
   const pet = props.pet;
@@ -32,6 +33,24 @@ function PetDisplayCard(props) {
     setAge(pet.age);
   }
 
+  function handleRemove() {
+
+    request("DELETE", `/pets/${pet.id}`, null)
+      .then((response) => {
+        if( response.status === 204 ) {
+          let index = currPets.findIndex(p => p.id === pet.id);
+          currPets = [
+            ...currPets.slice(0, index), // Elements before the one to delete
+            ...currPets.slice(index + 1) // Elements after the one to delete
+          ]
+
+          props.setPets(currPets);
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+
   function savePetChanges() {
     let updatedPet = {
       id: pet.id,
@@ -45,6 +64,23 @@ function PetDisplayCard(props) {
       gender: gender,
       adoptionCenter: pet.adoptionCenter,
     }
+
+    console.log(updatedPet);
+
+    request("PUT", `/pets/${getUserID()}`, updatedPet)
+      .then((response) => {
+        console.log(response)
+        console.log(updatedPet)
+        let index = currPets.findIndex(p => p.id === updatedPet.id);
+        if( index !== -1) {
+          currPets[index] = updatedPet;
+          props.setPets(currPets);
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+    
+      setIsEditing(false);
   }
 
   function onChangeGender() {
@@ -73,6 +109,10 @@ function PetDisplayCard(props) {
 
   function onChangeAge(e) {
     setAge(e.target.value);
+  }
+
+  function onChangeDescription(e) {
+    setDescription(e.target.value);
   }
 
   return (
@@ -172,7 +212,7 @@ function PetDisplayCard(props) {
             </label>
           </div>
           <div>
-          <label>
+            <label>
               Age:{" "} 
               {isEditing ? (
                 <input
@@ -185,17 +225,32 @@ function PetDisplayCard(props) {
 
             </label>
           </div>
+          <div>
+            <label>
+              Description:{" "} 
+              {isEditing ? (
+                <textarea
+                  rows={4} 
+                  value={description}
+                  onChange={onChangeDescription}  
+                />
+              ) : (
+                <span>{description}</span>
+              )}
+
+            </label>
+          </div>
         </Typography>
 
         {isEditing ? 
         <>
-          <Button variant="outlined">Confirm</Button>
+          <Button variant="outlined" onClick={savePetChanges}>Confirm</Button>
           <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
         </>
         :
         <>
           <Button variant="outlined" onClick={handleEdit}>Edit</Button>
-          <Button variant="outlined">Remove</Button>
+          <Button variant="outlined" onClick={handleRemove}>Remove</Button>
         </> }
       </CardContent>
 
