@@ -48,11 +48,9 @@ public class User {
     @Column(nullable = false)
     Role role;
 
-    @JsonManagedReference(value = "adoptionCenter-pets")
     @OneToMany(mappedBy = "adoptionCenter")
     List<Pet> pets;
 
-    @JsonManagedReference(value = "owner-pets")
     @OneToMany(mappedBy = "owner")
     List<Pet> adoptedPets;
 }

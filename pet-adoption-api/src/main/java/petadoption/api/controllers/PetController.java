@@ -20,8 +20,8 @@ public class PetController {
     private final PetMapper petMapper;
 
     @PostMapping("/pets/{centerID}")
-    public Pet addPet(@PathVariable Long centerID, @RequestBody Pet pet) {
-        return petService.savePet(pet, centerID);
+    public PetDto addPet(@PathVariable Long centerID, @RequestBody Pet pet) {
+        return petMapper.toPetDto(petService.savePet(pet, centerID));
     }
 
     @DeleteMapping("/pets/{petID}")
@@ -35,16 +35,16 @@ public class PetController {
     }
 
     @GetMapping("/pets/{centerID}")
-    public List<Pet> getPets(@PathVariable Long centerID) {
+    public List<PetDto> getPets(@PathVariable Long centerID) {
         return petService.getPets(centerID);
     }
 
     @PutMapping("/pets/{centerID}")
-    public ResponseEntity<Pet> updatePet(@RequestBody PetDto pet, @PathVariable Long centerID) {
-        System.out.println(pet);
+    public ResponseEntity<PetDto> updatePet(@RequestBody PetDto pet, @PathVariable Long centerID) {
         Pet newPet = petMapper.toPet(pet);
         newPet = petService.updatePet(newPet, centerID);
+        pet = petMapper.toPetDto(newPet);
 
-        return ResponseEntity.ok(newPet);
+        return ResponseEntity.ok(pet);
     }
 }

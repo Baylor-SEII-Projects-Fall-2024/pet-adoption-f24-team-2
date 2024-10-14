@@ -16,6 +16,8 @@ import petadoption.api.user.User;
 @Data
 public class PetDto {
     Long id;
+    Long adoptionCenterID;
+    Long ownerID;
     String name;
     String species;
     String breed;

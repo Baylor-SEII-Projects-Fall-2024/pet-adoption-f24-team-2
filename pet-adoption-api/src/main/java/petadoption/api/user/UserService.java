@@ -28,8 +28,8 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserDto saveUser(User user) {
+        return userMapper.toUserDto(userRepository.save(user));
     }
 
     public UserDto login(CredentialsDto credentialsDto) {

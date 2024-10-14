@@ -27,13 +27,11 @@ public class UserTests {
         newUser.emailAddress = "example@example.com";
         newUser.password = "password";
 
-        User savedUser = userService.saveUser(newUser);
-        assertNotNull(savedUser.id);
+        UserDto savedUser = userService.saveUser(newUser);
+        assertNotNull(savedUser.getId());
 
-        UserDto foundUser = userService.findUser(savedUser.id);
-
-        assertEquals(newUser.role, foundUser.getRole());
-        assertEquals(newUser.emailAddress, foundUser.getEmailAddress());
+        assertEquals(newUser.role, savedUser.getRole());
+        assertEquals(newUser.emailAddress, savedUser.getEmailAddress());
     }
 
     @Test

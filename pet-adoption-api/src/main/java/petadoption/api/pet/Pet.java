@@ -46,12 +46,10 @@ public class Pet {
     @Column(name = "GENDER")
     boolean gender;
 
-    @JsonBackReference(value = "adoptionCenter-pets")
     @ManyToOne
     @JoinColumn(name = "ADOPTION_CENTER_ID")
     User adoptionCenter;
 
-    @JsonBackReference(value = "owner-pets")
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
     User owner;
