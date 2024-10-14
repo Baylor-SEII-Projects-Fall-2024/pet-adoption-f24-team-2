@@ -10,6 +10,7 @@ axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export const request = (method, url, data) => {
   let headers = {};
+  console.log(getAuthToken())
   if( (url !== "/login" && url !== "/register") && getAuthToken() === undefined ) {
     Router.push("/");
   }
