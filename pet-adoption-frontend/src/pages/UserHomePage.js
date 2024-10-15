@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
+import Navbar from "@/components/Navbar";
 
 export default function UserHomePage() {
   const [user, setUser] = useState({});
@@ -89,6 +90,7 @@ export default function UserHomePage() {
 
   return (
     <>
+    <Navbar user={user}/>
       <h1>User Profile Page</h1>
       <h2>Welcome {email}</h2>
       

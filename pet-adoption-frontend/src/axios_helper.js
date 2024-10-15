@@ -31,6 +31,10 @@ export const clearCookies = () => {
   cookies.remove("jwt_authorization");
 }
 
+export const clearUser = () => {
+  sessionStorage.removeItem("userID");
+}
+
 export const getAuthToken = () => {
   let token = cookies.get("jwt_authorization");
   return token;

@@ -4,7 +4,6 @@ import {Button, Card, CardContent, Stack, Typography} from '@mui/material'
 import { clearCookies, setAuthenticatedUser, request } from '@/axios_helper';
 import styles from '@/styles/Login.module.css';
 import Router from 'next/router';
-import Navbar from '@/components/Navbar';
 
 export default function Login() {
   const [active, setActive] = useState("Login");
