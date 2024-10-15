@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import petadoption.api.enums.Role;
+import petadoption.api.event.Event;
 import petadoption.api.pet.Pet;
 
 import java.util.List;
@@ -53,4 +54,7 @@ public class User {
 
     @OneToMany(mappedBy = "owner")
     List<Pet> adoptedPets;
+
+    @OneToMany(mappedBy = "adoptionCenter")
+    List<Event> events;
 }

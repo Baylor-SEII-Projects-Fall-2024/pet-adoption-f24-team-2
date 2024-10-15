@@ -10,13 +10,24 @@ axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export const request = (method, url, data) => {
   let headers = {};
-  console.log(getAuthToken())
   if( (url !== "/login" && url !== "/register") && getAuthToken() === undefined ) {
     Router.push("/");
   }
 
   if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
-      headers = {"Authorization": `Bearer ${getAuthToken()}`}
+    const cookie = cookies.get("jwt_authorization");
+    if (cookie) {
+      if( cookie.expires ) {
+        const expirationDate = new Date(cookie.expires);
+        const now = new Date();
+
+        if( now > expirationDate ) {
+          Router.push("/");
+          
+        }
+      }
+    }
+    headers = {"Authorization": `Bearer ${getAuthToken()}`}
   }
 
   return axios({

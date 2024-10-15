@@ -10,6 +10,7 @@ import petadoption.api.user.User;
 @Table(name = Pet.TABLE_NAME)
 public class Pet {
     public static final String TABLE_NAME = "PETS";
+
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
     @SequenceGenerator(

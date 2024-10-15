@@ -104,7 +104,7 @@ export default function Login() {
   return (
   <>
     <Head>
-      <title>Furry Friends {active}</title>
+      <title>Furry Friends</title>
     </Head>
 
     <main>

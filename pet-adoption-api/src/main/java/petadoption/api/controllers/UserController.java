@@ -23,7 +23,6 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public UserDto findByID(@PathVariable Long id) {
-        System.out.println(id);
         return userService.findUser(id);
     }
 

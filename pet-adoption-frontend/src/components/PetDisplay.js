@@ -31,6 +31,7 @@ function PetDisplayCard(props) {
     setColor(pet.color);
     setFurLength(pet.furLength);
     setAge(pet.age);
+    setDescription(pet.description);
   }
 
   function handleRemove() {
