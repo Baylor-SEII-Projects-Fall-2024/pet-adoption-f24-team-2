@@ -69,21 +69,19 @@ function EventDisplayCard(props) {
               )}
         </Typography>
         <Typography>
-          <div>
-            <label>
-              Description:{" "} 
-              {isEditing ? (
-                <textarea
-                  rows={4} 
-                  value={description}
-                  onChange={onChangeDescription}  
-                />
-              ) : (
-                <span>{description}</span>
-              )}
+          <label>
+            Description:{" "} 
+            {isEditing ? (
+              <textarea
+                rows={4} 
+                value={description}
+                onChange={onChangeDescription}  
+              />
+            ) : (
+              <span>{description}</span>
+            )}
 
-            </label>
-          </div>
+          </label>
         </Typography>
 
         <Typography>Date: {date.toString()}</Typography>

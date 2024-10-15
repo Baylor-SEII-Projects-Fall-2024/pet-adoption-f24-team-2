@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
+import { Typography, Card, CardContent, Button } from "@mui/material";
 
 export default function UserHomePage() {
   const [user, setUser] = useState({});
@@ -91,17 +92,16 @@ export default function UserHomePage() {
   return (
     <>
     <Navbar user={user}/>
-      <h1>User Profile Page</h1>
-      <h2>Welcome {email}</h2>
-      
-      <form id="userInformation">
-        <div>
-          Email Address: {email}
-        </div>
-        <div>
+    <Typography variant="h3" align="center"> Welcome {user.name}  </Typography>
+    <Card elevation={2}>
+      <CardContent component="form">
+        <Typography>
+          Email: {email}
+        </Typography>
+        <Typography>
           Account Type: {userType}
-        </div>
-        <div>
+        </Typography>
+        <Typography>
           <label>
             Name:{" "} 
             {isEditing ? (
@@ -114,8 +114,8 @@ export default function UserHomePage() {
             )}
 
           </label>
-        </div>
-        <div>
+        </Typography>
+        <Typography>
           <label>
             Phone Number:{" "} {
               isEditing ? (
@@ -128,8 +128,8 @@ export default function UserHomePage() {
               )
             }
           </label>
-        </div>
-        <div>
+        </Typography>
+        <Typography>
           <label>
             Description:{" "} {
               isEditing ? (
@@ -143,9 +143,9 @@ export default function UserHomePage() {
               )
             }
           </label>
-        </div>
+        </Typography>
         {userType === "Adoption Center" &&
-          <div>
+          <Typography>
             <label>
               Address:{" "} {
                 isEditing ? (
@@ -158,16 +158,18 @@ export default function UserHomePage() {
                 )
               }
             </label>
-          </div>
+          </Typography>
         }
-      </form>
-      {isEditing ?
-      <>
-        <button form="userInformation" onClick={saveChanges}>Save</button>
-        {" "}
-        <button form="userInformation" onClick={discardChanges}>Cancel</button>
-      </> :
-      <button form="userInformation" onClick={startEditing}>Edit profile</button> }
+
+        {isEditing ?
+          <>
+            <Button variant="contained" onClick={saveChanges}>Save</Button>
+            {" "}
+            <Button variant="contained" onClick={discardChanges}>Cancel</Button>
+          </> :
+          <Button variant="contained" onClick={startEditing}>Edit profile</Button> }
+      </CardContent>
+    </Card>
     </>
   )
 }

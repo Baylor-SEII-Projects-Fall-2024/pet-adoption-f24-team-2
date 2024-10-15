@@ -1,6 +1,6 @@
 import { request, getUserID } from "@/axios_helper"
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogContent, DialogContentText, DialogActions, Button, Typography, CardActions } from "@mui/material";
 import PetDisplay from "@/components/PetDisplay";
 import Navbar from "@/components/Navbar";
 
@@ -111,8 +111,10 @@ export default function AdoptionCenterPetsPage() {
   return (
     <>
       <Navbar user={user}/>
-      <h1>Welcome to your pets {user.name}!</h1>
-      <button onClick={handleClickOpen}>Register Pet</button>
+      <Typography variant="h3" align="center">Welcome to your pets {user.name}!</Typography>
+      <CardActions sx={{ justifyContent: "center" }}>
+        <Button onClick={handleClickOpen} size="large">Register Pet</Button>
+      </CardActions>
       <Dialog
         open={open}
         onClose={handleClose}

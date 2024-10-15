@@ -18,9 +18,7 @@ public class EventController {
 
     @PostMapping("/register/{centerID}")
     public EventDto registerEvent(@PathVariable Long centerID, @RequestBody EventDto newEvent) {
-        System.out.println(newEvent);
         EventDto savedEvent = eventService.save(newEvent, centerID);
-        System.out.println(savedEvent);
 
         return savedEvent;
     }
