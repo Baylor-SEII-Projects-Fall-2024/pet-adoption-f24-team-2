@@ -26,20 +26,18 @@ public class WebConfig {
         // Allow the frontend to send credentials and accept them
         config.setAllowCredentials(true);
         // Set the url we will receive request from
-        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://104.198.233.250:3000");
 
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.ACCEPT
-        ));
+                HttpHeaders.ACCEPT));
 
         config.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.DELETE.name(),
-                HttpMethod.PUT.name()
-        ));
+                HttpMethod.PUT.name()));
         // This option allows the browser to cache the response of a preflight
         // request for 30 minutes, so if the same request is sent within
         // that time frame, no preflight request will be sent for later
