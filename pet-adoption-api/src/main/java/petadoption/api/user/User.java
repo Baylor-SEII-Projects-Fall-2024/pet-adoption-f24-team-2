@@ -8,7 +8,9 @@ import lombok.ToString;
 import petadoption.api.enums.Role;
 import petadoption.api.event.Event;
 import petadoption.api.pet.Pet;
+import petadoption.api.recommendation.petAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -45,6 +47,12 @@ public class User {
     @Column(name = "DESCRIPTION")
     String description;
 
+    @Column(name = "ATTRIBUTES")
+    petAttributes attributes;
+
+    @Column(name = "NUM_LIKED_PETS")
+    Integer numLikedPets = 0;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     Role role;
@@ -57,4 +65,27 @@ public class User {
 
     @OneToMany(mappedBy = "adoptionCenter")
     List<Event> events;
+
+    // used in petRecommendation
+    public void addLikedPet(Pet p) {
+        attributes.combine(p.getAttributes());
+        numLikedPets++;
+    }
+
+    // used in petRecommendation
+    public double[] generateUserProfile() {
+        double[] profile = new double[petAttributes.getNumAttributes()];
+        double[] userAttributes = attributes.getAttributes();
+
+        for (int i = 0; i < profile.length; i++) {
+            profile[i] = userAttributes[i]/numLikedPets;
+        }
+
+        return profile;
+    }
+
+    // used in petRecommendation
+    public String profileToString() {
+        return Arrays.toString(attributes.getAttributes());
+    }
 }
