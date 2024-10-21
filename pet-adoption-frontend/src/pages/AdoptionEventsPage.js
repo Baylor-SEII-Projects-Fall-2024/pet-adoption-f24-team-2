@@ -59,6 +59,7 @@ export default function RegisterAdoptionEventPage() {
       name: name,
       description: description,
       date: epochTime,
+      location: user.address,
     }
     console.log(newEvent);
     request("POST", `/register/${getUserID()}`, newEvent)
@@ -105,7 +106,6 @@ export default function RegisterAdoptionEventPage() {
             />
           <DialogContentText>Date</DialogContentText>
           <DateTimePicker 
-           value={date}
            onChange={(newValue) => setDate(newValue)}
            />
         </DialogContent>
