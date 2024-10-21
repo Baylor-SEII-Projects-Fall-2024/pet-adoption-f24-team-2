@@ -3,7 +3,10 @@ package petadoption.api.pet;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import petadoption.api.recommendation.petAttributes;
 import petadoption.api.user.User;
+
+import java.util.Arrays;
 
 @Data
 @Entity
@@ -47,6 +50,9 @@ public class Pet {
     @Column(name = "GENDER")
     boolean gender;
 
+    @Column(name = "ATTRIBUTES")
+    petAttributes attributes;
+
     @ManyToOne
     @JoinColumn(name = "ADOPTION_CENTER_ID")
     User adoptionCenter;
@@ -54,5 +60,10 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
     User owner;
+
+    // used in petRecommendation
+    public String profileToString() {
+        return Arrays.toString(attributes.getAttributes());
+    }
 
 }
