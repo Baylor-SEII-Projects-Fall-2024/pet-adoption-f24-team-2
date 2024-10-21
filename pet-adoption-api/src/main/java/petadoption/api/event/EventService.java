@@ -45,4 +45,8 @@ public class EventService {
     public void delete(Long eventID) {
         eventRepository.deleteById(eventID);
     }
+
+    public void update(Long eventID, EventDto newEvent) {
+
+    }
 }
