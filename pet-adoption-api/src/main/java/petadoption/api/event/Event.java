@@ -27,6 +27,9 @@ public class Event {
     @Column(name = "DESCRIPTION")
     String description;
 
+    @Column(name = "LOCATION")
+    String location;
+
     @Column(name = "DATE")
     Date date;
 

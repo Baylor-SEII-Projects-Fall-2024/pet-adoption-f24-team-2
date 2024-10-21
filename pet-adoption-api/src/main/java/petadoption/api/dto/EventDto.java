@@ -13,6 +13,7 @@ public class EventDto {
     Long id;
     Long adoptionCenterId;
     String name;
+    String location;
     String description;
     Long date;
 }
