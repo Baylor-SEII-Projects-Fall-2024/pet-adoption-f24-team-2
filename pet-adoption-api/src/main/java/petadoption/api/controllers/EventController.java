@@ -38,8 +38,10 @@ public class EventController {
         }
     }
 
-    @PutMapping("/events/{eventID}")
-    public ResponseEntity<EventDto> update(@PathVariable Long eventID, @RequestBody EventDto newEvent) {
-        eventService.update(eventID, newEvent);
+    @PutMapping("/events/{centerID}")
+    public ResponseEntity<EventDto> update(@PathVariable Long centerID, @RequestBody EventDto newEvent) {
+        EventDto updatedEvent = eventService.update(centerID, newEvent);
+
+        return ResponseEntity.ok(updatedEvent);
     }
 }

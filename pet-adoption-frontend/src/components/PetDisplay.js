@@ -66,15 +66,11 @@ function PetDisplayCard(props) {
       adoptionCenter: pet.adoptionCenter,
     }
 
-    console.log(updatedPet);
-
     request("PUT", `/pets/${getUserID()}`, updatedPet)
       .then((response) => {
-        console.log(response)
-        console.log(updatedPet)
         let index = currPets.findIndex(p => p.id === updatedPet.id);
         if( index !== -1) {
-          currPets[index] = updatedPet;
+          currPets[index] = response.data;
           props.setPets(currPets);
         }
       }).catch((error) => {
