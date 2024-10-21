@@ -37,4 +37,11 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/events/{centerID}")
+    public ResponseEntity<EventDto> update(@PathVariable Long centerID, @RequestBody EventDto newEvent) {
+        EventDto updatedEvent = eventService.update(centerID, newEvent);
+
+        return ResponseEntity.ok(updatedEvent);
+    }
 }
