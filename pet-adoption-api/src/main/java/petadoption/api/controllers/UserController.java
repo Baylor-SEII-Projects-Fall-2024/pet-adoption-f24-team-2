@@ -12,11 +12,12 @@ import petadoption.api.user.User;
 import petadoption.api.user.UserService;
 
 import java.net.URI;
+import java.util.List;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "https://104.198.233.250:3000")
 public class UserController {
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
@@ -54,5 +55,21 @@ public class UserController {
     @PostMapping("/users")
     public UserDto saveUser(@RequestBody User user) {
         return userService.saveUser(user);
+    }
+
+    @GetMapping("/users/adoption-centers")
+    public ResponseEntity<List<UserDto>> showCenters() {
+        return ResponseEntity.ok(userService.getAdoptionCenters());
+    }
+
+    @GetMapping("/users/adoption-centers/{id}")
+    public ResponseEntity<UserDto> showSpecifiedCenter(@PathVariable long id) {
+        UserDto adoptionCenter = userService.getSpecifiedAdoptionCenter(id);
+        if (adoptionCenter != null) {
+            return ResponseEntity.ok(adoptionCenter);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

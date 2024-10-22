@@ -49,6 +49,11 @@ export default function Navbar({ user }) {
           <ListItemText primary="Adopt A Pet"/>
         </ListItemButton>
       </ListItem>
+      <ListItem key="AdoptionCenters">
+        <ListItemButton onClick={() => Router.push("AdoptionCentersPage")}>
+          <ListItemText primary="Adoption Centers"/>
+        </ListItemButton>
+      </ListItem>
     </List>
   )
 

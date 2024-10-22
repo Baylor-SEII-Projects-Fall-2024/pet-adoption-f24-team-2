@@ -12,7 +12,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "https://104.198.233.250:3000")
 public class EventController {
     private final EventService eventService;
 

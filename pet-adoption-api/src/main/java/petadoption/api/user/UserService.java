@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import petadoption.api.dto.CredentialsDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
+import petadoption.api.enums.Role;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.UserMapper;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,12 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         return userMapper.toUserDto(user);
+    }
+
+    public User findAUser(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        return user;
     }
 
     public UserDto saveUser(User user) {
@@ -73,5 +82,19 @@ public class UserService {
         User savedUser = userRepository.save(newUser);
 
         return userMapper.toUserDto(savedUser);
+    }
+
+    public List<UserDto> getAdoptionCenters() {
+        List<User> adoptionCenters = userRepository.findByRole(Role.ADOPTION_CENTER);
+        List<UserDto> adoptionCenterDto = adoptionCenters.stream()
+                .map(userMapper::toUserDto)
+                .collect(Collectors.toList());
+        return adoptionCenterDto;
+    }
+
+    public UserDto getSpecifiedAdoptionCenter(Long id) {
+        return userRepository.findByIdAndRole(id, Role.ADOPTION_CENTER)
+                .map(userMapper::toUserDto)
+                .orElse(null);
     }
 }
