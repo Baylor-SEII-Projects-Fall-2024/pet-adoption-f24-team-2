@@ -77,8 +77,15 @@ public class UserService {
     }
 
     public UserDto updateUser(Long id, UserDto user) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if( optionalUser.isEmpty() ) {
+            throw new AppException("Account not found", HttpStatus.BAD_REQUEST);
+        }
+
+        User currUser = optionalUser.get();
         user.setId(id);
         User newUser = userMapper.userDtoToUser(user);
+        newUser.setPassword(currUser.getPassword());
         User savedUser = userRepository.save(newUser);
 
         return userMapper.toUserDto(savedUser);

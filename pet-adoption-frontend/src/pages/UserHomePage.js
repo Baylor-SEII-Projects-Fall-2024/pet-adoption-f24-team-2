@@ -74,7 +74,7 @@ export default function UserHomePage() {
   }
 
   function onChangePhone(event) {
-    setPhoneNumber(event.target.value);
+    setPhone(event.target.value);
   }
 
   function onChangeName(event) {
