@@ -42,7 +42,7 @@ public class PetService {
         return pets;
     }
 
-    public void deletePet(Long petID) throws Exception {
+    public void deletePet(Long petID) {
         petRepository.deleteById(petID);
     }
 

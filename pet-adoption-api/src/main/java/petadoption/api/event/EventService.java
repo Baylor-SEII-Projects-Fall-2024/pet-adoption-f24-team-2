@@ -52,8 +52,9 @@ public class EventService {
                 newEvent.getId()).orElseThrow(() -> new AppException("Event not found", HttpStatus.NOT_FOUND));
         User adoptionCenter = userRepository.findById(centerID)
                 .orElseThrow(() -> new AppException("Adoption center not found", HttpStatus.NOT_FOUND));
-
-        e.setDate(new Date(newEvent.getDate()));
+        if( newEvent.getDate() != null) {
+            e.setDate(new Date(newEvent.getDate()));
+        }
         e.setName(newEvent.getName());
         e.setLocation(newEvent.getLocation());
         e.setDescription(newEvent.getDescription());

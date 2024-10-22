@@ -1,14 +1,12 @@
 package petadoption.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@EqualsAndHashCode
 public class EventDto {
     Long id;
     Long adoptionCenterId;
