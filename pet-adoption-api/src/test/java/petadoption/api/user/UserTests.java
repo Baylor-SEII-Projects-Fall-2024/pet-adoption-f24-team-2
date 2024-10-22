@@ -11,8 +11,6 @@ import petadoption.api.dto.UserDto;
 import petadoption.api.enums.Role;
 import petadoption.api.exceptions.AppException;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

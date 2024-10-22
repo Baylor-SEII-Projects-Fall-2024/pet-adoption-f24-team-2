@@ -137,7 +137,7 @@ function EventDisplayCard(props) {
           </label>
         </Typography>
 
-        {isEditing ? 
+        { isEditing ? 
         <>
           <Button variant="outlined" onClick={saveEventChanges}>Confirm</Button>
           <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
