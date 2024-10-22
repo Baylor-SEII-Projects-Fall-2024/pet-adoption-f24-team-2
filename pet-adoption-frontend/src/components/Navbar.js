@@ -69,6 +69,7 @@ export default function Navbar({ user }) {
 
   return (
     <div>
+      {console.log(user)}
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>

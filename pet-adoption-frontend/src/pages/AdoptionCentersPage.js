@@ -13,6 +13,13 @@ export default function AdoptionCentersPage() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    request("GET", `/users/${getUserID()}`, null)
+      .then((response) => {
+        setUser(response.data)
+      }).catch((error) => {
+        console.log(error);
+      })
+
     request("GET", `/users/adoption-centers`, null)
       .then((response) => {
         console.log(response.data);
