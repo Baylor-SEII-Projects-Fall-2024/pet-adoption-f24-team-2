@@ -11,7 +11,6 @@ import petadoption.api.dto.UserDto;
 import petadoption.api.enums.Role;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.PetMapper;
-import petadoption.api.mappers.UserMapper;
 import petadoption.api.user.UserService;
 
 import java.util.ArrayList;
