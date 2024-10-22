@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 function EventDisplayCard(props) {
   const event = props.event;
   let currEvents = props.currEvents;
+  let user = props.user;
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(event.name);
@@ -136,8 +137,8 @@ function EventDisplayCard(props) {
 
           </label>
         </Typography>
-
-        { isEditing ? 
+        {console.log(props.user)}
+        { user.role === "ADOPTION_CENTER" && (isEditing ? 
         <>
           <Button variant="outlined" onClick={saveEventChanges}>Confirm</Button>
           <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
@@ -146,7 +147,7 @@ function EventDisplayCard(props) {
         <>
           <Button variant="outlined" onClick={handleEdit}>Edit</Button>
           <Button variant="outlined" onClick={handleRemove}>Remove</Button>
-        </> }
+        </>) }
       </CardContent>
 
     </Card>
@@ -159,7 +160,7 @@ export default function EventDisplay(props) {
     <>
       {props.events.map((event) => {
         return (
-          <EventDisplayCard key={event.id} event={event} currEvents={eventsCopy} setEvents={props.setEvents}/>
+          <EventDisplayCard key={event.id} event={event} currEvents={eventsCopy} setEvents={props.setEvents} user={props.user}/>
         );
       }) }
     </>

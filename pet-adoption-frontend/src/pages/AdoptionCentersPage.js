@@ -22,9 +22,7 @@ export default function AdoptionCentersPage() {
 
     request("GET", `/users/adoption-centers`, null)
       .then((response) => {
-        console.log(response.data);
         setCenters(response.data);
-        console.log("Went through");
       })
       .catch((error) => {
         console.error(error);
@@ -34,7 +32,6 @@ export default function AdoptionCentersPage() {
   function findCenterEvents(centerId) {
     request("GET", `/events/${centerId}`, null)
       .then((response) => {
-        console.log(response.data);
         setEvents(response.data);
         setEventCenter(centers.find((center) => center.id === centerId));
         setOpen(true);
@@ -60,7 +57,9 @@ export default function AdoptionCentersPage() {
       <DialogTitle>Available Events for {eventCenter?.name}</DialogTitle>
       <DialogContent>
         {events.length > 0 ? (
-          <EventDisplay events={events} setEvents={setEvents}/>
+          <>
+          <EventDisplay events={events} setEvents={setEvents} user={user}/>
+          </>
         ) : (
           <Typography>No events planned :/</Typography>
         )}

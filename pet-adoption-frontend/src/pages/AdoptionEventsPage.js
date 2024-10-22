@@ -115,7 +115,7 @@ export default function RegisterAdoptionEventPage() {
         </DialogActions>
       </Dialog>
       <Grid columns={2}>
-        <EventDisplay events={events} setEvents={setEvents}/>
+        <EventDisplay events={events} setEvents={setEvents} user={user}/>
       </Grid> 
       
     </>
