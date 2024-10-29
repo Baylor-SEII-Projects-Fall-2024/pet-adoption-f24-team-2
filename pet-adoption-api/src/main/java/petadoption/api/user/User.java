@@ -74,6 +74,7 @@ public class User {
 
     // used in petRecommendation
     public double[] generateUserProfile() {
+        if (numLikedPets == 0) {return new double[petAttributes.getNumAttributes()];}
         double[] profile = new double[petAttributes.getNumAttributes()];
         double[] userAttributes = attributes.getAttributes();
 

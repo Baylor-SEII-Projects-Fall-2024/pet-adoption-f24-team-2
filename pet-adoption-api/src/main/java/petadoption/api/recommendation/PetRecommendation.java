@@ -15,16 +15,20 @@ public class PetRecommendation {
 
     // weights that are applied during recommendation
     // basically based on which attributes are more important than others
-    static final double WEIGHT_SPECIES = 7.5;
-    static final double WEIGHT_COLOR = 5;
-    static final double WEIGHT_AGE = 1.25;
-    static final double WEIGHT_GENDER = 1.25;
+    static final double WEIGHT_SPECIES = 2;
+    static final double WEIGHT_COLOR = 1.25;
+    static final double WEIGHT_GENDER = 1.5;
+
+    // WEIGHT_AGE is a special weight, used in the calcPetSimilarity function
+    // as a way to provide exponential decay for age difference
+    static final double WEIGHT_AGE = .05;
 
     // function to apply the above weights to adjust the importance of attributes
     public static double[] applyWeights(double[] attributes) {
         double[] temp = new double[petAttributes.getNumAttributes()];
         System.arraycopy(attributes, 0, temp, 0, petAttributes.getNumAttributes());
 
+        // applies weights to all attributes except age
         temp[0]*=WEIGHT_SPECIES;
         temp[1]*=WEIGHT_SPECIES;
         temp[2]*=WEIGHT_SPECIES;
@@ -33,7 +37,6 @@ public class PetRecommendation {
         temp[5]*=WEIGHT_COLOR;
         temp[6]*=WEIGHT_GENDER;
         temp[7]*=WEIGHT_GENDER;
-        temp[8]*=WEIGHT_AGE;
 
         return temp;
     }
@@ -41,9 +44,11 @@ public class PetRecommendation {
     // computes cosine similarity between two vectors (a user and pet attributes)
     public static double calcPetSimilarity(User u, Pet p) {
         // creates copies of arrays for manipulation
-        double[] temp1 = Arrays.copyOf(u.getAttributes().getAttributes(), u.getAttributes().getAttributes().length+1);
-        double[] temp2 = Arrays.copyOf(p.getAttributes().getAttributes(), p.getAttributes().getAttributes().length+1);
-        temp2[8] = temp1[8] - Math.abs(temp2[8] - temp1[8]);
+        //double[] temp1 = Arrays.copyOf(u.getAttributes().getAttributes(), u.getAttributes().getAttributes().length);
+        double[] temp1 = u.generateUserProfile();
+        double[] temp2 = Arrays.copyOf(p.getAttributes().getAttributes(), p.getAttributes().getAttributes().length);
+        double ageDiff = Math.abs(temp2[8] - temp1[8]);
+        temp2[8] = temp1[8] + ageDiff;
 
         // applies weights to the vectors
         double[] vectorA = applyWeights(temp1);
@@ -67,6 +72,7 @@ public class PetRecommendation {
         For values where magnitude matters, we leave them as is, where their actual value is stored.
 
          */
+
         double dotProduct = 0.0;
         double normA = 0.0;
         double normB = 0.0;
@@ -75,6 +81,14 @@ public class PetRecommendation {
             normA += Math.pow(vectorA[i], 2);
             normB += Math.pow(vectorB[i], 2);
         }
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        if (dotProduct == 0.0) { return 1.0; } // if user preferences are empty, return 1
+
+        // similarity between vectors
+        double similarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+
+        // applies exponential decay to adjust similarity based on age difference
+        double ageAdjustment = Math.exp(-WEIGHT_AGE * ageDiff);
+
+        return similarity * ageAdjustment;
     }
 }

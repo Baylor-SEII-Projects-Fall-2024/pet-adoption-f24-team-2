@@ -1,10 +1,10 @@
 package petadoption.api.petRecommendationTests;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import petadoption.api.pet.Pet;
 import petadoption.api.recommendation.PetRecommendation;
 import petadoption.api.user.User;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,46 +18,41 @@ public class petRecommendationTest {
     void testPetRecommendation() {
         User user = createTestUser();
 
-        Pet pet1 = createTestPet("White cat", "cat", "white", "male", 3);
-        Pet pet2 = createTestPet("Black dog", "dog", "black", "male", 3);
-        Pet pet3 = createTestPet("Brown rab", "rab", "brown", "male", 3);
-        Pet pet4 = createTestPet("Black cat", "cat", "black", "female", 3);
-        Pet pet5 = createTestPet("Brown dog", "dog", "brown", "female", 3);
+        Pet pet1 = createTestPet("White cat", "cat", "white", "male", 4);
+        Pet pet2 = createTestPet("White cat", "cat", "white", "male", 5);
+        Pet pet3 = createTestPet("White cat", "cat", "white", "male", 6);
 
         assertNotNull(pet1);
         assertNotNull(pet2);
         assertNotNull(pet3);
-        assertNotNull(pet4);
-        assertNotNull(pet5);
 
-        List<Pet> allPets = new ArrayList<>(Arrays.asList(pet1, pet2, pet3, pet4, pet5));
+        List<Pet> allPets = new ArrayList<>(Arrays.asList(pet1, pet2, pet3));
 
-        user.addLikedPet(pet1);
         user.generateUserProfile();
-
-        System.out.println("First round:");
-        System.out.println("User Profile:" + "\t\t\t\t\t" + user.profileToString());
+        System.out.println("\nRecommendations with no preferences:");
+        //System.out.println("User Profile:" + "\t\t\t\t\t" + user.profileToString());
         printPets(user, allPets);
 
-        user.addLikedPet(pet3);
-        user.generateUserProfile();
+        user.addLikedPet(pet2);
 
-        System.out.println("Second round (added pet3):");
-        System.out.println("User Profile:" + "\t\t\t\t\t" + user.profileToString());
-        printPets(user, allPets);
-
-        user.addLikedPet(pet4);
-        user.generateUserProfile();
-
-        System.out.println("Third round (added pet4):");
-        System.out.println("User Profile:" + "\t\t\t\t\t" + user.profileToString());
+        System.out.println("\nRecommendations with Pet2 (White cat) added:");
+        //System.out.println("User Profile:" + "\t\t\t\t\t" + user.profileToString());
         printPets(user, allPets);
     }
 
     public static void printPets(User user, List<Pet> allPets) {
+        List<Pair<Pet, Double>> similarityList = new ArrayList<>();
+
         for (Pet pet : allPets) {
-            double similarity = PetRecommendation.calcPetSimilarity(user, pet);
-            System.out.println("Similarity: " + pet.getName() + " " + String.format("%.3f", similarity) + "\t\t" + pet.profileToString());
+            Double similarity = PetRecommendation.calcPetSimilarity(user, pet);
+            Pair<Pet, Double> temp = Pair.of(pet, similarity);
+            similarityList.add(temp);
+        }
+
+        similarityList.sort((p1, p2) -> p2.getRight().compareTo(p1.getRight()));
+
+        for (Pair<Pet, Double> pair : similarityList) {
+            System.out.println("Similarity: " + pair.getLeft().getName() + " " + String.format("%.3f", pair.getRight()) + "\t\t" + pair.getLeft().profileToString());
         }
     }
 }

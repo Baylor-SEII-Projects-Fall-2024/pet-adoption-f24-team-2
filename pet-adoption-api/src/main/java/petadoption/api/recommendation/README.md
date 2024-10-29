@@ -24,8 +24,9 @@ we can narrow down the search for the perfect pet.
 ## Future Additions
 
 I plan to add other features such as:
-- Resetting a user's preferences
 - Letting them choose their preferences manually
+- Resetting a user's manual preferences
+- Resetting ALL of a user's preferences
 
 Essentially just adding more ways to manipulate a user's likes.
 
