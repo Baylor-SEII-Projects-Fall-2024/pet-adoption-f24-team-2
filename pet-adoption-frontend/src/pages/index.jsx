@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Head from 'next/head'
-import {Button, Card, CardContent, Stack, Typography} from '@mui/material'
+import {Button, Card, CardContent, Stack, Typography, Box} from '@mui/material'
 import { clearCookies, setAuthenticatedUser, request } from '@/axios_helper';
 import styles from '@/styles/Login.module.css';
 import Router from 'next/router';
@@ -130,7 +130,9 @@ export default function Login() {
                   onChange={onChangePassword}
                   />
                 </div>
-                <button type="submit">Sign in</button>
+                <Box textAlign="center" paddingTop={2}>
+                  <Button variant="contained" type="submit" align="center">Sign in</Button>
+                </Box>
             </form> }
             { active === "Register" && 
             <form onSubmit={onSubmitRegister}>
@@ -204,7 +206,9 @@ export default function Login() {
                 
                 
             </div>
-              <button type="submit">{active === Login ? "Sign in" : "Register"}</button>
+            <Box textAlign="center" paddingTop={2}>
+              <Button variant="contained" type="submit">Register</Button>
+            </Box>
           </form>}
           </CardContent>
         </Card>

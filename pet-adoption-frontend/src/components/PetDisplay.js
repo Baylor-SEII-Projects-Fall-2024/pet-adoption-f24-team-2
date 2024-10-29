@@ -261,7 +261,7 @@ export default function PetDisplay(props) {
     <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
       {props.pets.map((pet) => {
         return (
-          <Grid2 key={pet.id} size={{xs: 12, sm: 6 }}>
+          <Grid2 item key={pet.id} size={{xs: 12, sm: 6 }}>
             <PetDisplayCard pet={pet} currPets={petsCopy} setPets={props.setPets}/>
           </Grid2>
         );

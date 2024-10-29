@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardContent, Typography, Button, Grid2 } from "@mui/material";
 import { useState } from "react";
 import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
@@ -157,12 +157,14 @@ function EventDisplayCard(props) {
 export default function EventDisplay(props) {
   const eventsCopy  = [...props.events];
   return (
-    <>
+    <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
       {props.events.map((event) => {
         return (
-          <EventDisplayCard key={event.id} event={event} currEvents={eventsCopy} setEvents={props.setEvents} user={props.user}/>
+          <Grid2 item key={event.id} size={{xs: 12, sm: 6 }}>
+            <EventDisplayCard event={event} currEvents={eventsCopy} setEvents={props.setEvents} user={props.user}/>
+          </Grid2>
         );
       }) }
-    </>
+    </Grid2>
   )
 }
