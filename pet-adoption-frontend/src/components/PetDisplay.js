@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardContent, Typography, Button, Grid2 } from "@mui/material";
 import { useState } from "react";
 import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
@@ -258,12 +258,14 @@ function PetDisplayCard(props) {
 export default function PetDisplay(props) {
   const petsCopy  = [...props.pets];
   return (
-    <>
+    <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
       {props.pets.map((pet) => {
         return (
-          <PetDisplayCard key={pet.id} pet={pet} currPets={petsCopy} setPets={props.setPets}/>
+          <Grid2 key={pet.id} size={{xs: 12, sm: 6 }}>
+            <PetDisplayCard pet={pet} currPets={petsCopy} setPets={props.setPets}/>
+          </Grid2>
         );
       }) }
-    </>
+    </Grid2>
   )
 }
