@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
-import { Typography, Card, CardContent, Button } from "@mui/material";
+import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
 
 export default function UserHomePage() {
   const [user, setUser] = useState({});
@@ -91,85 +91,123 @@ export default function UserHomePage() {
 
   return (
     <>
-    <Navbar user={user}/>
-    <Typography variant="h3" align="center"> Welcome {user.name}  </Typography>
-    <Card elevation={2}>
-      <CardContent component="form">
-        <Typography>
-          Email: {email}
-        </Typography>
-        <Typography>
-          Account Type: {userType}
-        </Typography>
-        <Typography>
-          <label>
-            Name:{" "} 
-            {isEditing ? (
-              <input
-                value={name}
-                onChange={onChangeName}
-              />
-            ) : (
-              <span>{name}</span>
-            )}
-
-          </label>
-        </Typography>
-        <Typography>
-          <label>
-            Phone Number:{" "} {
-              isEditing ? (
-                <input 
-                  value={phone}
-                  onChange={onChangePhone}
-                  />
-              ) : (
-                <span>{phone}</span>
-              )
+      <Navbar user={user}/>
+      <Typography variant="h3" align="center"> Welcome {user.name}  </Typography>
+      <Box paddingLeft={{xs: "5%", sm: "10%", md: "20%", lg: "30%"}} paddingRight={{xs: "5%", sm: "10%", md: "20%", lg: "30%"}} paddingBottom={1}>
+        <Card elevation={2} >
+          <CardContent component="form" >
+            <Typography paddingTop={1} >
+              <Grid2 container spacing={2}>
+                <Grid2 item size={6}>
+                  Email:{" "}
+                </Grid2>
+                <Grid2 item size={6}>
+                  {email}
+                </Grid2>
+              </Grid2>
+            </Typography>
+            <Typography paddingTop={1} >
+              <Grid2 container spacing={2}>
+                <Grid2 item size={6}>
+                  Account Type:{" "}
+                </Grid2>
+                <Grid2 item size={6}>
+                  {userType}
+                </Grid2>
+              </Grid2>
+            </Typography>
+            <Typography paddingTop={1} >
+              <label>
+                <Grid2 container spacing={2}>
+                  <Grid2 item size={6}>
+                    Name:{" "}
+                  </Grid2>
+                  <Grid2 item size={6}>
+                    {isEditing ? (
+                      <input
+                        value={name}
+                        onChange={onChangeName}
+                      />
+                    ) : (
+                      <span>{name}</span>
+                    )}
+                  </Grid2>
+                </Grid2> 
+              </label>
+            </Typography>
+            <Typography paddingTop={1} >
+              <label>
+                <Grid2 container spacing={2}>
+                  <Grid2 item size={6}>
+                    Phone Number:{" "}
+                  </Grid2>
+                  <Grid2 item size={6}>
+                    { isEditing ? (
+                      <input 
+                        value={phone}
+                        onChange={onChangePhone}
+                        />
+                    ) : (
+                      <span>{phone}</span>
+                    )}
+                  </Grid2>
+                </Grid2> 
+              </label>
+            </Typography>
+            <Typography paddingTop={1} >
+              <label>
+                <Grid2 container spacing={2}>
+                  <Grid2 item size={6}>
+                    Description:{" "}
+                  </Grid2>
+                  <Grid2 item size={6}>
+                    {isEditing ? (
+                      <textarea
+                        rows={4} 
+                        value={description}
+                        onChange={onChangeDescription}
+                        />
+                    ) : (
+                      <span>{description}</span>
+                    )}
+                  </Grid2>
+                </Grid2>  
+              </label>
+            </Typography>
+            {userType === "Adoption Center" &&
+              <Typography paddingTop={1} >
+                <label>
+                  <Grid2 container spacing={2}>
+                    <Grid2 item size={6}>
+                      Address:{" "}
+                    </Grid2>
+                    <Grid2 item size={6}>
+                      {isEditing ? (
+                        <input 
+                          value={address}
+                          onChange={onChangeAddress}
+                          />
+                      ) : (
+                        <span>{address}</span>
+                      )}
+                    </Grid2>
+                  </Grid2>
+                </label>
+              </Typography>
             }
-          </label>
-        </Typography>
-        <Typography>
-          <label>
-            Description:{" "} {
-              isEditing ? (
-                <textarea
-                  rows={4} 
-                  value={description}
-                  onChange={onChangeDescription}
-                  />
-              ) : (
-                <span>{description}</span>
-              )
-            }
-          </label>
-        </Typography>
-        {userType === "Adoption Center" &&
-          <Typography>
-            <label>
-              Address:{" "} {
-                isEditing ? (
-                  <input 
-                    value={address}
-                    onChange={onChangeAddress}
-                    />
-                ) : (
-                  <span>{address}</span>
-                )
-              }
-            </label>
-          </Typography>
-        }
 
-        {isEditing ?
-          <>
-            <Button variant="contained" onClick={saveChanges}>Save</Button>
-            {" "}
-            <Button variant="contained" onClick={discardChanges}>Cancel</Button>
-          </> :
-          <Button variant="contained" onClick={startEditing}>Edit profile</Button> }
-      </CardContent>
-    </Card>
+            {isEditing ?
+              <Box textAlign="center">
+                <Button variant="contained" onClick={saveChanges}>Save</Button>
+                {" "}
+                <Button variant="contained" onClick={discardChanges}>Cancel</Button>
+              </Box> :
+              <Box textAlign="center">
+                <Button variant="contained" onClick={startEditing}>Edit profile</Button>
+              </Box> }
+          </CardContent>
+        </Card>
+      </Box>
     </>
   )
 }
