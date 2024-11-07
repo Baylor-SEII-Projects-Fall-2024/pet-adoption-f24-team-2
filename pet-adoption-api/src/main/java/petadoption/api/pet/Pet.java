@@ -51,7 +51,7 @@ public class Pet {
     boolean gender;
 
     @Column(name = "ATTRIBUTES")
-    petAttributes attributes;
+    petAttributes attributes = new petAttributes();
 
     @ManyToOne
     @JoinColumn(name = "ADOPTION_CENTER_ID")
@@ -66,4 +66,7 @@ public class Pet {
         return Arrays.toString(attributes.getAttributes());
     }
 
+    public boolean getGender() {
+        return gender;
+    }
 }

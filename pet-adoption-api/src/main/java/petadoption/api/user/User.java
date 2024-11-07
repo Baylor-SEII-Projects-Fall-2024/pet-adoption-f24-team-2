@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import petadoption.api.dto.PetDto;
 import petadoption.api.enums.Role;
 import petadoption.api.event.Event;
 import petadoption.api.pet.Pet;
@@ -48,7 +49,7 @@ public class User {
     String description;
 
     @Column(name = "ATTRIBUTES")
-    petAttributes attributes;
+    petAttributes attributes = new petAttributes();
 
     @Column(name = "NUM_LIKED_PETS")
     Integer numLikedPets = 0;
@@ -67,26 +68,38 @@ public class User {
     List<Event> events;
 
     // used in petRecommendation
-    public void addLikedPet(Pet p) {
-        attributes.combine(p.getAttributes());
-        numLikedPets++;
+    public String profileToString() {
+        return Arrays.toString(attributes.getAttributes());
     }
 
-    // used in petRecommendation
     public double[] generateUserProfile() {
-        if (numLikedPets == 0) {return new double[petAttributes.getNumAttributes()];}
+        int temp = numLikedPets;
+        if (numLikedPets == 0) {temp = 1;}
         double[] profile = new double[petAttributes.getNumAttributes()];
+        if (attributes == null) {
+            attributes = new petAttributes();
+        }
         double[] userAttributes = attributes.getAttributes();
 
         for (int i = 0; i < profile.length; i++) {
-            profile[i] = userAttributes[i]/numLikedPets;
+            int overrideOffset=0;
+            if (i < 3) {
+                overrideOffset = attributes.getSpeciesOverrideCount();
+            } else if (i < 6) {
+                overrideOffset = attributes.getColorOverrideCount();
+            } else if (i < 8) {
+                overrideOffset = attributes.getGenderOverrideCount();
+            }
+            profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
 
         return profile;
     }
 
-    // used in petRecommendation
-    public String profileToString() {
-        return Arrays.toString(attributes.getAttributes());
+    public void addLikedPet(Pet p) {
+        attributes.combine(p.getAttributes());
+        numLikedPets++;
     }
+
+    public void incrementNumLikedPets() {numLikedPets++;}
 }

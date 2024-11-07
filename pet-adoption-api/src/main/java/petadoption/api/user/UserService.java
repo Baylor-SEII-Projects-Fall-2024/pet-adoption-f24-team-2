@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import petadoption.api.dto.CredentialsDto;
+import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
 import petadoption.api.enums.Role;
@@ -104,4 +105,13 @@ public class UserService {
                 .map(userMapper::toUserDto)
                 .orElse(null);
     }
+
+    public void addLikedPet(User u, PetDto p) {
+        u.getAttributes().combine(p.getAttributes());
+        u.incrementNumLikedPets();
+        userRepository.save(u);
+    }
+
+    // hey future me, add the increment/decrement functions here
+    // but probably make sure it works with empty preferences first
 }

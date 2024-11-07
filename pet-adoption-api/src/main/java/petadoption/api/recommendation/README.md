@@ -27,6 +27,7 @@ I plan to add other features such as:
 - Letting them choose their preferences manually
 - Resetting a user's manual preferences
 - Resetting ALL of a user's preferences
+- Pet image generation?
 
 Essentially just adding more ways to manipulate a user's likes.
 

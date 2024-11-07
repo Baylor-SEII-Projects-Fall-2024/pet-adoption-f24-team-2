@@ -42,6 +42,16 @@ public class PetService {
         return pets;
     }
 
+    public List<PetDto> getAllPets() {
+        List<PetDto> pets = new ArrayList<PetDto>();
+        List<Pet> savedPets = petRepository.findAll();
+
+        for( Pet pet : savedPets) {
+            pets.add(petMapper.toPetDto(pet));
+        }
+        return pets;
+    }
+
     public void deletePet(Long petID) {
         petRepository.deleteById(petID);
     }

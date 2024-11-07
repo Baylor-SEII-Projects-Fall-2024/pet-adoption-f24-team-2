@@ -1,5 +1,8 @@
 package petadoption.api.recommendation;
 
+import org.springframework.stereotype.Service;
+import petadoption.api.dto.PetDto;
+import petadoption.api.dto.UserDto;
 import petadoption.api.pet.Pet;
 import petadoption.api.user.User;
 import java.util.Arrays;
@@ -11,6 +14,7 @@ Core recommendation algorithm functions provided here
 
  */
 
+@Service
 public class PetRecommendation {
 
     // weights that are applied during recommendation
@@ -44,7 +48,6 @@ public class PetRecommendation {
     // computes cosine similarity between two vectors (a user and pet attributes)
     public static double calcPetSimilarity(User u, Pet p) {
         // creates copies of arrays for manipulation
-        //double[] temp1 = Arrays.copyOf(u.getAttributes().getAttributes(), u.getAttributes().getAttributes().length);
         double[] temp1 = u.generateUserProfile();
         double[] temp2 = Arrays.copyOf(p.getAttributes().getAttributes(), p.getAttributes().getAttributes().length);
         double ageDiff = Math.abs(temp2[8] - temp1[8]);
@@ -81,7 +84,7 @@ public class PetRecommendation {
             normA += Math.pow(vectorA[i], 2);
             normB += Math.pow(vectorB[i], 2);
         }
-        if (dotProduct == 0.0) { return 1.0; } // if user preferences are empty, return 1
+        if (dotProduct == 0.0) { return 0.0; } // if user preferences are empty, return 0
 
         // similarity between vectors
         double similarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));

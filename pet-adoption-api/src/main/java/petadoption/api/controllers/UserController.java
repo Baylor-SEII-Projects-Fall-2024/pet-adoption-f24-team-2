@@ -6,21 +6,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import petadoption.api.config.UserAuthProvider;
 import petadoption.api.dto.CredentialsDto;
+import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
+import petadoption.api.mappers.*;
+import petadoption.api.pet.PetService;
+import petadoption.api.recommendation.PetRecommendation;
+import petadoption.api.recommendation.petAttributes;
 import petadoption.api.user.User;
 import petadoption.api.user.UserService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
+
+    private final PetRecommendation petRecommendation;
     private final UserService userService;
+    private final PetService petService;
     private final UserAuthProvider userAuthProvider;
+    private final UserMapper userMapper;
+    private final PetMapper petMapper;
 
     @GetMapping("/users/{id}")
     public UserDto findByID(@PathVariable Long id) {
@@ -71,5 +83,18 @@ public class UserController {
         else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/petrec/{id}/all")
+    public List<PetDto> getRecommendedPets(@PathVariable Long id) {
+        UserDto udto = userService.findUser(id);
+        User u = userMapper.userDtoToUser(udto);
+
+        double[] userProfile = u.generateUserProfile();
+
+        List<PetDto> allPets = petService.getAllPets();
+        return allPets.stream().sorted((pet1, pet2) -> Double.compare(
+                        PetRecommendation.calcPetSimilarity(u, petMapper.toPet(pet2)),
+                        PetRecommendation.calcPetSimilarity(u, petMapper.toPet(pet1)))).toList();
     }
 }
