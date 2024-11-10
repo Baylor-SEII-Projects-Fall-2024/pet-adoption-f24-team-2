@@ -18,7 +18,7 @@ import java.util.Locale;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://104.198.233.250:3000")
 public class PetController {
     private final PetService petService;
     private final PetMapper petMapper;
