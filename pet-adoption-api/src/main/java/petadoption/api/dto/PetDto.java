@@ -21,6 +21,8 @@ public class PetDto {
     int furLength;
     int age;
     boolean gender;
+
+    @JsonProperty("attributes")
     petAttributes attributes = new petAttributes();
 
     public boolean getGender() {

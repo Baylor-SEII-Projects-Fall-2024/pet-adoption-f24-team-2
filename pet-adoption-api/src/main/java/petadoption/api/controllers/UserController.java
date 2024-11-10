@@ -84,17 +84,4 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @GetMapping("/petrec/{id}/all")
-    public List<PetDto> getRecommendedPets(@PathVariable Long id) {
-        UserDto udto = userService.findUser(id);
-        User u = userMapper.userDtoToUser(udto);
-
-        double[] userProfile = u.generateUserProfile();
-
-        List<PetDto> allPets = petService.getAllPets();
-        return allPets.stream().sorted((pet1, pet2) -> Double.compare(
-                        PetRecommendation.calcPetSimilarity(u, petMapper.toPet(pet2)),
-                        PetRecommendation.calcPetSimilarity(u, petMapper.toPet(pet1)))).toList();
-    }
 }

@@ -111,7 +111,4 @@ public class UserService {
         u.incrementNumLikedPets();
         userRepository.save(u);
     }
-
-    // hey future me, add the increment/decrement functions here
-    // but probably make sure it works with empty preferences first
 }

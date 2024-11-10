@@ -96,10 +96,14 @@ public class User {
         return profile;
     }
 
-    public void addLikedPet(Pet p) {
-        attributes.combine(p.getAttributes());
+    public void addLikedPet(petAttributes attributes) {
+        this.attributes.combine(attributes);
         numLikedPets++;
     }
 
     public void incrementNumLikedPets() {numLikedPets++;}
+
+    public void resetPreferences() {
+        this.attributes = new petAttributes();
+    }
 }

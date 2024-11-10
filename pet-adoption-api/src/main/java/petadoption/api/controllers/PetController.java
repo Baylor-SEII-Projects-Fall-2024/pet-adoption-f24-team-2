@@ -61,47 +61,4 @@ public class PetController {
 
         return ResponseEntity.ok(pet);
     }
-
-    @PostMapping("/pets/interpretAttributes")
-    public List<String> interpretAttributes(@RequestBody PetDto pet) {
-
-        System.out.println("values:    " + pet.getSpecies() + pet.getColor() + pet.getGender() + pet.getAge());
-        System.out.println("attributes:" + Arrays.toString(pet.getAttributes().getAttributes()));
-        List<String> temp = new ArrayList<>();
-        double[] attributes = pet.getAttributes().getAttributes();
-
-        if (attributes != null) {
-            if (attributes[0] == 1) {
-                temp.add("Cat");
-            } else if (attributes[1] == 1) {
-                temp.add("Dog");
-            } else if (attributes[2] == 1) {
-                temp.add("Rabbit");
-            } else {
-                temp.add("species");
-            }
-
-            if (attributes[3] == 1) {
-                temp.add("White");
-            } else if (attributes[4] == 1) {
-                temp.add("Black");
-            } else if (attributes[5] == 1) {
-                temp.add("Brown");
-            } else {
-                temp.add("color");
-            }
-
-            if (attributes[6] == 1) {
-                temp.add("Male");
-            } else if (attributes[7] == 1) {
-                temp.add("Female");
-            } else {
-                temp.add("gender");
-            }
-
-            temp.add(String.valueOf(attributes[8]));
-        }
-
-        return temp;
-    }
 }
