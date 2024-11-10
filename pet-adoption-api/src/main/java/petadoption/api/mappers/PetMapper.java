@@ -12,10 +12,12 @@ public interface PetMapper {
 
     @Mapping(source = "adoptionCenter.id", target = "adoptionCenterID")
     @Mapping(source = "owner.id", target = "ownerID")
+    @Mapping(source = "attributes", target = "attributes") // Explicitly map attributes
     PetDto toPetDto(Pet pet);
 
     @Mapping(target = "adoptionCenter", expression = "java(mapAdoptionCenterIdToUser(petDto.getAdoptionCenterID()))")
     @Mapping(target = "owner", expression = "java(mapOwnerIdToUser(petDto.getOwnerID()))")
+    @Mapping(source = "attributes", target = "attributes") // Explicitly map attributes
     Pet toPet(PetDto petDto);
 
     default User mapAdoptionCenterIdToUser(Long adoptionCenterID) {

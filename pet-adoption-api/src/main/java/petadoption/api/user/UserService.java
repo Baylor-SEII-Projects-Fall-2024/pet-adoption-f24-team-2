@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import petadoption.api.dto.CredentialsDto;
+import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
 import petadoption.api.enums.Role;
@@ -103,5 +104,11 @@ public class UserService {
         return userRepository.findByIdAndRole(id, Role.ADOPTION_CENTER)
                 .map(userMapper::toUserDto)
                 .orElse(null);
+    }
+
+    public void addLikedPet(User u, PetDto p) {
+        u.getAttributes().combine(p.getAttributes());
+        u.incrementNumLikedPets();
+        userRepository.save(u);
     }
 }

@@ -2,6 +2,7 @@ package petadoption.api.dto;
 
 import lombok.*;
 import petadoption.api.enums.Role;
+import petadoption.api.recommendation.petAttributes;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +17,7 @@ public class UserDto {
     private String phone;
     private String token;
     private Role role;
+
+    private petAttributes attributes;
+    private Integer numLikedPets = 0;
 }

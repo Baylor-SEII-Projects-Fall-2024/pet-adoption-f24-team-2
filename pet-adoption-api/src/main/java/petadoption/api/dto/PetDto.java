@@ -1,14 +1,8 @@
 package petadoption.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import petadoption.api.user.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import petadoption.api.recommendation.petAttributes;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +21,11 @@ public class PetDto {
     int furLength;
     int age;
     boolean gender;
+
+    @JsonProperty("attributes")
+    petAttributes attributes = new petAttributes();
+
+    public boolean getGender() {
+        return gender;
+    }
 }
