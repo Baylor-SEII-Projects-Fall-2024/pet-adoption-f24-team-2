@@ -171,7 +171,7 @@ export default function UserHomePage() {
         >
         <Grid2 container spacing={3} justifyContent="center">
           {/* Account Details Card */}
-          <Grid2 item xs={12} sm={8} md={5} sx={{ minWidth: '400px' }}>
+          <Grid2 xs={12} sm={8} md={5} sx={{ minWidth: '400px' }}>
             <Card elevation={2}>
               <CardContent component="form">
                 <Box variant="h5" align="center">
@@ -179,20 +179,20 @@ export default function UserHomePage() {
                 </Box>
                 <Box paddingTop={1}>
                   <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                       Email:{" "}
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                       {email}
                     </Grid2>
                   </Grid2>
                 </Box>
                 <Box paddingTop={1}>
                   <Grid2 container spacing={2}>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                       Account Type:{" "}
                     </Grid2>
-                    <Grid2 item size={6}>
+                    <Grid2 size={6}>
                       {userType}
                     </Grid2>
                   </Grid2>
@@ -200,10 +200,10 @@ export default function UserHomePage() {
                 <Box paddingTop={1}>
                   <label>
                     <Grid2 container spacing={2}>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         Name:{" "}
                       </Grid2>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         {isEditing ? (
                           <input value={name} onChange={onChangeName} />
                         ) : (
@@ -216,10 +216,10 @@ export default function UserHomePage() {
                 <Box paddingTop={1}>
                   <label>
                     <Grid2 container spacing={2}>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         Phone Number:{" "}
                       </Grid2>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         {isEditing ? (
                           <input value={phone} onChange={onChangePhone} />
                         ) : (
@@ -232,10 +232,10 @@ export default function UserHomePage() {
                 <Box paddingTop={1}>
                   <label>
                     <Grid2 container spacing={2}>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         Description:{" "}
                       </Grid2>
-                      <Grid2 item size={6}>
+                      <Grid2 size={6}>
                         {isEditing ? (
                           <textarea rows={4} value={description} onChange={onChangeDescription} />
                         ) : (
@@ -249,10 +249,10 @@ export default function UserHomePage() {
                   <Box paddingTop={1}>
                     <label>
                       <Grid2 container spacing={2}>
-                        <Grid2 item size={6}>
+                        <Grid2 size={6}>
                           Address:{" "}
                         </Grid2>
-                        <Grid2 item size={6}>
+                        <Grid2 size={6}>
                           {isEditing ? (
                             <input value={address} onChange={onChangeAddress} />
                           ) : (
@@ -279,7 +279,7 @@ export default function UserHomePage() {
           </Grid2>
   
           {userType === "Pet Owner" && (
-            <Grid2 item xs={12} sm={6} md={5} sx={{ minWidth: '400px' }}>
+            <Grid2 xs={12} sm={6} md={5} sx={{ minWidth: '400px' }}>
               <Card elevation={2}>
                 <CardContent>
                   <Box variant="h5" align="center">
@@ -290,10 +290,10 @@ export default function UserHomePage() {
                   </Box>
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item xs={4} textAlign="right">
+                      <Grid2 xs={4} textAlign="right">
                         Species:
                       </Grid2>
-                      <Grid2 item xs={4} textAlign="center">
+                      <Grid2 xs={4} textAlign="center">
                         <Button variant="contained" onClick={() => onIncSpecies("cat")}>More Cats</Button>
                         <Button variant="contained" onClick={() => onDecSpecies("cat")}
                           disabled={user.attributes?.attributes[0] < 1}>Less Cats</Button>
@@ -308,10 +308,10 @@ export default function UserHomePage() {
                   </Box>
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item xs={4} textAlign="right">
+                      <Grid2 xs={4} textAlign="right">
                         Color:
                       </Grid2>
-                      <Grid2 item xs={4} textAlign="center">
+                      <Grid2 xs={4} textAlign="center">
                         <Button variant="contained" onClick={() => onIncColor("white")}>More White</Button>
                         <Button variant="contained" onClick={() => onDecColor("white")}
                           disabled={user.attributes?.attributes[3] < 1}>Less White</Button>
@@ -326,10 +326,10 @@ export default function UserHomePage() {
                   </Box>
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item xs={4} textAlign="right">
+                      <Grid2 xs={4} textAlign="right">
                         Gender:
                       </Grid2>
-                      <Grid2 item xs={4} textAlign="center">
+                      <Grid2 xs={4} textAlign="center">
                         <Button variant="contained" onClick={() => onChangeGender(true)}>More Male</Button>
                         <Button variant="contained" onClick={() => onChangeGender(false)}>More Female</Button>
                       </Grid2>
@@ -337,10 +337,10 @@ export default function UserHomePage() {
                   </Box>
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item xs={4} textAlign="right">
+                      <Grid2 xs={4} textAlign="right">
                         Age ({user.attributes?.attributes ? user.attributes.attributes[8] : "N/A"}):
                       </Grid2>
-                      <Grid2 item xs={4} textAlign="center">
+                      <Grid2 xs={4} textAlign="center">
                       <Button variant="contained" onClick={() => onChangeAge(false)}
                         disabled={user.attributes?.attributes[8] < 1}> Younger</Button>
                       <Button variant="contained" onClick={() => onChangeAge(true)}>Older</Button>
@@ -349,7 +349,7 @@ export default function UserHomePage() {
                   </Box>
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item xs={4} textAlign="center">
+                      <Grid2 xs={4} textAlign="center">
                         <Button variant="contained" onClick={() => onResetPref()}>Reset Preferences</Button>
                       </Grid2>
                     </Grid2>
@@ -358,8 +358,8 @@ export default function UserHomePage() {
                   {/* Display user attributes here */}
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
-                      <Grid2 item xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
-                      <Grid2 item xs={8}>
+                      <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
+                      <Grid2 xs={8}>
                         {user.attributes && JSON.stringify(user.attributes)} {/* Display attributes */}
                       </Grid2>
                     </Grid2>

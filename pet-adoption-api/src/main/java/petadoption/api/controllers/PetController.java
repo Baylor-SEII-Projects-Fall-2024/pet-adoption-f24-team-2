@@ -8,12 +8,8 @@ import petadoption.api.dto.PetDto;
 import petadoption.api.mappers.PetMapper;
 import petadoption.api.pet.Pet;
 import petadoption.api.pet.PetService;
-import petadoption.api.recommendation.petAttributes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Log4j2
 @RestController
@@ -25,11 +21,6 @@ public class PetController {
 
     @PostMapping("/pets/{centerID}")
     public PetDto addPet(@PathVariable Long centerID, @RequestBody Pet pet) {
-        petAttributes attributes = new petAttributes(pet.getSpecies(),
-                pet.getColor(), pet.getGender(), pet.getAge());
-
-        pet.setAttributes(attributes);
-
         return petMapper.toPetDto(petService.savePet(pet, centerID));
     }
 
@@ -46,6 +37,11 @@ public class PetController {
     @GetMapping("/pets/{centerID}")
     public List<PetDto> getPets(@PathVariable Long centerID) {
         return petService.getPets(centerID);
+    }
+
+    @GetMapping("/pet/{petID}")
+    public PetDto getPet(@PathVariable Long petID) {
+        return petService.getPet(petID);
     }
 
     @GetMapping("/pets/all")
