@@ -64,4 +64,11 @@ public class PetService {
         pet.setAdoptionCenter(adoptionCenter);
         return petRepository.save(pet);
     }
+
+    public PetDto getPet(Long petID) {
+        Pet pet = petRepository.findById(petID)
+                .orElseThrow(() -> new AppException("Pet not found", HttpStatus.NOT_FOUND));
+
+        return petMapper.toPetDto(pet);
+    }
 }
