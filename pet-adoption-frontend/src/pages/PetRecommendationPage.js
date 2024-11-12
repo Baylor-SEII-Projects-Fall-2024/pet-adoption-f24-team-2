@@ -10,6 +10,7 @@ function interpretAttributes(pet) {
 
 
   if (attributes) {
+    console.log(attributes);
     // Species
     if (attributes[0] === 1) {
       temp.push("Cat");
@@ -95,6 +96,7 @@ export default function PetRecommendationPage() {
         </Typography>
       </Box>
       <div className="pet-list">
+        {console.log(pets)}
         {pets.map((pet) => (
           <PetCard
             key={pet.id}
