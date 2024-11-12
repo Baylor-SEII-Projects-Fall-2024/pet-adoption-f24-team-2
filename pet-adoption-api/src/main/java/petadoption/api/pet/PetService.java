@@ -3,9 +3,11 @@ package petadoption.api.pet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import petadoption.api.dto.PetDto;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.PetMapper;
+import petadoption.api.notification.NotificationRepository;
 import petadoption.api.user.User;
 import petadoption.api.user.UserRepository;
 
@@ -19,6 +21,7 @@ public class PetService {
     private final PetRepository petRepository;
     private final PetMapper petMapper;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
     public Pet savePet(Pet pet, Long adoptionCenterID) {
         // Fetch the adoption center (User) from the database
@@ -52,7 +55,9 @@ public class PetService {
         return pets;
     }
 
+    @Transactional
     public void deletePet(Long petID) {
+        notificationRepository.deleteByPetId(petID);
         petRepository.deleteById(petID);
     }
 

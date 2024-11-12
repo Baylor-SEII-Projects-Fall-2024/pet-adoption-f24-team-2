@@ -28,7 +28,6 @@ public class PetController {
                 pet.getColor(), pet.getGender(), pet.getAge());
 
         pet.setAttributes(attributes);
-
         return petMapper.toPetDto(petService.savePet(pet, centerID));
     }
 
