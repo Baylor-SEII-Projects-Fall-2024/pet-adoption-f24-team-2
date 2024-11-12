@@ -26,7 +26,7 @@ public class Notification {
     @JoinColumn(name = "USER_ID")
     User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PET_ID")
     Pet pet;
 

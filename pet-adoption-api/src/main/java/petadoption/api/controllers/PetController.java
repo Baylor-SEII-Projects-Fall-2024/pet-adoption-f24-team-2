@@ -8,6 +8,7 @@ import petadoption.api.dto.PetDto;
 import petadoption.api.mappers.PetMapper;
 import petadoption.api.pet.Pet;
 import petadoption.api.pet.PetService;
+import petadoption.api.recommendation.petAttributes;
 
 import java.util.List;
 
@@ -21,6 +22,10 @@ public class PetController {
 
     @PostMapping("/pets/{centerID}")
     public PetDto addPet(@PathVariable Long centerID, @RequestBody Pet pet) {
+        petAttributes attributes = new petAttributes(pet.getSpecies(),
+                pet.getColor(), pet.getGender(), pet.getAge());
+
+        pet.setAttributes(attributes);
         return petMapper.toPetDto(petService.savePet(pet, centerID));
     }
 
