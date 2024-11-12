@@ -70,10 +70,22 @@ public class PetController {
         List<PetDto> pets = new ArrayList<>();
         String[] speciesOptions = {"cat", "dog", "rabbit"};
         String[] colorOptions = {"white", "black", "brown"};
+        String[] petNames = {
+                "Bella", "Max", "Luna", "Charlie", "Daisy",
+                "Rocky", "Molly", "Buddy", "Coco", "Ruby",
+                "Milo", "Olive", "Oscar", "Ginger", "Finn",
+                "Lulu", "Simba", "Penny", "Bear", "Zoey",
+                "Gizmo", "Sadie", "Thor", "Willow", "Diesel",
+                "Athena", "Pepper", "Roxy", "Moose", "Piper",
+                "Bandit", "Shadow", "Marley", "Blue", "Sassy",
+                "Murphy", "Maple", "Apollo", "Scout", "Nala",
+                "Jax", "Tilly", "Leo", "Frankie", "Olive",
+                "Duke", "Stella", "Ranger", "Biscuit", "Hazel"
+        };
 
         for (int i = 0; i < 50; i++) {
             Pet pet = new Pet();
-            pet.setName("testPet" + i);
+            pet.setName(petNames[i]);
 
             // Random species
             String randomSpecies = speciesOptions[ThreadLocalRandom.current().nextInt(speciesOptions.length)];

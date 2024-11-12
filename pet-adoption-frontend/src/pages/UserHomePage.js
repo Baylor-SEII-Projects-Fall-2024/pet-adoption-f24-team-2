@@ -364,15 +364,16 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
 
-                  {/* Display user attributes here */}
+                  {/* Display user attributes here
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
                       <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
                       <Grid2 xs={8}>
-                        {user.attributes && JSON.stringify(user.attributes)} {/* Display attributes */}
+                        {user.attributes && JSON.stringify(user.attributes)}
                       </Grid2>
                     </Grid2>
                   </Box>
+                  */}
                   
                 </CardContent>
               </Card>
