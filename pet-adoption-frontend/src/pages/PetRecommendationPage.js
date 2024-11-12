@@ -49,7 +49,6 @@ function interpretAttributes(pet) {
 }
 
 
-
 export default function PetRecommendationPage() {
   const [user, setUser] = useState({});
   const [pets, setPets] = useState([]);

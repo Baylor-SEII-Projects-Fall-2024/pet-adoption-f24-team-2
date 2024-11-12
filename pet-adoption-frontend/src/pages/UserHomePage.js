@@ -159,6 +159,13 @@ export default function UserHomePage() {
     })
   }
 
+  function addRandomPets() {
+    request("POST", `/pets/addTestPets/${getUserID()}`)
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
     <>
       <Navbar user={user}/>
@@ -261,6 +268,7 @@ export default function UserHomePage() {
                         </Grid2>
                       </Grid2>
                     </label>
+                    <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button>
                   </Box>
                 )}
   
