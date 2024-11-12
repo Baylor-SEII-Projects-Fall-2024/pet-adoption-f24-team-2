@@ -268,7 +268,6 @@ export default function UserHomePage() {
                         </Grid2>
                       </Grid2>
                     </label>
-                    <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button>
                   </Box>
                 )}
   
@@ -284,6 +283,8 @@ export default function UserHomePage() {
                 )}
               </CardContent>
             </Card>
+            {userType === "Adoption Center" &&
+                <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button> }
           </Grid2>
   
           {userType === "Pet Owner" && (
