@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http:/104.198.233.250:3000")
+@CrossOrigin(origins = "http://104.198.233.250:3000")
 public class UserController {
 
     private final PetRecommendation petRecommendation;
