@@ -7,20 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import petadoption.api.config.UserAuthProvider;
 import petadoption.api.dto.CredentialsDto;
-import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
-import petadoption.api.mappers.*;
-import petadoption.api.pet.PetService;
-import petadoption.api.recommendation.PetRecommendation;
-import petadoption.api.recommendation.petAttributes;
 import petadoption.api.user.User;
 import petadoption.api.user.UserService;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -50,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto signUpDto) {
         UserDto user = userService.register(signUpDto);
         // Return a fresh JWT token on registration
         user.setToken(userAuthProvider.createToken(user));

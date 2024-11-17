@@ -23,8 +23,9 @@ public class PetService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
 
-    public Pet savePet(Pet pet, Long adoptionCenterID) {
+    public PetDto savePet(PetDto petDto, Long adoptionCenterID) {
         // Fetch the adoption center (User) from the database
+        Pet pet = petMapper.toPet(petDto);
         User adoptionCenter = userRepository.findById(adoptionCenterID)
                 .orElseThrow(() -> new AppException("Adoption center not found", HttpStatus.NOT_FOUND));
 
@@ -32,7 +33,7 @@ public class PetService {
         pet.setAdoptionCenter(adoptionCenter);
 
         // Save the pet to the database
-        return petRepository.save(pet);
+        return petMapper.toPetDto(petRepository.save(pet));
     }
 
     public List<PetDto> getPets(Long centerID) {
