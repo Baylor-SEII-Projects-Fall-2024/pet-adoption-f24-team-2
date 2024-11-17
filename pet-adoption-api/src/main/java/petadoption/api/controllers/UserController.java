@@ -1,5 +1,6 @@
 package petadoption.api.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +25,10 @@ import java.util.stream.Collectors;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-
-    private final PetRecommendation petRecommendation;
     private final UserService userService;
-    private final PetService petService;
     private final UserAuthProvider userAuthProvider;
-    private final UserMapper userMapper;
-    private final PetMapper petMapper;
 
     @GetMapping("/users/{id}")
     public UserDto findByID(@PathVariable Long id) {
@@ -40,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
+    public UserDto updateUser(@PathVariable Long id, @RequestBody @Valid UserDto user) {
         return userService.updateUser(id, user);
     }
 
