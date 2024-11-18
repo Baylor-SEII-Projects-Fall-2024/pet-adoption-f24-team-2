@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import { useEffect } from "react";
 import { useState } from "react";
 import { request, getUserID } from "@/axios_helper";
-import { Card, CardActions, Typography, Grid, Button } from '@mui/material';
+import { Box, CardActions, Typography, Grid, Button } from '@mui/material';
 import { Dialog, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { DateTimePicker } from "@mui/x-date-pickers";
 import EventDisplay from "@/components/EventDisplay"; 
@@ -16,13 +16,14 @@ export default function RegisterAdoptionEventPage() {
   const [ description, setDescription ] = useState("");
   const [ date, setDate ] = useState();
   const [ events, setEvents ] = useState([]);
+  const [ errorMessage, setErrorMessage] = useState(null);
   
   useEffect( () => {
     request("GET", `/users/${getUserID()}`, null)
       .then((response) => {
         setUser(response.data)
       }).catch((error) => {
-        console.log(error);
+        console.log(error)
       })
 
       request("GET", `/events/${getUserID()}`, null)
@@ -70,7 +71,12 @@ export default function RegisterAdoptionEventPage() {
         setEvents(currEvents);
         console.log(currEvents)
       }).catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 400) {
+          const errorMessages = error.response.data.messages;
+          setErrorMessage(errorMessages.join(', '));  
+      } else {
+          setErrorMessage('An unexpected error occurred.');
+      }
       })
     handleClose();
   }
@@ -84,6 +90,10 @@ export default function RegisterAdoptionEventPage() {
       <CardActions sx={{ justifyContent: "center" }}>
         <Button size="large" onClick={handleClickOpen}>Register Event</Button>
       </CardActions>
+      {errorMessage && 
+      <Box align="center">
+        <Typography style={{color: 'red'}}>{errorMessage}</Typography>
+      </Box>}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -103,6 +113,7 @@ export default function RegisterAdoptionEventPage() {
             rows={4} 
             value={description}
             onChange={onChangeDescription}
+            required
             />
           <DialogContentText>Date</DialogContentText>
           <DateTimePicker 

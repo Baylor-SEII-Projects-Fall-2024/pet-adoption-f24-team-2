@@ -1,6 +1,7 @@
 package petadoption.api.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @AllArgsConstructor
@@ -17,6 +18,6 @@ public class EventDto {
     String location;
     @NotEmpty(message="Event description is required")
     String description;
-    @NotEmpty(message="Event date is required")
+    @NotNull(message="Event date is required")
     Long date;
 }

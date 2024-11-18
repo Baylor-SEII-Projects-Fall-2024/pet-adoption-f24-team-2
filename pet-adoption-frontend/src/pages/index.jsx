@@ -171,6 +171,7 @@ export default function Login() {
                 name="password"
                 onChange={onChangePassword}
                 required
+                minLength={8}
                 />
               <label htmlFor="phone"><Typography>Phone:</Typography></label>
               <input 
@@ -178,6 +179,10 @@ export default function Login() {
                 id="phone"
                 name="phone"
                 onChange={onChangePhone}
+                placeholder="888-888-8888"
+                minLength={12}
+                maxLength={12}
+                required
                 />
               <label htmlFor="name"><Typography>Name:</Typography></label>
               <input 
@@ -185,6 +190,7 @@ export default function Login() {
                 id="name"
                 name="name"
                 onChange={onChangeName}
+                required
                 />
               <label htmlFor="description"><Typography>Description:</Typography></label>
               <textarea
