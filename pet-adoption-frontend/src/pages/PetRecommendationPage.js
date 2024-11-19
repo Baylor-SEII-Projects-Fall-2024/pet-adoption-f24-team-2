@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
 import PetCard from "@/components/PetCard";
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, Pagination } from '@mui/material';
 
 function interpretAttributes(pet) {
   const temp = [];
@@ -53,6 +53,8 @@ export default function PetRecommendationPage() {
   const [user, setUser] = useState({});
   const [pets, setPets] = useState([]);
   const [interpretedAttributes, setInterpretedAttributes] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const petsPerPage = 49;
 
   useEffect(() => {
     request("GET", `/petrec/${getUserID()}/all`, null)
@@ -82,6 +84,17 @@ export default function PetRecommendationPage() {
     window.location.reload();
   };
 
+  // pagination
+  const indexOfLastPet = currentPage * petsPerPage;
+  const indexOfFirstPet = indexOfLastPet - petsPerPage;
+  const currentPets = pets.slice(indexOfFirstPet, indexOfLastPet);
+  const pageCount = Math.ceil(pets.length / petsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       <Navbar user={user} />
@@ -93,8 +106,13 @@ export default function PetRecommendationPage() {
           Pet Recommendations:
         </Typography>
       </Box>
-      <div className="pet-list">
-        {pets.map((pet) => (
+      <div className="pet-list" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(7, 1fr)',
+        gap: '20px',
+        padding: '20px'
+      }}>
+        {currentPets.map((pet) => (
           <PetCard
             key={pet.id}
             id={pet.id}
@@ -104,6 +122,15 @@ export default function PetRecommendationPage() {
           />
         ))}
       </div>
+      <Box display="flex" justifyContent="center" padding="20px">
+        <Pagination 
+          count={pageCount}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          size="large"
+        />
+      </Box>
     </>
   );
 }

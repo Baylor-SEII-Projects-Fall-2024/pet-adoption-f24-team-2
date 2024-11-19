@@ -94,9 +94,6 @@ public class User {
         }
         profile[profile.length-1] = userAttributes[profile.length-1];
 
-        System.out.println("userAttributes: " + Arrays.toString(userAttributes));
-        System.out.println("profile       : " + Arrays.toString(profile));
-
         return profile;
     }
 
