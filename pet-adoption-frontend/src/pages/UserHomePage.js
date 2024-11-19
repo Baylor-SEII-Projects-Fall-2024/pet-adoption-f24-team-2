@@ -355,7 +355,11 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
 
+<<<<<<< Updated upstream
                   {/* Display user attributes here */}
+=======
+
+>>>>>>> Stashed changes
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
                       <Grid2 item xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
@@ -364,6 +368,10 @@ export default function UserHomePage() {
                       </Grid2>
                     </Grid2>
                   </Box>
+<<<<<<< Updated upstream
+=======
+                  
+>>>>>>> Stashed changes
                   
                 </CardContent>
               </Card>

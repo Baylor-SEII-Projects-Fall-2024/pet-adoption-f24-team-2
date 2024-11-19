@@ -92,6 +92,10 @@ public class User {
             }
             profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
+<<<<<<< Updated upstream
+=======
+        profile[8] = userAttributes[8];
+>>>>>>> Stashed changes
 
         return profile;
     }
