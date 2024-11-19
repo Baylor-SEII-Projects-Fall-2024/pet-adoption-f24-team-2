@@ -113,7 +113,9 @@ public class PetController {
 
             pet.setAdoptionCenter(null);
 
-            addPet(id, pet);
+            PetDto generatedPet = petMapper.toPetDto(pet);
+
+            addPet(id, generatedPet);
         }
     }
 }
