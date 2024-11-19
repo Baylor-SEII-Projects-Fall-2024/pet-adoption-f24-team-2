@@ -94,6 +94,7 @@ export default function AdoptionCenterPetsPage() {
       furLength: furLength,
       age: age,
       description: description,
+      adoptionCenterId: getUserID(),
     }
     request("POST", `/pets/${getUserID()}`, newPet)
       .then((response) => {

@@ -1,5 +1,6 @@
 package petadoption.api.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @PostMapping("/notifications")
-    public ResponseEntity<NotificationDto> createNotification(@RequestBody NotificationDto notificationDto) {
+    public ResponseEntity<NotificationDto> createNotification(@RequestBody @Valid NotificationDto notificationDto) {
         System.out.println(notificationDto);
         NotificationDto notificationDto1 = notificationService.save(notificationDto);
         return ResponseEntity.ok(notificationDto1);

@@ -1,5 +1,6 @@
 package petadoption.api.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class PetController {
     private final PetMapper petMapper;
 
     @PostMapping("/pets/{centerID}")
-    public PetDto addPet(@PathVariable Long centerID, @RequestBody Pet pet) {
+    public PetDto addPet(@PathVariable Long centerID, @RequestBody @Valid PetDto pet) {
         petAttributes attributes = new petAttributes(pet.getSpecies(),
                 pet.getColor(), pet.getGender(), pet.getAge());
 
         pet.setAttributes(attributes);
-        return petMapper.toPetDto(petService.savePet(pet, centerID));
+        return petService.savePet(pet, centerID);
     }
 
     @DeleteMapping("/pets/{petID}")
@@ -57,7 +58,7 @@ public class PetController {
     }
 
     @PutMapping("/pets/{centerID}")
-    public ResponseEntity<PetDto> updatePet(@RequestBody PetDto pet, @PathVariable Long centerID) {
+    public ResponseEntity<PetDto> updatePet(@RequestBody @Valid PetDto pet, @PathVariable Long centerID) {
         Pet newPet = petMapper.toPet(pet);
         newPet = petService.updatePet(newPet, centerID);
         pet = petMapper.toPetDto(newPet);

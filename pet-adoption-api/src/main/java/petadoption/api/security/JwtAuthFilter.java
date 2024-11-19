@@ -1,4 +1,4 @@
-package petadoption.api.config;
+package petadoption.api.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import petadoption.api.config.UserAuthProvider;
 
 import java.io.IOException;
 

@@ -212,7 +212,7 @@ export default function UserHomePage() {
                       </Grid2>
                       <Grid2 size={6}>
                         {isEditing ? (
-                          <input value={name} onChange={onChangeName} />
+                          <input value={name} onChange={onChangeName} required />
                         ) : (
                           <span>{name}</span>
                         )}
@@ -228,7 +228,7 @@ export default function UserHomePage() {
                       </Grid2>
                       <Grid2 size={6}>
                         {isEditing ? (
-                          <input value={phone} onChange={onChangePhone} />
+                          <input value={phone} onChange={onChangePhone} required />
                         ) : (
                           <span>{phone}</span>
                         )}

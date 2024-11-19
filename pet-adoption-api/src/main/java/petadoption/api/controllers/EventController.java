@@ -1,5 +1,6 @@
 package petadoption.api.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping("/register/{centerID}")
-    public EventDto registerEvent(@PathVariable Long centerID, @RequestBody EventDto newEvent) {
+    public EventDto registerEvent(@PathVariable Long centerID, @RequestBody @Valid EventDto newEvent) {
         EventDto savedEvent = eventService.save(newEvent, centerID);
 
         return savedEvent;
@@ -39,9 +40,8 @@ public class EventController {
     }
 
     @PutMapping("/events/{centerID}")
-    public ResponseEntity<EventDto> update(@PathVariable Long centerID, @RequestBody EventDto newEvent) {
+    public ResponseEntity<EventDto> update(@PathVariable Long centerID, @RequestBody @Valid EventDto newEvent) {
         EventDto updatedEvent = eventService.update(centerID, newEvent);
-
         return ResponseEntity.ok(updatedEvent);
     }
 }
