@@ -447,7 +447,7 @@ export default function UserHomePage() {
               </CardContent>
             </Card>
             {userType === "Adoption Center" &&
-                <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button> }
+                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button> }
           </Grid2>
   
           {userType === "Pet Owner" && (
