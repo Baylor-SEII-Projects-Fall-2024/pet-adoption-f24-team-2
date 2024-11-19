@@ -62,13 +62,13 @@ public class PetService {
         petRepository.deleteById(petID);
     }
 
-    public Pet updatePet(Pet pet, Long centerID) {
+    public PetDto updatePet(PetDto pet, Long centerID) {
         petRepository.findById(pet.getId()).orElseThrow(() -> new AppException("Pet not found", HttpStatus.NOT_FOUND));
         User adoptionCenter = userRepository.findById(centerID)
                 .orElseThrow(() -> new AppException("Adoption center not found", HttpStatus.NOT_FOUND));
-
-        pet.setAdoptionCenter(adoptionCenter);
-        return petRepository.save(pet);
+        Pet newPet = petMapper.toPet(pet);
+        newPet.setAdoptionCenter(adoptionCenter);
+        return petMapper.toPetDto(petRepository.save(newPet));
     }
 
     public PetDto getPet(Long petID) {

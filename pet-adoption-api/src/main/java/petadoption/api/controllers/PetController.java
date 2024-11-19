@@ -59,11 +59,9 @@ public class PetController {
 
     @PutMapping("/pets/{centerID}")
     public ResponseEntity<PetDto> updatePet(@RequestBody @Valid PetDto pet, @PathVariable Long centerID) {
-        Pet newPet = petMapper.toPet(pet);
-        newPet = petService.updatePet(newPet, centerID);
-        pet = petMapper.toPetDto(newPet);
+        PetDto newPet = petService.updatePet(pet, centerID);
 
-        return ResponseEntity.ok(pet);
+        return ResponseEntity.ok(newPet);
     }
 
     @PostMapping("/pets/addTestPets/{id}")
