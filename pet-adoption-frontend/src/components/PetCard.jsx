@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
+import SnackbarNoti from "./SnackbarNoti";
 
-function onLike(attributes) {
+function onLike(attributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity) {
     request("POST", `/petrec/${getUserID()}/likePet`, attributes)
+        .then(() => {
+          setSnackbarMessage("Pet liked!");
+          setSnackbarSeverity("success");
+          setSnackbarOpen(true);
+        })
         .catch((error) => {
             console.log(error);
         });
@@ -20,6 +26,9 @@ function PetCard({ id, name, attributes, bigattributes }) {
         "Gender",
         "Age"
     ];
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
     function onChangeMessage(e) {
       setMessage(e.target.value);
@@ -31,6 +40,10 @@ function PetCard({ id, name, attributes, bigattributes }) {
 
     function handleClose() {
       setOpen(false);
+    }
+
+    function handleSnackbarClose() {
+      setSnackbarOpen(false);
     }
 
     function handleSubmit(e) {
@@ -51,6 +64,10 @@ function PetCard({ id, name, attributes, bigattributes }) {
         .catch((error) => {
             console.log(error);
         });
+      setSnackbarMessage("Adoption form sent!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      console.log(snackbarMessage, snackbarSeverity, snackbarOpen);
     }
 
     return (
@@ -69,7 +86,7 @@ function PetCard({ id, name, attributes, bigattributes }) {
                     <p>No attributes available</p>
                 )}
                 <Grid2 item xs={4} textAlign="center">
-                  <Button variant="contained" onClick={() => onLike(bigattributes)}>Like</Button>
+                  <Button variant="contained" onClick={() => onLike(bigattributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity)}>Like</Button>
                   <Button variant="contained" onClick={handleOpen}>Adopt</Button>
                 </Grid2>
             </div>
@@ -89,6 +106,12 @@ function PetCard({ id, name, attributes, bigattributes }) {
                 <Button variant="contained" onClick={handleSubmit}>Send</Button>
               </DialogActions>
             </Dialog>
+            <SnackbarNoti
+              open={snackbarOpen}
+              severity={snackbarSeverity}
+              message={snackbarMessage}
+              onClose={handleSnackbarClose}
+            />
         </div>
     );
 }

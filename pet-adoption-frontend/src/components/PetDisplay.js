@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button, Grid2 } from "@mui/material";
 import { useState } from "react";
 import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
+import SnackbarNoti from "./SnackbarNoti";
 
 function PetDisplayCard(props) {
   const pet = props.pet;
@@ -17,6 +18,9 @@ function PetDisplayCard(props) {
   const [furLength, setFurLength] = useState(pet.furLength);
   const [age, setAge] = useState(pet.age);
   const [description, setDescription] = useState(pet.description);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   function handleEdit() {
     setIsEditing(true);
@@ -32,10 +36,12 @@ function PetDisplayCard(props) {
     setFurLength(pet.furLength);
     setAge(pet.age);
     setDescription(pet.description);
+    setSnackbarMessage("Pet edit canceled");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
   }
 
   function handleRemove() {
-
     request("DELETE", `/pets/${pet.id}`, null)
       .then((response) => {
         if( response.status === 204 ) {
@@ -44,12 +50,19 @@ function PetDisplayCard(props) {
             ...currPets.slice(0, index), // Elements before the one to delete
             ...currPets.slice(index + 1) // Elements after the one to delete
           ]
-
           props.setPets(currPets);
         }
       }).catch((error) => {
         console.log(error);
       });
+  }
+
+  function handleSnackbarRemove() {
+    console.log(snackbarMessage, snackbarSeverity, snackbarOpen);
+    setSnackbarMessage("Pet deleted");
+    setSnackbarSeverity("warning");
+    setSnackbarOpen(true);
+    console.log(snackbarMessage, snackbarSeverity, snackbarOpen);
   }
 
   function savePetChanges() {
@@ -73,6 +86,9 @@ function PetDisplayCard(props) {
           currPets[index] = response.data;
           props.setPets(currPets);
         }
+        setSnackbarMessage("Pet updated!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
       }).catch((error) => {
         console.log(error);
       });
@@ -110,6 +126,10 @@ function PetDisplayCard(props) {
 
   function onChangeDescription(e) {
     setDescription(e.target.value);
+  }
+
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
   }
 
   return (
@@ -250,6 +270,12 @@ function PetDisplayCard(props) {
           <Button variant="outlined" onClick={handleRemove}>Remove</Button>
         </> }
       </CardContent>
+      <SnackbarNoti
+        open={snackbarOpen}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+        onClose={handleSnackbarClose}
+      />
 
     </Card>
   )
