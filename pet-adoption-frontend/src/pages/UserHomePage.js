@@ -3,6 +3,7 @@ import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
 import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
 import SnackbarNoti from "@/components/SnackbarNoti";
+import Chart from 'chart.js/auto';
 
 export default function UserHomePage() {
   const [user, setUser] = useState({});
@@ -183,6 +184,167 @@ export default function UserHomePage() {
   function handleSnackbarClose() {
     setSnackbarOpen(false);
   }
+  // Species Chart
+  useEffect(() => {
+    const speciesCtx = document.getElementById('speciesChart')?.getContext('2d');
+    
+    if (speciesCtx && user.attributes?.attributes) {
+      const speciesChart = new Chart(speciesCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Cats', 'Dogs', 'Rabbits'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[0],
+              user.attributes.attributes[1],
+              user.attributes.attributes[2]
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Species Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => speciesChart.destroy();
+    }
+  }, [user.attributes?.attributes[0], user.attributes?.attributes[1], user.attributes?.attributes[2]]);
+
+  // Color Chart
+  useEffect(() => {
+    const colorCtx = document.getElementById('colorChart')?.getContext('2d');
+    
+    if (colorCtx && user.attributes?.attributes) {
+      const colorChart = new Chart(colorCtx, {
+        type: 'pie',
+        data: {
+          labels: ['White', 'Black', 'Brown'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[3],
+              user.attributes.attributes[4],
+              user.attributes.attributes[5]
+            ],
+            backgroundColor: [
+              'rgba(255, 255, 255, 0.5)',
+              'rgba(0, 0, 0, 0.5)',
+              'rgba(111, 78, 55, 0.5)'
+            ],
+            borderColor: [
+              'rgba(200, 200, 200, 1)',
+              'rgba(0, 0, 0, 1)',
+              'rgba(111, 78, 55, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Color Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => colorChart.destroy();
+    }
+  }, [user.attributes?.attributes[3], user.attributes?.attributes[4], user.attributes?.attributes[5]]);
+
+  // Gender Chart
+  useEffect(() => {
+    const genderCtx = document.getElementById('genderChart')?.getContext('2d');
+    
+    if (genderCtx && user.attributes?.attributes) {
+      const genderChart = new Chart(genderCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Male', 'Female'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[6],
+              user.attributes.attributes[7]
+            ],
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 99, 132, 0.5)'
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Gender Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => genderChart.destroy();
+    }
+  }, [user.attributes?.attributes[6], user.attributes?.attributes[7]]);
 
   return (
     <>
@@ -302,7 +464,7 @@ export default function UserHomePage() {
               </CardContent>
             </Card>
             {userType === "Adoption Center" &&
-                <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button> }
+                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button> }
           </Grid2>
 
           <SnackbarNoti
@@ -387,19 +549,36 @@ export default function UserHomePage() {
                         <Button variant="contained" onClick={() => onResetPref()}>Reset Preferences</Button>
                       </Grid2>
                     </Grid2>
+                    
                   </Box>
 
-                  {/* Display user attributes here
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
-                      <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
+                      {/* <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
                       <Grid2 xs={8}>
                         {user.attributes && JSON.stringify(user.attributes)}
-                      </Grid2>
+                      </Grid2> */}
+                      <Box paddingTop={1}>
+                        <Grid2 container spacing={2}>
+                          <Grid2 xs={12}>
+                            <Box sx={{ height: '150px' }}>
+                              <canvas id="speciesChart"></canvas>
+                            </Box>
+                          </Grid2>
+                          <Grid2 xs={12}>
+                            <Box sx={{ height: '150px' }}>
+                              <canvas id="colorChart"></canvas>
+                            </Box>
+                          </Grid2>
+                          <Grid2 xs={12}>
+                            <Box sx={{ height: '150px' }}>
+                              <canvas id="genderChart"></canvas>
+                            </Box>
+                          </Grid2>
+                        </Grid2>
+                      </Box>
                     </Grid2>
                   </Box>
-                  */}
-
                 </CardContent>
               </Card>
             </Grid2>
@@ -408,5 +587,4 @@ export default function UserHomePage() {
       </Box>
     </>
   );
-  
 }

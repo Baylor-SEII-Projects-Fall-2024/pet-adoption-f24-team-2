@@ -63,26 +63,66 @@ public class PetController {
 
         return ResponseEntity.ok(newPet);
     }
-
+    
     @PostMapping("/pets/addTestPets/{id}")
     public void addTestPets(@PathVariable Long id) {
         List<PetDto> pets = new ArrayList<>();
         String[] speciesOptions = {"cat", "dog", "rabbit"};
         String[] colorOptions = {"white", "black", "brown"};
         String[] petNames = {
-                "Bella", "Max", "Luna", "Charlie", "Daisy",
-                "Rocky", "Molly", "Buddy", "Coco", "Ruby",
-                "Milo", "Olive", "Oscar", "Ginger", "Finn",
-                "Lulu", "Simba", "Penny", "Bear", "Zoey",
-                "Gizmo", "Sadie", "Thor", "Willow", "Diesel",
-                "Athena", "Pepper", "Roxy", "Moose", "Piper",
-                "Bandit", "Shadow", "Marley", "Blue", "Sassy",
-                "Murphy", "Maple", "Apollo", "Scout", "Nala",
-                "Jax", "Tilly", "Leo", "Frankie", "Olive",
-                "Duke", "Stella", "Ranger", "Biscuit", "Hazel"
+                "Luna", "Max", "Bella", "Charlie", "Lucy", "Leo", "Milo", "Daisy", "Rocky", "Lily",
+                "Oliver", "Molly", "Buddy", "Lola", "Jack", "Sadie", "Zeus", "Ruby", "Duke", "Bailey",
+                "Coco", "Bear", "Sophie", "Tucker", "Penny", "Murphy", "Maggie", "Oscar", "Riley", "Zoey",
+                "Bentley", "Chloe", "Finn", "Nala", "Winston", "Rosie", "Luke", "Millie", "Sam", "Lulu",
+                "Cooper", "Belle", "Teddy", "Emma", "Ollie", "Pip", "Roxy", "Archie", "Nova", "Scout",
+                "Jasper", "Princess", "Blue", "Gracie", "Bruno", "Cali", "Ace", "Ginger", "Thor", "Dixie",
+                "Atlas", "Willow", "Louie", "Pepper", "Ziggy", "Stella", "Rocco", "Olive", "Simba", "Ellie",
+                "Baxter", "Winnie", "Felix", "Piper", "Banjo", "Honey", "George", "Hazel", "Ozzy", "Poppy",
+                "Dexter", "Ivy", "Harley", "Abby", "Rufus", "Kiki", "Chester", "Maple", "Moose", "Bonnie",
+                "Samson", "Misty", "Beau", "Stormy", "Hank", "Minnie", "Diesel", "Pearl", "Rex", "Callie",
+                "Apollo", "Layla", "Axel", "Raven", "Marley", "Leia", "Odin", "Delilah", "Romeo", "Sasha",
+                "Benji", "Nori", "Ranger", "Athena", "Loki", "Phoebe", "Shadow", "Skye", "Wally", "Trixie",
+                "Rusty", "Violet", "Prince", "Zelda", "Oakley", "Sage", "Neo", "Pixie", "River", "Josie",
+                "Koda", "Fiona", "Chase", "Mabel", "Arlo", "Heidi", "Toby", "Flora", "Dash", "Iris",
+                "Mochi", "Sunny", "Atlas", "Clover", "Cosmo", "Juniper", "Bandit", "Buttercup", "Bingo", "Daisy",
+                "Blaze", "Eden", "Flash", "Georgia", "Hugo", "Holly", "Igor", "Indigo", "Jett", "Jasmine",
+                "King", "Jade", "Link", "Lacey", "Mac", "Liberty", "Ned", "Luna", "Orion", "Marina",
+                "Pluto", "Meadow", "Quincy", "Nellie", "Radar", "Oceana", "Storm", "Phoenix", "Tank", "Queen",
+                "Ulysses", "Rain", "Vader", "Savannah", "Wolf", "Terra", "Xander", "Uma", "Yogi", "Venus",
+                "Zeus", "Wren", "Ace", "Xena", "Bear", "Yara", "Chip", "Zinnia", "Duke", "Aurora",
+                "Echo", "Bloom", "Finn", "Crystal", "Ghost", "Dawn", "Hero", "Ember", "Ice", "Fawn",
+                "Jet", "Gaia", "Kite", "Haven", "Lion", "Iris", "Mars", "Joy", "Nero", "Karma",
+                "Oz", "Lima", "Pike", "Moon", "Quest", "Nova", "Rex", "Opal", "Sol", "Pearl",
+                "Thor", "Rose", "Uri", "Star", "Vex", "Twilight", "Wren", "Unity", "Yak", "Venus",
+                "Zephyr", "Wave", "Ajax", "Xanthe", "Blitz", "Yuki", "Crow", "Zara", "Drake", "Ash",
+                "Eagle", "Brook", "Fox", "Cloud", "Grim", "Dew", "Hawk", "Eve", "Iron", "Fable",
+                "Jag", "Grace", "Knox", "Hope", "Lynx", "Isle", "Mist", "Joy", "Nix", "Koi",
+                "Owl", "Lake", "Puma", "Mist", "Quill", "Night", "Rook", "Ocean", "Sky", "Peace",
+                "Tux", "River", "Uri", "Storm", "Vale", "Terra", "Wing", "Uma", "Yeti", "Vale",
+                "Zen", "Winter", "Ash", "Yarn", "Bolt", "Zest", "Cub", "Aura", "Dex", "Breeze",
+                "Echo", "Coral", "Flint", "Delta", "Glow", "Eden", "Haze", "Fern", "Ink", "Gem",
+                "Jade", "Halo", "Koi", "Iris", "Leo", "Jazz", "Moon", "Kiss", "Nova", "Leaf",
+                "Onyx", "Mist", "Pike", "Noon", "Quartz", "Oasis", "Rain", "Pearl", "Star", "Quest",
+                "Sun", "Rain", "Tiger", "Sage", "Ultra", "Sky", "Viper", "Soul", "Wolf", "Spring",
+                "Xenon", "Tide", "Yogi", "Vale", "Zero", "Wave", "Alpha", "Wish", "Beta", "Zen",
+                "Cave", "Amber", "Dune", "Bloom", "Edge", "Charm", "Frost", "Dawn", "Gulf", "Echo",
+                "Hill", "Fairy", "Isle", "Glow", "Jade", "Haze", "Keep", "Iris", "Lake", "Joy",
+                "Mesa", "Kiss", "Node", "Luna", "Oasis", "Mint", "Peak", "Nova", "Quest", "Opal",
+                "Reef", "Pearl", "Sand", "Rose", "Tide", "Star", "Vale", "Sun", "Wave", "Terra",
+                "Xray", "Uma", "Yang", "Vita", "Zeal", "Wave", "Apex", "Xena", "Bay", "Yang",
+                "Cove", "Zora", "Dusk", "Alba", "Edge", "Briar", "Fern", "Cara", "Glen", "Dawn",
+                "Hill", "Eden", "Isle", "Faye", "Jump", "Gia", "Knot", "Hope", "Leaf", "Ivy",
+                "Maze", "Joy", "Nest", "Kay", "Orb", "Lark", "Path", "Mae", "Reef", "Nina",
+                "Stream", "Ora", "Trail", "Paz", "Urban", "Quinn", "Vale", "Rain", "Wave", "Sage",
+                "Yard", "Tara", "Zone", "Uma", "Arc", "Vera", "Bay", "Wren", "Cliff", "Xia",
+                "Den", "Yara", "Edge", "Zara", "Flow", "Aria", "Gate", "Bria", "Hook", "Cora",
+                "Inn", "Dara", "Jump", "Eva", "Key", "Fay", "Loop", "Gia", "Mill", "Hana",
+                "Nook", "Ida", "Oak", "Jana", "Port", "Kara", "Quay", "Lea", "Rock", "Mia",
+                "Sand", "Nia", "Tree", "Ora", "Urban", "Pia", "View", "Rae", "Wall", "Sky",
+                "Yard", "Tea", "Zone", "Uma", "Arch", "Via", "Bank", "Wya", "Cave", "Zea"
         };
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 500; i++) {
             Pet pet = new Pet();
             pet.setName(petNames[i]);
 
