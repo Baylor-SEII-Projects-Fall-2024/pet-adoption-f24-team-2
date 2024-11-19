@@ -7,15 +7,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import petadoption.api.dto.UserDto;
 import petadoption.api.user.UserService;
 
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -33,28 +29,26 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(UserDto user) {
-        // Jwt token valid for ope hour after being issued
+    public String createToken(UserDetails userDetails) {
+        // Jwt token valid for one hour after being issued
+        String email = userDetails.getUsername();
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3_600_000);
 
         return JWT.create()
-                .withIssuer(user.getEmailAddress())
+                .withIssuer(email)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
-                .withClaim("role", user.getRole().name())
+                .withClaim("role", userDetails.getAuthorities().toString())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    public Authentication validateToken(String token) {
+    public DecodedJWT verifyToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
                 .build();
         // Decode the token in order to verify it, if the validity date
         // is expired, an exception is thrown
-        DecodedJWT decoded = verifier.verify(token);
+        return verifier.verify(token);
 
-        UserDto user = userService.findByEmail(decoded.getIssuer());
-
-        return new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(user.getRole()));
     }
 }

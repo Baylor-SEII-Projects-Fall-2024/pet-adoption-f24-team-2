@@ -51,8 +51,7 @@ public class PetTests {
                 .description("Skittish")
                 .build();
 
-        Pet pet = petMapper.toPet(petDto);
-        PetDto savedPet = petMapper.toPetDto(petService.savePet(pet, user.getId()));
+        PetDto savedPet = petService.savePet(petDto, user.getId());
 
         assertEquals(savedPet.getAdoptionCenterID(), user.getId());
         assertEquals(savedPet.getName(), "Thor");
@@ -65,10 +64,11 @@ public class PetTests {
 
     @Test
     void testPetCreateNoAdoptionCenter() {
-        Pet pet = new Pet();
-        pet.setName("name");
+        PetDto petDto = new PetDto();
+        petDto.setName("name");
+        petDto.setGender(true);
 
-        assertThrows(AppException.class, () -> petService.savePet(pet, 1L));
+        assertThrows(AppException.class, () -> petService.savePet(petDto, 1L));
     }
 
     @Test
@@ -95,14 +95,12 @@ public class PetTests {
                 .species("Dog")
                 .description("Skittish")
                 .build();
-        Pet pet = petMapper.toPet(petDto);
 
-        PetDto savedPet = petMapper.toPetDto(petService.savePet(pet, user.getId()));
-        System.out.println(pet);
+        PetDto savedPet = petService.savePet(petDto, user.getId());
         pets.add(savedPet);
         petDto.setName("Crazy");
-        pet = petMapper.toPet(petDto);
-        savedPet = petMapper.toPetDto(petService.savePet(pet, user.getId()));
+
+        savedPet = petService.savePet(petDto, user.getId());
         pets.add(savedPet);
 
         assertEquals(pets, petService.getPets(user.getId()));
@@ -131,9 +129,8 @@ public class PetTests {
                 .species("Dog")
                 .description("Skittish")
                 .build();
-        Pet pet = petMapper.toPet(petDto);
 
-        PetDto savedPet = petMapper.toPetDto(petService.savePet(pet, user.getId()));
+        PetDto savedPet = petService.savePet(petDto, user.getId());
 
         petService.deletePet(savedPet.getId());
         assertEquals(new ArrayList<>(), petService.getPets(user.getId()));
@@ -157,23 +154,22 @@ public class PetTests {
                 .species("Dog")
                 .description("Skittish")
                 .build();
-        Pet pet = petMapper.toPet(petDto);
 
-        PetDto savedPet = petMapper.toPetDto(petService.savePet(pet, user.getId()));
+        PetDto savedPet = petService.savePet(petDto, user.getId());
         petDto.setAdoptionCenterID(savedPet.getAdoptionCenterID());
         petDto.setName("crazy");
         petDto.setAge(2);
         petDto.setId(savedPet.getId());
-        pet = petMapper.toPet(petDto);
-        savedPet = petMapper.toPetDto(petService.updatePet(pet, user.getId()));
+
+        savedPet = petService.updatePet(petDto, user.getId());
 
         assertEquals(savedPet.getId(), petDto.getId());
-        assertEquals(savedPet.getName(), pet.getName());
+        assertEquals(savedPet.getName(), petDto.getName());
         assertEquals(user.getId(), savedPet.getAdoptionCenterID());
     }
 
     @Test
-    void testEventUpdateInvalidPet() {
+    void testPetUpdateInvalidPet() {
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setEmailAddress("register@exmaple.com");
         signUpDto.setPassword("password".toCharArray());
@@ -181,16 +177,16 @@ public class PetTests {
 
         UserDto user = userService.register(signUpDto);
 
-        Pet pet = new Pet();
+        PetDto pet = new PetDto();
         pet.setId(0L);
         pet.setName("Crazy");
-        System.out.println(pet);
+        pet.setGender(true);
 
         assertThrows(AppException.class, () -> petService.updatePet(pet, user.getId()));
     }
 
     @Test
-    void testEventUpdateInvalidCenter() {
+    void testPetUpdateInvalidCenter() {
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setEmailAddress("register@exmaple.com");
         signUpDto.setPassword("password".toCharArray());
@@ -198,13 +194,14 @@ public class PetTests {
 
         UserDto user = userService.register(signUpDto);
 
-        Pet pet = new Pet();
+        PetDto pet = new PetDto();
         pet.setName("Crazy");
+        pet.setGender(true);
 
-        Pet savedPet = petService.savePet(pet, user.getId());
+        PetDto savedPet = petService.savePet(pet, user.getId());
         pet.setName("Thor");
         pet.setId(savedPet.getId());
-        assertThrows(AppException.class, () -> petService.updatePet(pet, 0L));
+        assertThrows(AppException.class, () -> petService.updatePet(pet, user.getId() + 1));
     }
 
 }

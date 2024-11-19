@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://104.198.233.250:3000")
 public class PetController {
     private final PetService petService;
     private final PetMapper petMapper;
@@ -59,11 +59,9 @@ public class PetController {
 
     @PutMapping("/pets/{centerID}")
     public ResponseEntity<PetDto> updatePet(@RequestBody @Valid PetDto pet, @PathVariable Long centerID) {
-        Pet newPet = petMapper.toPet(pet);
-        newPet = petService.updatePet(newPet, centerID);
-        pet = petMapper.toPetDto(newPet);
+        PetDto newPet = petService.updatePet(pet, centerID);
 
-        return ResponseEntity.ok(pet);
+        return ResponseEntity.ok(newPet);
     }
 
     @PostMapping("/pets/addTestPets/{id}")
@@ -113,7 +111,9 @@ public class PetController {
 
             pet.setAdoptionCenter(null);
 
-            addPet(id, pet);
+            PetDto generatedPet = petMapper.toPetDto(pet);
+
+            addPet(id, generatedPet);
         }
     }
 }
