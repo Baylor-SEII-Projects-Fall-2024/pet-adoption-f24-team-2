@@ -374,7 +374,7 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
                   */}
-                  
+
                 </CardContent>
               </Card>
             </Grid2>

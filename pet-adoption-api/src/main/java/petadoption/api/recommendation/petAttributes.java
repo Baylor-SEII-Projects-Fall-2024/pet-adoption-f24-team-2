@@ -56,12 +56,23 @@ public class petAttributes {
         attributes[8] = age;
     }
 
+    public petAttributes(petAttributes attributes) {
+        this.attributes = Arrays.copyOf(attributes.attributes, numAttributes);
+        this.speciesOverrideCount = attributes.speciesOverrideCount;
+        this.colorOverrideCount = attributes.colorOverrideCount;
+        this.genderOverrideCount = attributes.genderOverrideCount;
+    }
+
     // combines two petAttributes
     // used to add pets to a user's liked pets
     public void combine(petAttributes other) {
-        for (int i = 0; i < numAttributes; i++) {
+        for (int i = 0; i < numAttributes-1; i++) {
             attributes[i] += other.attributes[i];
         }
+        // averages age directly and floors, just simpler to do it this way
+        // not as accurate but whateverrrr
+        if (attributes[numAttributes-1] == 0) {attributes[8] = other.attributes[numAttributes-1];}
+        else {attributes[numAttributes-1] = Math.round((attributes[numAttributes-1] + other.attributes[numAttributes-1])/2);}
     }
 
     public String attributesToString() {

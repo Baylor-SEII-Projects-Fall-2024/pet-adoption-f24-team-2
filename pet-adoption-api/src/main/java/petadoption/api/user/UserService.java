@@ -12,6 +12,7 @@ import petadoption.api.dto.UserDto;
 import petadoption.api.enums.Role;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.UserMapper;
+import petadoption.api.recommendation.petAttributes;
 
 import java.nio.CharBuffer;
 import java.util.List;
@@ -86,6 +87,7 @@ public class UserService {
         User currUser = optionalUser.get();
         user.setId(id);
         User newUser = userMapper.userDtoToUser(user);
+        newUser.setAttributes(new petAttributes(currUser.getAttributes()));
         newUser.setPassword(currUser.getPassword());
         User savedUser = userRepository.save(newUser);
 
@@ -110,5 +112,21 @@ public class UserService {
         u.getAttributes().combine(p.getAttributes());
         u.incrementNumLikedPets();
         userRepository.save(u);
+    }
+
+    public UserDto resetUserPreferences(Long id, UserDto user) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if( optionalUser.isEmpty() ) {
+            throw new AppException("Account not found", HttpStatus.BAD_REQUEST);
+        }
+
+        User currUser = optionalUser.get();
+        user.setId(id);
+        User newUser = userMapper.userDtoToUser(user);
+        newUser.resetPreferences();
+        newUser.setPassword(currUser.getPassword());
+        User savedUser = userRepository.save(newUser);
+
+        return userMapper.toUserDto(savedUser);
     }
 }
