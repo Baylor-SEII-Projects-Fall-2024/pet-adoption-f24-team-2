@@ -3,9 +3,11 @@ package petadoption.api.pet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import petadoption.api.dto.PetDto;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.PetMapper;
+import petadoption.api.notification.NotificationRepository;
 import petadoption.api.user.User;
 import petadoption.api.user.UserRepository;
 
@@ -19,9 +21,11 @@ public class PetService {
     private final PetRepository petRepository;
     private final PetMapper petMapper;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
 
-    public Pet savePet(Pet pet, Long adoptionCenterID) {
+    public PetDto savePet(PetDto petDto, Long adoptionCenterID) {
         // Fetch the adoption center (User) from the database
+        Pet pet = petMapper.toPet(petDto);
         User adoptionCenter = userRepository.findById(adoptionCenterID)
                 .orElseThrow(() -> new AppException("Adoption center not found", HttpStatus.NOT_FOUND));
 
@@ -29,7 +33,7 @@ public class PetService {
         pet.setAdoptionCenter(adoptionCenter);
 
         // Save the pet to the database
-        return petRepository.save(pet);
+        return petMapper.toPetDto(petRepository.save(pet));
     }
 
     public List<PetDto> getPets(Long centerID) {
@@ -52,7 +56,9 @@ public class PetService {
         return pets;
     }
 
+    @Transactional
     public void deletePet(Long petID) {
+        notificationRepository.deleteByPetId(petID);
         petRepository.deleteById(petID);
     }
 
@@ -63,5 +69,12 @@ public class PetService {
 
         pet.setAdoptionCenter(adoptionCenter);
         return petRepository.save(pet);
+    }
+
+    public PetDto getPet(Long petID) {
+        Pet pet = petRepository.findById(petID)
+                .orElseThrow(() -> new AppException("Pet not found", HttpStatus.NOT_FOUND));
+
+        return petMapper.toPetDto(pet);
     }
 }

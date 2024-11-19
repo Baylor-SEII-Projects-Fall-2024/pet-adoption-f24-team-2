@@ -25,7 +25,7 @@ public class PetRecommendation {
 
     // WEIGHT_AGE is a special weight, used in the calcPetSimilarity function
     // as a way to provide exponential decay for age difference
-    static final double WEIGHT_AGE = .05;
+    static final double WEIGHT_AGE = .025;
 
     // function to apply the above weights to adjust the importance of attributes
     public static double[] applyWeights(double[] attributes) {
@@ -47,6 +47,7 @@ public class PetRecommendation {
 
     // computes cosine similarity between two vectors (a user and pet attributes)
     public static double calcPetSimilarity(User u, Pet p) {
+
         // creates copies of arrays for manipulation
         double[] temp1 = u.generateUserProfile();
         double[] temp2 = Arrays.copyOf(p.getAttributes().getAttributes(), p.getAttributes().getAttributes().length);
@@ -56,6 +57,11 @@ public class PetRecommendation {
         // applies weights to the vectors
         double[] vectorA = applyWeights(temp1);
         double[] vectorB = applyWeights(temp2);
+
+//        System.out.println("temp1: " + Arrays.toString(temp1));
+//        System.out.println("temp2: " + Arrays.toString(temp2));
+//        System.out.println("ageDiff: " + ageDiff);
+//        System.out.println("temp2[8] after calc: " + ageDiff);
 
         /*
 
@@ -92,6 +98,7 @@ public class PetRecommendation {
         // applies exponential decay to adjust similarity based on age difference
         double ageAdjustment = Math.exp(-WEIGHT_AGE * ageDiff);
 
+        //System.out.println("sim: " + similarity * ageAdjustment * '\n');
         return similarity * ageAdjustment;
     }
 }

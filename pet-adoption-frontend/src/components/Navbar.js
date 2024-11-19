@@ -1,14 +1,25 @@
-import { ListItemIcon, Button, ListItemText, List, ListItem, ListItemButton, Box, Drawer, AppBar, IconButton, Toolbar } from "@mui/material";
+import { Button, ListItemText, List, ListItem, ListItemButton, Box, Drawer, AppBar, IconButton, Toolbar } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
 import { Menu } from "@mui/icons-material";
 import Router from 'next/router';
 import { clearUser, clearToken } from "@/axios_helper";
+import NotificationsDisplay from "./NotificationsDisplay";
 
 export default function Navbar({ user }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   function toggleDrawer(opened) {
     setIsNavOpen(opened);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  function handleOpen() {
+    setOpen(true);
   }
 
   function logout() {
@@ -79,7 +90,18 @@ export default function Navbar({ user }) {
               onClick={() => toggleDrawer(true)}>
               <Menu />
             </IconButton>
-            <Button color="inherit" sx={{ marginLeft: "auto" }} onClick={logout}>Logout</Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              >
+              <DialogContent>
+              <NotificationsDisplay/>
+              </DialogContent>
+            </Dialog>
+            <Box sx={{ marginLeft: "auto" }}>
+              <Button color="inherit" onClick={handleOpen}>Notifications</Button>
+              <Button color="inherit" onClick={logout}>Logout</Button>
+            </Box>
           </Toolbar>
         </AppBar>
       </Box>

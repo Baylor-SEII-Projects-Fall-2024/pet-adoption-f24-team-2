@@ -49,7 +49,6 @@ function interpretAttributes(pet) {
 }
 
 
-
 export default function PetRecommendationPage() {
   const [user, setUser] = useState({});
   const [pets, setPets] = useState([]);
@@ -66,6 +65,7 @@ export default function PetRecommendationPage() {
   }, []);
 
   useEffect(() => {
+    console.log(pets);
     if (pets.length > 0) {
       const interpretationMap = {};
 
@@ -97,6 +97,7 @@ export default function PetRecommendationPage() {
         {pets.map((pet) => (
           <PetCard
             key={pet.id}
+            id={pet.id}
             name={pet.name}
             attributes={interpretedAttributes[pet.id] || []}
             bigattributes={pet.attributes}

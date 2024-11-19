@@ -1,4 +1,4 @@
-package petadoption.api.config;
+package petadoption.api.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import petadoption.api.config.UserAuthProvider;
+import petadoption.api.config.UserAuthenticationEntryPoint;
 
 @RequiredArgsConstructor
 @Configuration

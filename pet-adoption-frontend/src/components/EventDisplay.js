@@ -160,7 +160,7 @@ export default function EventDisplay(props) {
     <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
       {props.events.map((event) => {
         return (
-          <Grid2 item key={event.id} size={{xs: 12, sm: 6 }}>
+          <Grid2 key={event.id} size={{xs: 12, sm: 6 }}>
             <EventDisplayCard event={event} currEvents={eventsCopy} setEvents={props.setEvents} user={props.user}/>
           </Grid2>
         );
