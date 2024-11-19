@@ -6,6 +6,7 @@ import { Box, CardActions, Typography, Grid, Button } from '@mui/material';
 import { Dialog, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { DateTimePicker } from "@mui/x-date-pickers";
 import EventDisplay from "@/components/EventDisplay"; 
+import SnackbarNoti from "@/components/SnackbarNoti";
 
 
 export default function RegisterAdoptionEventPage() {
@@ -17,6 +18,10 @@ export default function RegisterAdoptionEventPage() {
   const [ date, setDate ] = useState();
   const [ events, setEvents ] = useState([]);
   const [ errorMessage, setErrorMessage] = useState(null);
+  const [ snackbarMessage, setSnackbarMessage ] = useState("");
+  const [ snackbarSeverity, setSnackbarSeverity ] = useState("");
+  const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+
   
   useEffect( () => {
     request("GET", `/users/${getUserID()}`, null)
@@ -40,6 +45,9 @@ export default function RegisterAdoptionEventPage() {
   };
 
   function handleClose() {
+    setSnackbarMessage("Event registration canceled!");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
     setOpen(false);
   };
 
@@ -49,6 +57,10 @@ export default function RegisterAdoptionEventPage() {
 
   function onChangeDescription(e) {
     setDescription(e.target.value);
+  }
+
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
   }
 
   function handleEventRegistration(e) {
@@ -70,6 +82,9 @@ export default function RegisterAdoptionEventPage() {
         currEvents.push(event);
         setEvents(currEvents);
         console.log(currEvents)
+        setSnackbarMessage("Event registered!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
       }).catch((error) => {
         if (error.response && error.response.status === 400) {
           const errorMessages = error.response.data.messages;
@@ -128,7 +143,12 @@ export default function RegisterAdoptionEventPage() {
       <Grid columns={2}>
         <EventDisplay events={events} setEvents={setEvents} user={user}/>
       </Grid> 
-      
+      <SnackbarNoti
+            open={snackbarOpen}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+            onClose={handleSnackbarClose}
+      />
     </>
   )
 }

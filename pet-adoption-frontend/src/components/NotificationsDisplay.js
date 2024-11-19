@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { request, getUserID } from "@/axios_helper";  
 import { Grid2, Card, CardContent, Typography, Button, Box } from "@mui/material";
+import SnackbarNoti from './SnackbarNoti';
 
 function NotificationDisplayCard({notif, onMarkAsRead}) {
   const [user, setUser] = useState({});
   const [pet, setPet] = useState({});
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect( () => {
     request("GET", `/users/${notif.userId}`, null)
@@ -30,6 +34,10 @@ function NotificationDisplayCard({notif, onMarkAsRead}) {
       }).catch((error) => {
         console.log(error);
       })
+  }
+
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
   }
 
   return (
@@ -58,12 +66,25 @@ function NotificationDisplayCard({notif, onMarkAsRead}) {
           <Button variant="contained" size="small" onClick={handleNotifClick}>Mark as read</Button>
         </Box>
       </CardContent>
+      <SnackbarNoti
+            open={snackbarOpen}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+            onClose={handleSnackbarClose}
+      />
     </Card>)
     )
 }
 
 export default function NotificationsDisplay(props) {
   const [notifications, setNotifications] = useState([]);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
+  }
 
   useEffect(() => {
     request("GET", `/notifications/${getUserID()}`, null)
@@ -81,6 +102,9 @@ export default function NotificationsDisplay(props) {
     let prevNotifications = [...notifications];
     prevNotifications[index] = updatedNotif;
     setNotifications(prevNotifications);
+    setSnackbarMessage("Message marked as read");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
   };
 
   return (
@@ -89,6 +113,12 @@ export default function NotificationsDisplay(props) {
         return (
           <Grid2 key={notif.id} size={{xs: 12}}>
             <NotificationDisplayCard notif={notif} onMarkAsRead={handleMarkAsRead} />
+            <SnackbarNoti
+              open={snackbarOpen}
+              severity={snackbarSeverity}
+              message={snackbarMessage}
+              onClose={handleSnackbarClose}
+            />
           </Grid2>
         );
       }) : <div>No notifications found</div>}

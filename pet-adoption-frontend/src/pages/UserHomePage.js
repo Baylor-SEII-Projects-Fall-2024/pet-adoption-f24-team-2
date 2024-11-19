@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
 import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
+import SnackbarNoti from "@/components/SnackbarNoti";
 import Chart from 'chart.js/auto';
 
 export default function UserHomePage() {
@@ -13,6 +14,9 @@ export default function UserHomePage() {
   const [userType, setUserType] = useState();
   const [description, setDescription] = useState();
   const [address, setAddress] = useState();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
   useEffect( () => {
       request("GET", `/users/${getUserID()}`, null)
@@ -39,6 +43,9 @@ export default function UserHomePage() {
     if( userType === "Pet Owner" ) {
       setAddress(user.address);
     }
+    setSnackbarMessage("User information changes have been discarded!");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
   }
 
   function saveChanges(e) {
@@ -63,6 +70,10 @@ export default function UserHomePage() {
         setUserType(response.data.role === "PET_OWNER" ? "Pet Owner" : "Adoption Center");
         setDescription(response.data.description);
         setAddress(response.data.address);
+
+        setSnackbarMessage("User information updated!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
       }).catch((error) => {
         console.log(error);
       })
@@ -157,6 +168,9 @@ export default function UserHomePage() {
         .then((response) => {
           setUser(response.data); 
         })
+        setSnackbarMessage("Preferences Reset!");
+        setSnackbarSeverity("warning");
+        setSnackbarOpen(true);
     })
   }
 
@@ -167,6 +181,9 @@ export default function UserHomePage() {
     })
   }
 
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
+  }
   // Species Chart
   useEffect(() => {
     const speciesCtx = document.getElementById('speciesChart')?.getContext('2d');
@@ -449,6 +466,13 @@ export default function UserHomePage() {
             {userType === "Adoption Center" &&
                 <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button> }
           </Grid2>
+
+          <SnackbarNoti
+            open={snackbarOpen}
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+          />
   
           {userType === "Pet Owner" && (
             <Grid2 xs={12} sm={6} md={5} sx={{ minWidth: '400px' }}>

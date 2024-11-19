@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogContentText, DialogActions, Button, Typography, CardActions } from "@mui/material";
 import PetDisplay from "@/components/PetDisplay";
 import Navbar from "@/components/Navbar";
+import SnackbarNoti from "@/components/SnackbarNoti";
 
 export default function AdoptionCenterPetsPage() {
   const [ open, setOpen ] = useState(false);
@@ -16,7 +17,10 @@ export default function AdoptionCenterPetsPage() {
   const [ description, setDescription] = useState("");
   const [ user, setUser ] = useState({});
   const [ pets, setPets ] = useState([]);
-  
+  const [ snackbarMessage, setSnackbarMessage ] = useState("");
+  const [ snackbarSeverity, setSnackbarSeverity ] = useState("");
+  const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+
   useEffect( () => {
     request("GET", `/users/${getUserID()}`, null)
       .then((response) => {
@@ -82,6 +86,10 @@ export default function AdoptionCenterPetsPage() {
     setDescription(e.target.value);
   }
 
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
+  }
+
   const handlePetRegistration = (e) => {
     let currPets = [...pets]
     e.preventDefault();
@@ -103,6 +111,9 @@ export default function AdoptionCenterPetsPage() {
         currPets.push(pet);
         setPets(currPets);
         console.log(currPets);
+        setSnackbarMessage("Pet registered!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
       }).catch((error) => {
         console.log(error);
       })
@@ -197,7 +208,12 @@ export default function AdoptionCenterPetsPage() {
           <Button type="submit">Register</Button>
         </DialogActions>
       </Dialog>
-
+      <SnackbarNoti
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
       <PetDisplay pets={pets} setPets={setPets}/>
     </>
   )

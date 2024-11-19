@@ -5,6 +5,7 @@ import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from 'dayjs';
+import SnackbarNoti from "./SnackbarNoti";
 
 function EventDisplayCard(props) {
   const event = props.event;
@@ -16,6 +17,9 @@ function EventDisplayCard(props) {
   const [description, setDescription] = useState(event.description);
   const [location, setLocation] = useState(event.location);
   const [date, setDate] = useState(dayjs(event.date));
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   function handleEdit() {
     setIsEditing(true);
@@ -27,6 +31,9 @@ function EventDisplayCard(props) {
     setDescription(event.description)
     setLocation(event.location)
     setDate(event.date)
+    setSnackbarMessage("Event edit canceled");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
   }
 
   function handleRemove() {
@@ -38,7 +45,9 @@ function EventDisplayCard(props) {
             ...currEvents.slice(0, index), // Elements before the one to delete
             ...currEvents.slice(index + 1) // Elements after the one to delete
           ]
-
+          setSnackbarMessage("Event deleted!");
+          setSnackbarSeverity("warning");
+          setSnackbarOpen(true);
           props.setEvents(currEvents);
         }
       }).catch((error) => {
@@ -64,6 +73,9 @@ function EventDisplayCard(props) {
         currEvents[index] = response.data;
         props.setEvents(currEvents);
       }
+      setSnackbarMessage("Event updated!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
     }).catch((error) => {
       console.log(error);
     });
@@ -80,6 +92,10 @@ function EventDisplayCard(props) {
   
   function onChangeLocation(e) {
     setLocation(e.target.value);
+  }
+
+  function handleSnackbarClose() {
+    setSnackbarOpen(false);
   }
 
   return (
@@ -149,7 +165,12 @@ function EventDisplayCard(props) {
           <Button variant="outlined" onClick={handleRemove}>Remove</Button>
         </>) }
       </CardContent>
-
+      <SnackbarNoti
+            open={snackbarOpen}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+            onClose={handleSnackbarClose}
+      />
     </Card>
   )
 }
