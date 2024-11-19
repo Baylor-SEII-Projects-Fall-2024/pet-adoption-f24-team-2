@@ -159,6 +159,13 @@ export default function UserHomePage() {
     })
   }
 
+  function addRandomPets() {
+    request("POST", `/pets/addTestPets/${getUserID()}`)
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
     <>
       <Navbar user={user}/>
@@ -276,6 +283,8 @@ export default function UserHomePage() {
                 )}
               </CardContent>
             </Card>
+            {userType === "Adoption Center" &&
+                <Button variant="contained" onClick={addRandomPets}>Add 50 Random Test Pets</Button> }
           </Grid2>
   
           {userType === "Pet Owner" && (
@@ -355,15 +364,16 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
 
-                  {/* Display user attributes here */}
+                  {/* Display user attributes here
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
                       <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
                       <Grid2 xs={8}>
-                        {user.attributes && JSON.stringify(user.attributes)} {/* Display attributes */}
+                        {user.attributes && JSON.stringify(user.attributes)}
                       </Grid2>
                     </Grid2>
                   </Box>
+                  */}
                   
                 </CardContent>
               </Card>

@@ -81,7 +81,7 @@ public class User {
         }
         double[] userAttributes = attributes.getAttributes();
 
-        for (int i = 0; i < profile.length; i++) {
+        for (int i = 0; i < profile.length-1; i++) {
             int overrideOffset=0;
             if (i < 3) {
                 overrideOffset = attributes.getSpeciesOverrideCount();
@@ -92,6 +92,10 @@ public class User {
             }
             profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
+        profile[profile.length-1] = userAttributes[profile.length-1];
+
+        System.out.println("userAttributes: " + Arrays.toString(userAttributes));
+        System.out.println("profile       : " + Arrays.toString(profile));
 
         return profile;
     }
@@ -104,6 +108,7 @@ public class User {
     public void incrementNumLikedPets() {numLikedPets++;}
 
     public void resetPreferences() {
+        this.numLikedPets=0;
         this.attributes = new petAttributes();
     }
 }
