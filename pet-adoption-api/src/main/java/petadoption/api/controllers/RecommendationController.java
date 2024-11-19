@@ -18,7 +18,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RecommendationController {
 
     private final UserService userService;
@@ -102,11 +102,7 @@ public class RecommendationController {
     @PostMapping("/petrec/{id}/reset")
     public void resetUserPreferences(@PathVariable Long id) {
         UserDto udto = userService.findUser(id);
-        User u = userMapper.userDtoToUser(udto);
-
-        u.resetPreferences();
-
-        userService.updateUser(u.getId(), userMapper.toUserDto(u));
+        userService.resetUserPreferences(id, udto);
     }
 
     @PostMapping("/petrec/{id}/likePet")
