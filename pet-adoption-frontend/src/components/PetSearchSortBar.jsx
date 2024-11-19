@@ -1,11 +1,17 @@
-import { Box, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, TextField, Select, MenuItem, FormControl, InputLabel, Button } from '@mui/material';
 
 export default function PetSearchSortBar({ 
   onSearchChange, 
   onSortChange, 
   onSpeciesFilter,
   onColorFilter,
-  onGenderFilter
+  onGenderFilter,
+  onClearFilters,
+  searchTerm = '',
+  speciesValue = 'all',
+  colorValue = 'all',
+  genderValue = 'all',
+  sortValue = 'similarity'
 }) {
   return (
     <Box sx={{ 
@@ -14,13 +20,17 @@ export default function PetSearchSortBar({
       padding: 2,
       alignItems: 'center',
       justifyContent: 'center',
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
+      width: '100%',
+      position: 'relative',
+      zIndex: 1
     }}>
       <TextField
         label="Search pet names"
         variant="outlined"
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Search by name..."
+        value={searchTerm}
         sx={{ width: 300 }}
       />
       
@@ -29,7 +39,10 @@ export default function PetSearchSortBar({
         <Select
           label="Species"
           onChange={(e) => onSpeciesFilter(e.target.value)}
-          defaultValue="all"
+          value={speciesValue}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
         >
           <MenuItem value="all">All Species</MenuItem>
           <MenuItem value="Cat">Cat</MenuItem>
@@ -43,7 +56,10 @@ export default function PetSearchSortBar({
         <Select
           label="Color"
           onChange={(e) => onColorFilter(e.target.value)}
-          defaultValue="all"
+          value={colorValue}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
         >
           <MenuItem value="all">All Colors</MenuItem>
           <MenuItem value="White">White</MenuItem>
@@ -57,7 +73,10 @@ export default function PetSearchSortBar({
         <Select
           label="Gender"
           onChange={(e) => onGenderFilter(e.target.value)}
-          defaultValue="all"
+          value={genderValue}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
         >
           <MenuItem value="all">All Genders</MenuItem>
           <MenuItem value="Male">Male</MenuItem>
@@ -70,7 +89,10 @@ export default function PetSearchSortBar({
         <Select
           label="Sort By"
           onChange={(e) => onSortChange(e.target.value)}
-          defaultValue="similarity"
+          value={sortValue}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
         >
           <MenuItem value="similarity">Similarity to Preferences</MenuItem>
           <MenuItem value="nameAsc">Name (A-Z)</MenuItem>
@@ -79,6 +101,14 @@ export default function PetSearchSortBar({
           <MenuItem value="ageDesc">Age (Oldest First)</MenuItem>
         </Select>
       </FormControl>
+      
+      <Button 
+        variant="outlined" 
+        onClick={onClearFilters}
+        sx={{ height: 56 }}
+      >
+        Clear Filters
+      </Button>
     </Box>
   );
 }

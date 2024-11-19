@@ -150,6 +150,14 @@ export default function PetRecommendationPage() {
       });
   };
 
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSortMethod('similarity');
+    setSpeciesFilter('all');
+    setColorFilter('all');
+    setGenderFilter('all');
+  };
+
   // pagination
   const indexOfLastPet = currentPage * petsPerPage;
   const indexOfFirstPet = indexOfLastPet - petsPerPage;
@@ -165,7 +173,7 @@ export default function PetRecommendationPage() {
     <>
       <Navbar user={user} />
       <Box display="flex" justifyContent="space-between" alignItems="center" padding="0 16px" sx={{ my: 4 }}>
-        <Button variant="contained" onClick={handleReload}>
+        <Button variant="contained" onClick={handleReload} sx={{ mr: 2 }}>
           Reload Recommendations
         </Button>
         <Typography variant="h2" align="center" flexGrow={1} sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
@@ -179,6 +187,12 @@ export default function PetRecommendationPage() {
         onSpeciesFilter={setSpeciesFilter}
         onColorFilter={setColorFilter}
         onGenderFilter={setGenderFilter}
+        onClearFilters={clearFilters}
+        searchTerm={searchTerm}
+        speciesValue={speciesFilter}
+        colorValue={colorFilter}
+        genderValue={genderFilter}
+        sortValue={sortMethod}
       />
       
       <div className="pet-list" style={{
