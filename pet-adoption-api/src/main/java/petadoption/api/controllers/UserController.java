@@ -22,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://104.198.233.250:3000")
 public class UserController {
+    // TODO: Refactor to use @AuthenticationPrincipal for userDetails instead of id
     private final UserService userService;
     private final UserAuthProvider userAuthProvider;
     private final UserDetailsService userDetailsService;

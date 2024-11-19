@@ -66,6 +66,7 @@ public class PetTests {
     void testPetCreateNoAdoptionCenter() {
         PetDto petDto = new PetDto();
         petDto.setName("name");
+        petDto.setGender(true);
 
         assertThrows(AppException.class, () -> petService.savePet(petDto, 1L));
     }
@@ -168,7 +169,7 @@ public class PetTests {
     }
 
     @Test
-    void testEventUpdateInvalidPet() {
+    void testPetUpdateInvalidPet() {
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setEmailAddress("register@exmaple.com");
         signUpDto.setPassword("password".toCharArray());
@@ -179,13 +180,13 @@ public class PetTests {
         PetDto pet = new PetDto();
         pet.setId(0L);
         pet.setName("Crazy");
-        System.out.println(pet);
+        pet.setGender(true);
 
         assertThrows(AppException.class, () -> petService.updatePet(pet, user.getId()));
     }
 
     @Test
-    void testEventUpdateInvalidCenter() {
+    void testPetUpdateInvalidCenter() {
         SignUpDto signUpDto = new SignUpDto();
         signUpDto.setEmailAddress("register@exmaple.com");
         signUpDto.setPassword("password".toCharArray());
@@ -195,11 +196,12 @@ public class PetTests {
 
         PetDto pet = new PetDto();
         pet.setName("Crazy");
+        pet.setGender(true);
 
         PetDto savedPet = petService.savePet(pet, user.getId());
         pet.setName("Thor");
         pet.setId(savedPet.getId());
-        assertThrows(AppException.class, () -> petService.updatePet(pet, 0L));
+        assertThrows(AppException.class, () -> petService.updatePet(pet, user.getId() + 1));
     }
 
 }

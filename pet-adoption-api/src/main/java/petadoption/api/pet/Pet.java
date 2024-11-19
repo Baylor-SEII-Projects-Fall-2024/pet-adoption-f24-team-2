@@ -42,13 +42,13 @@ public class Pet {
     String description;
 
     @Column(name = "FUR_LENGTH")
-    int furLength;
+    Integer furLength;
 
     @Column(name = "AGE")
-    int age;
+    Integer age;
 
     @Column(name = "GENDER")
-    boolean gender;
+    Boolean gender;
 
     @Column(name = "ATTRIBUTES")
     petAttributes attributes = new petAttributes();
