@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://104.198.233.250:3000")
 public class PetController {
     private final PetService petService;
     private final PetMapper petMapper;
@@ -111,7 +111,9 @@ public class PetController {
 
             pet.setAdoptionCenter(null);
 
-            addPet(id, pet);
+            PetDto generatedPet = petMapper.toPetDto(pet);
+
+            addPet(id, generatedPet);
         }
     }
 }
