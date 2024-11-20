@@ -43,7 +43,7 @@ function interpretAttributes(pet) {
     }
 
     // Age
-    temp.push(String(attributes[8]));
+    temp.push(String(attributes[17]));
   }
 
   return temp;
@@ -55,7 +55,7 @@ export default function PetRecommendationPage() {
   const [pets, setPets] = useState([]);
   const [interpretedAttributes, setInterpretedAttributes] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const petsPerPage = 49;
+  const petsPerPage = 25;
   const [searchTerm, setSearchTerm] = useState('');
   const [sortMethod, setSortMethod] = useState('similarity');
   const [filteredPets, setFilteredPets] = useState([]);
@@ -197,8 +197,8 @@ export default function PetRecommendationPage() {
       
       <div className="pet-list" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-        gap: '20px',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gap: '95px',
         padding: '20px'
       }}>
         {currentPets.map((pet) => (

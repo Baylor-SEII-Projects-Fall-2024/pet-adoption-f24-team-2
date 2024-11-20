@@ -89,12 +89,12 @@ public class User {
                 overrideOffset = attributes.getColorOverrideCount();
             } else if (i < 8) {
                 overrideOffset = attributes.getGenderOverrideCount();
-            } else if (i != 8 && i < 18) {
+            } else if (i < 17) {
                 overrideOffset = attributes.getBreedOverrideCount();
             }
             profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
-        profile[8] = userAttributes[8];
+        profile[17] = userAttributes[17];
 
         return profile;
     }

@@ -43,25 +43,25 @@ public class petAttributes {
             case "cat" -> {
                 attributes[0] = 1;
                 switch (breed.toLowerCase()) {
-                    case "persian" -> attributes[9] = 1;
-                    case "siamese" -> attributes[10] = 1;
-                    default -> attributes[11] = 1;
+                    case "persian" -> attributes[8] = 1;
+                    case "siamese" -> attributes[9] = 1;
+                    default -> attributes[10] = 1;
                 }
             }
             case "dog" -> {
                 attributes[1] = 1;
                 switch (breed.toLowerCase()) {
-                    case "labrador" -> attributes[12] = 1;
-                    case "german shepherd" -> attributes[13] = 1;
-                    default -> attributes[14] = 1;
+                    case "labrador" -> attributes[11] = 1;
+                    case "german shepherd" -> attributes[12] = 1;
+                    default -> attributes[13] = 1;
                 }
             }
             case "rab", "rabbit" -> {
                 attributes[2] = 1;
                 switch (breed.toLowerCase()) {
-                    case "holland lop" -> attributes[15] = 1;
-                    case "rex" -> attributes[16] = 1;
-                    default -> attributes[17] = 1;
+                    case "holland lop" -> attributes[14] = 1;
+                    case "rex" -> attributes[15] = 1;
+                    default -> attributes[16] = 1;
                 }
             }
         }
@@ -78,7 +78,7 @@ public class petAttributes {
             attributes[7] = 1;
         }
 
-        attributes[8] = age;
+        attributes[17] = age;
     }
 
     public petAttributes(petAttributes attributes) {
@@ -94,15 +94,15 @@ public class petAttributes {
     public void combine(petAttributes other) {
         // Handle species-specific breed combinations
         if (other.attributes[0] > 0) {  // Cat
-            for (int i = 9; i <= 11; i++) {
+            for (int i = 8; i <= 10; i++) {
                 attributes[i] += other.attributes[i];
             }
         } else if (other.attributes[1] > 0) {  // Dog
-            for (int i = 12; i <= 14; i++) {
+            for (int i = 11; i <= 13; i++) {
                 attributes[i] += other.attributes[i];
             }
         } else if (other.attributes[2] > 0) {  // Rabbit
-            for (int i = 15; i <= 17; i++) {
+            for (int i = 14; i <= 16; i++) {
                 attributes[i] += other.attributes[i];
             }
         }
@@ -111,10 +111,10 @@ public class petAttributes {
             attributes[i] += other.attributes[i];
         }
 
-        if (attributes[8] == 0) {
-            attributes[8] = other.attributes[8];
+        if (attributes[17] == 0) {
+            attributes[17] = other.attributes[17];
         } else {
-            attributes[8] = Math.round((attributes[8] + other.attributes[8])/2);
+            attributes[17] = Math.round((attributes[17] + other.attributes[17])/2);
         }
     }
 
@@ -219,10 +219,10 @@ public class petAttributes {
     // function to change gender values
     public void changeAge(boolean opt) {
         if (opt) {
-            attributes[8] += 1.0;
+            attributes[17] += 1.0;
         } else {
-            if (attributes[8] < 1.0) {return;}
-            attributes[8] -= 1.0;
+            if (attributes[17] < 1.0) {return;}
+            attributes[17] -= 1.0;
         }
     }
 
@@ -237,55 +237,55 @@ public class petAttributes {
     public void incrementBreed(String breed) {
         breedOverrideCount++;
         switch (breed.toLowerCase()) {
-            case "persian" -> attributes[9] += 1.0;
-            case "siamese" -> attributes[10] += 1.0;
-            case "cat other" -> attributes[11] += 1.0;
-            case "labrador" -> attributes[12] += 1.0;
-            case "german shepherd" -> attributes[13] += 1.0;
-            case "dog other" -> attributes[14] += 1.0;
-            case "holland lop" -> attributes[15] += 1.0;
-            case "rex" -> attributes[16] += 1.0;
-            case "rabbit other" -> attributes[17] += 1.0;
+            case "persian" -> attributes[8] += 1.0;
+            case "siamese" -> attributes[9] += 1.0;
+            case "cat other" -> attributes[10] += 1.0;
+            case "labrador" -> attributes[11] += 1.0;
+            case "german shepherd" -> attributes[12] += 1.0;
+            case "dog other" -> attributes[13] += 1.0;
+            case "holland lop" -> attributes[14] += 1.0;
+            case "rex" -> attributes[15] += 1.0;
+            case "rabbit other" -> attributes[16] += 1.0;
         }
     }
 
     public void decrementBreed(String breed) {
         switch (breed.toLowerCase()) {
             case "persian" -> {
+                if (attributes[8] < 1.0) return;
+                attributes[8] -= 1.0;
+            }
+            case "siamese" -> {
                 if (attributes[9] < 1.0) return;
                 attributes[9] -= 1.0;
             }
-            case "siamese" -> {
+            case "cat other" -> {
                 if (attributes[10] < 1.0) return;
                 attributes[10] -= 1.0;
-            }
-            case "cat other" -> {
-                if (attributes[11] < 1.0) return;
-                attributes[11] -= 1.0;
             }   
             case "labrador" -> {
+                if (attributes[11] < 1.0) return;
+                attributes[11] -= 1.0;
+            }
+            case "german shepherd" -> {
                 if (attributes[12] < 1.0) return;
                 attributes[12] -= 1.0;
             }
-            case "german shepherd" -> {
+            case "dog other" -> {
                 if (attributes[13] < 1.0) return;
                 attributes[13] -= 1.0;
             }
-            case "dog other" -> {
+            case "holland lop" -> {
                 if (attributes[14] < 1.0) return;
                 attributes[14] -= 1.0;
             }
-            case "holland lop" -> {
+            case "rex" -> {
                 if (attributes[15] < 1.0) return;
                 attributes[15] -= 1.0;
             }
-            case "rex" -> {
+            case "rabbit other" -> {
                 if (attributes[16] < 1.0) return;
                 attributes[16] -= 1.0;
-            }
-            case "rabbit other" -> {
-                if (attributes[17] < 1.0) return;
-                attributes[17] -= 1.0;
             }
         }
         breedOverrideCount--;

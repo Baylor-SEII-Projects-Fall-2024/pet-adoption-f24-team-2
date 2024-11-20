@@ -74,7 +74,6 @@ public class PetController {
     
     @PostMapping("/pets/addTestPets/{id}")
     public void addTestPets(@PathVariable Long id) {
-        List<PetDto> pets = new ArrayList<>();
         String[] speciesOptions = {"cat", "dog", "rabbit"};
         String[] colorOptions = {"white", "black", "brown"};
         String[] petNames = {

@@ -207,7 +207,7 @@ export default function UserHomePage() {
     })
   }
 
-  function onDecBreed(species, breed) {
+  function onDecBreed(breed) {
     request("POST", `/petrec/${getUserID()}/decBreed/${breed}`, null)
     .then(() => {
       request("GET", `/users/${getUserID()}`, null)
@@ -391,9 +391,9 @@ export default function UserHomePage() {
           labels: ['Persian', 'Siamese', 'Other Cats'],
           datasets: [{
             data: [
+              user.attributes.attributes[8],
               user.attributes.attributes[9],
-              user.attributes.attributes[10],
-              user.attributes.attributes[11]
+              user.attributes.attributes[10]
             ],
             backgroundColor: [
               'rgba(255, 99, 132, 0.5)',
@@ -433,7 +433,7 @@ export default function UserHomePage() {
 
       return () => catBreedsChart.destroy();
     }
-  }, [user.attributes?.attributes[9], user.attributes?.attributes[10], user.attributes?.attributes[11]]);
+  }, [user.attributes?.attributes[8], user.attributes?.attributes[9], user.attributes?.attributes[10]]);
 
   // Dog Breeds Chart
   useEffect(() => {
@@ -446,9 +446,9 @@ export default function UserHomePage() {
           labels: ['Labrador', 'German Shepherd', 'Other Dogs'],
           datasets: [{
             data: [
+              user.attributes.attributes[11],
               user.attributes.attributes[12],
-              user.attributes.attributes[13],
-              user.attributes.attributes[14]
+              user.attributes.attributes[13]
             ],
             backgroundColor: [
               'rgba(255, 99, 132, 0.5)',
@@ -488,7 +488,7 @@ export default function UserHomePage() {
 
       return () => dogBreedsChart.destroy();
     }
-  }, [user.attributes?.attributes[12], user.attributes?.attributes[13], user.attributes?.attributes[14]]);
+  }, [user.attributes?.attributes[11], user.attributes?.attributes[12], user.attributes?.attributes[13]]);
 
   // Rabbit Breeds Chart
   useEffect(() => {
@@ -501,9 +501,9 @@ export default function UserHomePage() {
           labels: ['Holland Lop', 'Rex', 'Other Rabbits'],
           datasets: [{
             data: [
+              user.attributes.attributes[14],
               user.attributes.attributes[15],
-              user.attributes.attributes[16],
-              user.attributes.attributes[17]
+              user.attributes.attributes[16]
             ],
             backgroundColor: [
               'rgba(255, 99, 132, 0.5)',
@@ -543,7 +543,7 @@ export default function UserHomePage() {
 
       return () => rabbitBreedsChart.destroy();
     }
-  }, [user.attributes?.attributes[15], user.attributes?.attributes[16], user.attributes?.attributes[17]]);
+  }, [user.attributes?.attributes[14], user.attributes?.attributes[15], user.attributes?.attributes[16]]);
 
   return (
     <>
@@ -788,7 +788,7 @@ export default function UserHomePage() {
                         <Typography variant="h6" align="center" gutterBottom>Age Preference</Typography>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography variant="subtitle2" gutterBottom>
-                            Current: {user.attributes?.attributes[8] === 0 ? "(None)" : user.attributes?.attributes[8]}
+                            Current: {user.attributes?.attributes[17] === 0 ? "(None)" : user.attributes?.attributes[17]}
                           </Typography>
                           <Button 
                             variant="contained" 
@@ -797,7 +797,7 @@ export default function UserHomePage() {
                               minWidth: '120px'
                             }} 
                             onClick={() => onChangeAge(false)}
-                            disabled={user.attributes?.attributes[8] < 1}
+                            disabled={user.attributes?.attributes[17] < 1}
                           >
                             Younger
                           </Button>
@@ -834,9 +834,9 @@ export default function UserHomePage() {
                       <AccordionDetails sx={{ pt: 2, pb: 2 }}>
                         <Grid2 container spacing={2} justifyContent="center">
                           {[
-                            { label: 'Persian', inc: () => onIncBreed("persian"), dec: () => onDecBreed("persian"), value: 9 },
-                            { label: 'Siamese', inc: () => onIncBreed("siamese"), dec: () => onDecBreed("siamese"), value: 10 },
-                            { label: 'Other', inc: () => onIncBreed("cat other"), dec: () => onDecBreed("cat other"), value: 11 }
+                            { label: 'Persian', inc: () => onIncBreed("persian"), dec: () => onDecBreed("persian"), value: 8 },
+                            { label: 'Siamese', inc: () => onIncBreed("siamese"), dec: () => onDecBreed("siamese"), value: 9 },
+                            { label: 'Other', inc: () => onIncBreed("cat other"), dec: () => onDecBreed("cat other"), value: 10 }
                           ].map((breed) => (
                             <Grid2 xs={12} sm={4} key={breed.label}>
                               <Box sx={{ textAlign: 'center' }}>
@@ -870,9 +870,9 @@ export default function UserHomePage() {
                       <AccordionDetails sx={{ pt: 2, pb: 2 }}>
                         <Grid2 container spacing={2} justifyContent="center">
                           {[
-                            { label: 'Labrador', inc: () => onIncBreed("labrador"), dec: () => onDecBreed("labrador"), value: 12 },
-                            { label: 'German Shepherd', inc: () => onIncBreed("german shepherd"), dec: () => onDecBreed("german shepherd"), value: 13 },
-                            { label: 'Other', inc: () => onIncBreed("dog other"), dec: () => onDecBreed("dog other"), value: 14 }
+                            { label: 'Labrador', inc: () => onIncBreed("labrador"), dec: () => onDecBreed("labrador"), value: 11 },
+                            { label: 'German Shepherd', inc: () => onIncBreed("german shepherd"), dec: () => onDecBreed("german shepherd"), value: 12 },
+                            { label: 'Other', inc: () => onIncBreed("dog other"), dec: () => onDecBreed("dog other"), value: 13 }
                           ].map((breed) => (
                             <Grid2 xs={12} sm={4} key={breed.label}>
                               <Box sx={{ textAlign: 'center' }}>
@@ -906,9 +906,9 @@ export default function UserHomePage() {
                       <AccordionDetails sx={{ pt: 2, pb: 2 }}>
                         <Grid2 container spacing={2} justifyContent="center">
                           {[
-                            { label: 'Holland Lop', inc: () => onIncBreed("holland lop"), dec: () => onDecBreed("holland lop"), value: 15 },
-                            { label: 'Rex', inc: () => onIncBreed("rex"), dec: () => onDecBreed("rex"), value: 16 },
-                            { label: 'Other', inc: () => onIncBreed("rabbit other"), dec: () => onDecBreed("rabbit other"), value: 17 }
+                            { label: 'Holland Lop', inc: () => onIncBreed("holland lop"), dec: () => onDecBreed("holland lop"), value: 14 },
+                            { label: 'Rex', inc: () => onIncBreed("rex"), dec: () => onDecBreed("rex"), value: 15 },
+                            { label: 'Other', inc: () => onIncBreed("rabbit other"), dec: () => onDecBreed("rabbit other"), value: 16 }
                           ].map((breed) => (
                             <Grid2 xs={12} sm={4} key={breed.label}>
                               <Box sx={{ textAlign: 'center' }}>
