@@ -13,8 +13,8 @@ jobs:
 
       - name: Pre-prune
         run: |
-          docker system prune -a
-          docker builder prune --all
+          docker system prune -a -f
+          docker builder prune --all -f
 
 
       - name: Build Docker images
