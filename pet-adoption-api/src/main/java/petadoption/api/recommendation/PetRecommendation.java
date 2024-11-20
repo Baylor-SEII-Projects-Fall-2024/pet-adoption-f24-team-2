@@ -27,6 +27,8 @@ public class PetRecommendation {
     // as a way to provide exponential decay for age difference
     static final double WEIGHT_AGE = .025;
 
+    static final double WEIGHT_BREED = 1.75;
+
     // function to apply the above weights to adjust the importance of attributes
     public static double[] applyWeights(double[] attributes) {
         double[] temp = new double[petAttributes.getNumAttributes()];
@@ -41,6 +43,11 @@ public class PetRecommendation {
         temp[5]*=WEIGHT_COLOR;
         temp[6]*=WEIGHT_GENDER;
         temp[7]*=WEIGHT_GENDER;
+
+        // Apply breed weights
+        for (int i = 9; i < 18; i++) {
+            temp[i]*=WEIGHT_BREED;
+        }
 
         return temp;
     }

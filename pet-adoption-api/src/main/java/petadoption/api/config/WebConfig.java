@@ -26,7 +26,7 @@ public class WebConfig {
         // Allow the frontend to send credentials and accept them
         config.setAllowCredentials(true);
         // Set the url we will receive request from
-        config.addAllowedOrigin("http://104.198.233.250:3000");
+        config.addAllowedOrigin("http://localhost:3000");
 
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,

@@ -48,7 +48,7 @@ public class User {
     @Column(name = "DESCRIPTION")
     String description;
 
-    @Column(name = "ATTRIBUTES")
+    @Column(name = "ATTRIBUTES", columnDefinition = "petAttributes default '{}'")
     petAttributes attributes = new petAttributes();
 
     @Column(name = "NUM_LIKED_PETS")
@@ -82,17 +82,19 @@ public class User {
         double[] userAttributes = attributes.getAttributes();
 
         for (int i = 0; i < profile.length-1; i++) {
-            int overrideOffset=0;
+            int overrideOffset = 0;
             if (i < 3) {
                 overrideOffset = attributes.getSpeciesOverrideCount();
             } else if (i < 6) {
                 overrideOffset = attributes.getColorOverrideCount();
             } else if (i < 8) {
                 overrideOffset = attributes.getGenderOverrideCount();
+            } else if (i != 8 && i < 18) {
+                overrideOffset = attributes.getBreedOverrideCount();
             }
             profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
-        profile[profile.length-1] = userAttributes[profile.length-1];
+        profile[8] = userAttributes[8];
 
         return profile;
     }

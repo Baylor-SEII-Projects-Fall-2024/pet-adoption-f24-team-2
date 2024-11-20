@@ -181,6 +181,13 @@ export default function UserHomePage() {
     })
   }
 
+  function deleteAllPets() {
+    request("DELETE", `/pets/all`)
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   function handleSnackbarClose() {
     setSnackbarOpen(false);
   }
@@ -463,8 +470,12 @@ export default function UserHomePage() {
                 )}
               </CardContent>
             </Card>
-            {userType === "Adoption Center" &&
-                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button> }
+            {userType === "Adoption Center" && (
+              <Box>
+                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button>
+                <Button variant="contained" onClick={deleteAllPets}>Delete all pets</Button>
+              </Box>
+            )}
           </Grid2>
 
           <SnackbarNoti
@@ -554,10 +565,10 @@ export default function UserHomePage() {
 
                   <Box paddingTop={1}>
                     <Grid2 container spacing={2}>
-                      {/* <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
+                      <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
                       <Grid2 xs={8}>
                         {user.attributes && JSON.stringify(user.attributes)}
-                      </Grid2> */}
+                      </Grid2>
                       <Box paddingTop={1}>
                         <Grid2 container spacing={2}>
                           <Grid2 xs={12}>

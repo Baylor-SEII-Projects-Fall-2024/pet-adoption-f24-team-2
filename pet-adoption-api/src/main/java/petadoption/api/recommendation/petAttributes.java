@@ -19,26 +19,51 @@ Basically a fancy array class with some functions
 @Embeddable
 public class petAttributes {
     @Getter @Setter
-    static int numAttributes=9;
+    static int numAttributes=18;
 
     @Getter @Setter
     double[] attributes = new double[numAttributes];
 
     @Getter @Setter
-    int speciesOverrideCount=0, colorOverrideCount=0, genderOverrideCount=0;
+    Integer speciesOverrideCount=0, colorOverrideCount=0, genderOverrideCount=0, breedOverrideCount=0;
 
     // default constructor
     public petAttributes() {
         Arrays.fill(attributes, 0);
+        this.speciesOverrideCount = 0;
+        this.colorOverrideCount = 0;
+        this.genderOverrideCount = 0;
+        this.breedOverrideCount = 0;
     }
 
     // constructor used to easily create pets using strings
-    public petAttributes(String species, String color, boolean gender, Integer age) {
+    public petAttributes(String species, String color, boolean gender, Integer age, String breed) {
         Arrays.fill(attributes, 0);
         switch (species.toLowerCase()) {
-            case "cat" -> attributes[0] = 1;
-            case "dog" -> attributes[1] = 1;
-            case "rab", "rabbit" -> attributes[2] = 1;
+            case "cat" -> {
+                attributes[0] = 1;
+                switch (breed.toLowerCase()) {
+                    case "persian" -> attributes[9] = 1;
+                    case "siamese" -> attributes[10] = 1;
+                    default -> attributes[11] = 1;
+                }
+            }
+            case "dog" -> {
+                attributes[1] = 1;
+                switch (breed.toLowerCase()) {
+                    case "labrador" -> attributes[12] = 1;
+                    case "german shepherd" -> attributes[13] = 1;
+                    default -> attributes[14] = 1;
+                }
+            }
+            case "rab", "rabbit" -> {
+                attributes[2] = 1;
+                switch (breed.toLowerCase()) {
+                    case "holland lop" -> attributes[15] = 1;
+                    case "rex" -> attributes[16] = 1;
+                    default -> attributes[17] = 1;
+                }
+            }
         }
 
         switch (color.toLowerCase()) {
@@ -61,18 +86,36 @@ public class petAttributes {
         this.speciesOverrideCount = attributes.speciesOverrideCount;
         this.colorOverrideCount = attributes.colorOverrideCount;
         this.genderOverrideCount = attributes.genderOverrideCount;
+        this.breedOverrideCount = attributes.breedOverrideCount;
     }
 
     // combines two petAttributes
     // used to add pets to a user's liked pets
     public void combine(petAttributes other) {
-        for (int i = 0; i < numAttributes-1; i++) {
+        // Handle species-specific breed combinations
+        if (other.attributes[0] > 0) {  // Cat
+            for (int i = 9; i <= 11; i++) {
+                attributes[i] += other.attributes[i];
+            }
+        } else if (other.attributes[1] > 0) {  // Dog
+            for (int i = 12; i <= 14; i++) {
+                attributes[i] += other.attributes[i];
+            }
+        } else if (other.attributes[2] > 0) {  // Rabbit
+            for (int i = 15; i <= 17; i++) {
+                attributes[i] += other.attributes[i];
+            }
+        }
+
+        for (int i = 0; i < 9; i++) {
             attributes[i] += other.attributes[i];
         }
-        // averages age directly and floors, just simpler to do it this way
-        // not as accurate but whateverrrr
-        if (attributes[numAttributes-1] == 0) {attributes[8] = other.attributes[numAttributes-1];}
-        else {attributes[numAttributes-1] = Math.round((attributes[numAttributes-1] + other.attributes[numAttributes-1])/2);}
+
+        if (attributes[8] == 0) {
+            attributes[8] = other.attributes[8];
+        } else {
+            attributes[8] = Math.round((attributes[8] + other.attributes[8])/2);
+        }
     }
 
     public String attributesToString() {
@@ -188,5 +231,62 @@ public class petAttributes {
         speciesOverrideCount = 0;
         colorOverrideCount = 0;
         genderOverrideCount = 0;
+        breedOverrideCount = 0;
+    }
+
+    // Add these new methods for breed preferences
+    public void incrementBreed(String breed) {
+        breedOverrideCount++;
+        switch (breed.toLowerCase()) {
+            case "persian" -> attributes[9] += 1.0;
+            case "siamese" -> attributes[10] += 1.0;
+            case "labrador" -> attributes[12] += 1.0;
+            case "german shepherd" -> attributes[13] += 1.0;
+            case "holland lop" -> attributes[15] += 1.0;
+            case "rex" -> attributes[16] += 1.0;
+            default -> {
+                // Handle default breeds based on position
+                if (attributes[0] > 0) attributes[11] += 1.0;  // cat other
+                else if (attributes[1] > 0) attributes[14] += 1.0;  // dog other
+                else if (attributes[2] > 0) attributes[17] += 1.0;  // rabbit other
+            }
+        }
+    }
+
+    public void decrementBreed(String breed) {
+        switch (breed.toLowerCase()) {
+            case "persian" -> {
+                if (attributes[9] < 1.0) return;
+                attributes[9] -= 1.0;
+            }
+            case "siamese" -> {
+                if (attributes[10] < 1.0) return;
+                attributes[10] -= 1.0;
+            }
+            case "labrador" -> {
+                if (attributes[12] < 1.0) return;
+                attributes[12] -= 1.0;
+            }
+            case "german shepherd" -> {
+                if (attributes[13] < 1.0) return;
+                attributes[13] -= 1.0;
+            }
+            case "holland lop" -> {
+                if (attributes[15] < 1.0) return;
+                attributes[15] -= 1.0;
+            }
+            case "rex" -> {
+                if (attributes[16] < 1.0) return;
+                attributes[16] -= 1.0;
+            }
+            default -> {
+                // Handle default breeds based on position
+                if (attributes[0] > 0 && attributes[11] >= 1.0) attributes[11] -= 1.0;
+                else if (attributes[1] > 0 && attributes[14] >= 1.0) attributes[14] -= 1.0;
+                else if (attributes[2] > 0 && attributes[17] >= 1.0) attributes[17] -= 1.0;
+                else return;
+            }
+        }
+        breedOverrideCount--;
     }
 }

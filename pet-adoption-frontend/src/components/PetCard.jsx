@@ -22,6 +22,7 @@ function PetCard({ id, name, attributes, bigattributes }) {
     const [ open, setOpen ] = useState(false);
     const attributeNames = [
         "Species",
+        "Breed",
         "Color",
         "Gender",
         "Age"
@@ -29,6 +30,41 @@ function PetCard({ id, name, attributes, bigattributes }) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+    // Helper function to determine breed based on species and breed attributes
+    const getBreed = () => {
+        if (!bigattributes || !bigattributes.attributes) return "Unknown";
+        
+        const attrs = bigattributes.attributes;
+        console.log("Breed detection - attributes:", attrs); // Debug log
+        
+        // Check cat breeds (indices 9-11)
+        if (attrs[0] > 0) {
+            if (attrs[9] > 0) return "Persian";
+            if (attrs[10] > 0) return "Siamese";
+            if (attrs[11] > 0) return "Other";
+        }
+        // Check dog breeds (indices 12-14)
+        else if (attrs[1] > 0) {
+            if (attrs[12] > 0) return "Labrador";
+            if (attrs[13] > 0) return "German Shepherd";
+            if (attrs[14] > 0) return "Other";
+        }
+        // Check rabbit breeds (indices 15-17)
+        else if (attrs[2] > 0) {
+            if (attrs[15] > 0) return "Holland Lop";
+            if (attrs[16] > 0) return "Rex";
+            if (attrs[17] > 0) return "Other";
+        }
+        return "Unknown";
+    };
+
+    // Create new attributes array with breed after species
+    const displayAttributes = attributes ? [
+        attributes[0],  // Species
+        getBreed(),    // Breed
+        ...attributes.slice(1)  // Rest of the attributes
+    ] : [];
 
     function onChangeMessage(e) {
       setMessage(e.target.value);
@@ -76,8 +112,8 @@ function PetCard({ id, name, attributes, bigattributes }) {
             <h2>{name}</h2>
             <div>
                 <h3>Attributes:</h3>
-                {attributes && attributes.length > 0 ? (
-                    attributes.map((attribute, index) => (
+                {displayAttributes && displayAttributes.length > 0 ? (
+                    displayAttributes.map((attribute, index) => (
                         <p key={index}>
                             <strong>{attributeNames[index]}:</strong> {attribute}
                         </p>
