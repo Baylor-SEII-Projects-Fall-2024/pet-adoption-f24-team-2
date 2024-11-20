@@ -107,7 +107,7 @@ public class petAttributes {
             }
         }
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             attributes[i] += other.attributes[i];
         }
 

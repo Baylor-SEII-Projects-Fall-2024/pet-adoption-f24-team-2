@@ -787,7 +787,9 @@ export default function UserHomePage() {
                       <Grid2 xs={12}>
                         <Typography variant="h6" align="center" gutterBottom>Age Preference</Typography>
                         <Box sx={{ textAlign: 'center' }}>
-                          <Typography variant="subtitle2" gutterBottom>Current: {user.attributes?.attributes[8]}</Typography>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Current: {user.attributes?.attributes[8] === 0 ? "(None)" : user.attributes?.attributes[8]}
+                          </Typography>
                           <Button 
                             variant="contained" 
                             sx={{ 
