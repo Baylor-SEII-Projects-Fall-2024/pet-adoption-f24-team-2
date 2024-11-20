@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 export default function UserHomePage() {
+  // state for user info and editing mode
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState();
@@ -20,6 +21,7 @@ export default function UserHomePage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
+  // grab the user data when component loads
   useEffect( () => {
       request("GET", `/users/${getUserID()}`, null)
         .then((response) => {
@@ -36,6 +38,7 @@ export default function UserHomePage() {
     
   }, [])
   
+  // handlers for editing profile stuff
   function discardChanges(e) {
     e.preventDefault();
     setIsEditing(false);
@@ -87,6 +90,7 @@ export default function UserHomePage() {
     setIsEditing(true);
   }
 
+  // form input handlers
   function onChangePhone(event) {
     setPhone(event.target.value);
   }
@@ -103,6 +107,7 @@ export default function UserHomePage() {
     setAddress(event.target.value);
   }
 
+  // preference adjustment functions
   function onIncSpecies(opt) {
     request("POST", `/petrec/${getUserID()}/incSpecies/${opt}`, null)
     .then(() => {
@@ -112,7 +117,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onDecSpecies(opt) {
     request("POST", `/petrec/${getUserID()}/decSpecies/${opt}`, null)
     .then(() => {
@@ -122,7 +126,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onIncColor(opt) {
     request("POST", `/petrec/${getUserID()}/incColor/${opt}`, null)
     .then(() => {
@@ -132,7 +135,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onDecColor(opt) {
     request("POST", `/petrec/${getUserID()}/decColor/${opt}`, null)
     .then(() => {
@@ -142,7 +144,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onChangeGender(opt) {
     request("POST", `/petrec/${getUserID()}/changeGender/${opt}`, null)
     .then(() => {
@@ -152,7 +153,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onChangeAge(opt) {
     request("POST", `/petrec/${getUserID()}/changeAge/${opt}`, null)
     .then(() => {
@@ -163,6 +163,7 @@ export default function UserHomePage() {
     })
   }
 
+  // reset preference functions
   function onResetPref() {
     request("POST", `/petrec/${getUserID()}/reset`)
     .then(() => {
@@ -176,6 +177,7 @@ export default function UserHomePage() {
     })
   }
 
+  // admin functions for test data
   function addRandomPets() {
     request("POST", `/pets/addTestPets/${getUserID()}`)
     .catch((error) => {
@@ -190,6 +192,7 @@ export default function UserHomePage() {
     })
   }
 
+  // notification stuff
   function handleSnackbarClose() {
     setSnackbarOpen(false);
   }
@@ -225,6 +228,7 @@ export default function UserHomePage() {
           labels: ['Cats', 'Dogs', 'Rabbits'],
           datasets: [{
             data: [
+              // grab the preference values from user attributes
               user.attributes.attributes[0],
               user.attributes.attributes[1],
               user.attributes.attributes[2]
@@ -552,9 +556,10 @@ export default function UserHomePage() {
         sx={{ display: 'flex', justifyContent: 'center' }}
         >
         <Grid2 container spacing={3} justifyContent="center">
-          {/* Account Details Card */}
+          {/* account details Card */}
           <Grid2 xs={12} sm={8} md={5} sx={{ minWidth: '400px' }}>
             <Card elevation={2}>
+              {/* form for viewing/editing user details */}
               <CardContent component="form">
                 <Box variant="h5" align="center">
                   Account Details
@@ -627,6 +632,7 @@ export default function UserHomePage() {
                     </Grid2>
                   </label>
                 </Box>
+                {/* special buttons for adoption centers */}
                 {userType === "Adoption Center" && (
                   <Box paddingTop={1}>
                     <label>
@@ -666,6 +672,7 @@ export default function UserHomePage() {
             )}
           </Grid2>
 
+          {/* notification stuff */}
           <SnackbarNoti
             open={snackbarOpen}
             onClose={handleSnackbarClose}
@@ -684,7 +691,7 @@ export default function UserHomePage() {
                     Customize your pet matching preferences below
                   </Box>
 
-                  {/* Species Section */}
+                  {/* species preferences */}
                   <Box sx={{ mb: 4 }}>
                     <Typography variant="h6" align="center" gutterBottom>Species Preferences</Typography>
                     <Grid2 container spacing={2} justifyContent="center">
@@ -715,41 +722,41 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
 
-                  {/* Color Section */}
+                  {/* color preferences */}
                   <Box sx={{ mb: 4 }}>
                     <Typography variant="h6" align="center" gutterBottom>Color Preferences</Typography>
                     <Grid2 container spacing={2} justifyContent="center">
                       <Grid2 xs={12} sm={4}>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography variant="subtitle2" gutterBottom>White</Typography>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'white', color: 'black' }} onClick={() => onIncColor("white")}>+</Button>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'white', color: 'black' }} onClick={() => onDecColor("white")}
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(255, 255, 255, 1)', color: 'black' }} onClick={() => onIncColor("white")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(255, 255, 255, 1)', color: 'black' }} onClick={() => onDecColor("white")}
                             disabled={user.attributes?.attributes[3] < 1}>-</Button>
                         </Box>
                       </Grid2>
                       <Grid2 xs={12} sm={4}>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography variant="subtitle2" gutterBottom>Black</Typography>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'black' }} onClick={() => onIncColor("black")}>+</Button>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'black' }} onClick={() => onDecColor("black")}
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(0, 0, 0, 1)' }} onClick={() => onIncColor("black")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(0, 0, 0, 1)' }} onClick={() => onDecColor("black")}
                             disabled={user.attributes?.attributes[4] < 1}>-</Button>
                         </Box>
                       </Grid2>
                       <Grid2 xs={12} sm={4}>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography variant="subtitle2" gutterBottom>Brown</Typography>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: '#8B4513' }} onClick={() => onIncColor("brown")}>+</Button>
-                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: '#8B4513' }} onClick={() => onDecColor("brown")}
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(111, 78, 55, 1)' }} onClick={() => onIncColor("brown")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(111, 78, 55, 1)' }} onClick={() => onDecColor("brown")}
                             disabled={user.attributes?.attributes[5] < 1}>-</Button>
                         </Box>
                       </Grid2>
                     </Grid2>
                   </Box>
 
-                  {/* Gender and Age Section */}
+                  {/* gender/age Section */}
                   <Box sx={{ mb: 4 }}>
                     <Grid2 container direction="column" alignItems="center" spacing={3}>
-                      {/* Gender Preference */}
+                      {/* gender preference */}
                       <Grid2 xs={12}>
                         <Typography variant="h6" align="center" gutterBottom>Gender Preference</Typography>
                         <Box sx={{ textAlign: 'center' }}>
@@ -776,7 +783,7 @@ export default function UserHomePage() {
                         </Box>
                       </Grid2>
 
-                      {/* Age Preference */}
+                      {/* age preference */}
                       <Grid2 xs={12}>
                         <Typography variant="h6" align="center" gutterBottom>Age Preference</Typography>
                         <Box sx={{ textAlign: 'center' }}>
@@ -807,9 +814,9 @@ export default function UserHomePage() {
                     </Grid2>
                   </Box>
 
-                  {/* Breed Sections */}
+                  {/* breed preferences */}
                   <Box sx={{ mb: 4 }}>
-                    {/* Cat Breeds Accordion */}
+                    {/* cat breeds accordion */}
                     <Accordion disableGutters>
                       <AccordionSummary 
                         expandIcon={<ExpandMoreIcon />}
@@ -845,7 +852,7 @@ export default function UserHomePage() {
                       </AccordionDetails>
                     </Accordion>
 
-                    {/* Dog Breeds Accordion */}
+                    {/* dog breeds accordion */}
                     <Accordion disableGutters>
                       <AccordionSummary 
                         expandIcon={<ExpandMoreIcon />}
@@ -881,7 +888,7 @@ export default function UserHomePage() {
                       </AccordionDetails>
                     </Accordion>
 
-                    {/* Rabbit Breeds Accordion */}
+                    {/* rabbit breeds accordion */}
                     <Accordion disableGutters>
                       <AccordionSummary 
                         expandIcon={<ExpandMoreIcon />}
@@ -918,7 +925,7 @@ export default function UserHomePage() {
                     </Accordion>
                   </Box>
 
-                  {/* Main Charts Section */}
+                  {/* overall preferences */}
                   <Box sx={{ mt: 4 }}>
                     <Typography variant="h6" align="center" gutterBottom>Overall Preferences</Typography>
                     <Grid2 container spacing={3}>
@@ -939,7 +946,7 @@ export default function UserHomePage() {
                       </Grid2>
                     </Grid2>
                   </Box>
-                  {/* Reset Button */}
+                  {/* reset button */}
                   <Box sx={{ textAlign: 'center', mt: 3, mb: 4 }}>
                     <Button 
                       variant="contained" 
