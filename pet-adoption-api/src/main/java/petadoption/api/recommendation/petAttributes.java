@@ -234,22 +234,18 @@ public class petAttributes {
         breedOverrideCount = 0;
     }
 
-    // Add these new methods for breed preferences
     public void incrementBreed(String breed) {
         breedOverrideCount++;
         switch (breed.toLowerCase()) {
             case "persian" -> attributes[9] += 1.0;
             case "siamese" -> attributes[10] += 1.0;
+            case "cat other" -> attributes[11] += 1.0;
             case "labrador" -> attributes[12] += 1.0;
             case "german shepherd" -> attributes[13] += 1.0;
+            case "dog other" -> attributes[14] += 1.0;
             case "holland lop" -> attributes[15] += 1.0;
             case "rex" -> attributes[16] += 1.0;
-            default -> {
-                // Handle default breeds based on position
-                if (attributes[0] > 0) attributes[11] += 1.0;  // cat other
-                else if (attributes[1] > 0) attributes[14] += 1.0;  // dog other
-                else if (attributes[2] > 0) attributes[17] += 1.0;  // rabbit other
-            }
+            case "rabbit other" -> attributes[17] += 1.0;
         }
     }
 
@@ -263,6 +259,10 @@ public class petAttributes {
                 if (attributes[10] < 1.0) return;
                 attributes[10] -= 1.0;
             }
+            case "cat other" -> {
+                if (attributes[11] < 1.0) return;
+                attributes[11] -= 1.0;
+            }   
             case "labrador" -> {
                 if (attributes[12] < 1.0) return;
                 attributes[12] -= 1.0;
@@ -270,6 +270,10 @@ public class petAttributes {
             case "german shepherd" -> {
                 if (attributes[13] < 1.0) return;
                 attributes[13] -= 1.0;
+            }
+            case "dog other" -> {
+                if (attributes[14] < 1.0) return;
+                attributes[14] -= 1.0;
             }
             case "holland lop" -> {
                 if (attributes[15] < 1.0) return;
@@ -279,12 +283,9 @@ public class petAttributes {
                 if (attributes[16] < 1.0) return;
                 attributes[16] -= 1.0;
             }
-            default -> {
-                // Handle default breeds based on position
-                if (attributes[0] > 0 && attributes[11] >= 1.0) attributes[11] -= 1.0;
-                else if (attributes[1] > 0 && attributes[14] >= 1.0) attributes[14] -= 1.0;
-                else if (attributes[2] > 0 && attributes[17] >= 1.0) attributes[17] -= 1.0;
-                else return;
+            case "rabbit other" -> {
+                if (attributes[17] < 1.0) return;
+                attributes[17] -= 1.0;
             }
         }
         breedOverrideCount--;
