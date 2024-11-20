@@ -50,7 +50,7 @@ public class Pet {
     @Column(name = "GENDER")
     Boolean gender;
 
-    @Column(name = "ATTRIBUTES")
+    @Column(name = "ATTRIBUTES", columnDefinition = "petAttributes default '{}'")
     petAttributes attributes = new petAttributes();
 
     @ManyToOne

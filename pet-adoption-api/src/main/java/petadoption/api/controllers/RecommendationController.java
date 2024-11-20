@@ -114,4 +114,24 @@ public class RecommendationController {
 
         userService.updateUser(u.getId(), userMapper.toUserDto(u));
     }
+
+    @PostMapping("/petrec/{id}/incBreed/{breed}")
+    public void incBreedPref(@PathVariable Long id, @PathVariable String breed) {
+        UserDto udto = userService.findUser(id);
+        User u = userMapper.userDtoToUser(udto);
+        
+        u.getAttributes().incrementBreed(breed);
+        
+        userService.updateUser(u.getId(), userMapper.toUserDto(u));
+    }
+
+    @PostMapping("/petrec/{id}/decBreed/{breed}")
+    public void decBreedPref(@PathVariable Long id, @PathVariable String breed) {
+        UserDto udto = userService.findUser(id);
+        User u = userMapper.userDtoToUser(udto);
+        
+        u.getAttributes().decrementBreed(breed);
+        
+        userService.updateUser(u.getId(), userMapper.toUserDto(u));
+    }
 }

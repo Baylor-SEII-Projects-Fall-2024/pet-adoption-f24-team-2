@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
-import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
+import { Typography, Card, CardContent, Button, Grid2, Box, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import SnackbarNoti from "@/components/SnackbarNoti";
 import Chart from 'chart.js/auto';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 export default function UserHomePage() {
+  // state for user info and editing mode
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState();
@@ -18,6 +21,7 @@ export default function UserHomePage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
+  // grab the user data when component loads
   useEffect( () => {
       request("GET", `/users/${getUserID()}`, null)
         .then((response) => {
@@ -34,6 +38,7 @@ export default function UserHomePage() {
     
   }, [])
   
+  // handlers for editing profile stuff
   function discardChanges(e) {
     e.preventDefault();
     setIsEditing(false);
@@ -85,6 +90,7 @@ export default function UserHomePage() {
     setIsEditing(true);
   }
 
+  // form input handlers
   function onChangePhone(event) {
     setPhone(event.target.value);
   }
@@ -101,6 +107,7 @@ export default function UserHomePage() {
     setAddress(event.target.value);
   }
 
+  // preference adjustment functions
   function onIncSpecies(opt) {
     request("POST", `/petrec/${getUserID()}/incSpecies/${opt}`, null)
     .then(() => {
@@ -110,7 +117,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onDecSpecies(opt) {
     request("POST", `/petrec/${getUserID()}/decSpecies/${opt}`, null)
     .then(() => {
@@ -120,7 +126,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onIncColor(opt) {
     request("POST", `/petrec/${getUserID()}/incColor/${opt}`, null)
     .then(() => {
@@ -130,7 +135,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onDecColor(opt) {
     request("POST", `/petrec/${getUserID()}/decColor/${opt}`, null)
     .then(() => {
@@ -140,7 +144,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onChangeGender(opt) {
     request("POST", `/petrec/${getUserID()}/changeGender/${opt}`, null)
     .then(() => {
@@ -150,7 +153,6 @@ export default function UserHomePage() {
         })
     })
   }
-
   function onChangeAge(opt) {
     request("POST", `/petrec/${getUserID()}/changeAge/${opt}`, null)
     .then(() => {
@@ -161,6 +163,7 @@ export default function UserHomePage() {
     })
   }
 
+  // reset preference functions
   function onResetPref() {
     request("POST", `/petrec/${getUserID()}/reset`)
     .then(() => {
@@ -174,6 +177,7 @@ export default function UserHomePage() {
     })
   }
 
+  // admin functions for test data
   function addRandomPets() {
     request("POST", `/pets/addTestPets/${getUserID()}`)
     .catch((error) => {
@@ -181,9 +185,38 @@ export default function UserHomePage() {
     })
   }
 
+  function deleteAllPets() {
+    request("DELETE", `/pets/all`)
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  // notification stuff
   function handleSnackbarClose() {
     setSnackbarOpen(false);
   }
+
+  function onIncBreed(breed) {
+    request("POST", `/petrec/${getUserID()}/incBreed/${breed}`, null)
+    .then(() => {
+      request("GET", `/users/${getUserID()}`, null)
+        .then((response) => {
+          setUser(response.data);
+        })
+    })
+  }
+
+  function onDecBreed(breed) {
+    request("POST", `/petrec/${getUserID()}/decBreed/${breed}`, null)
+    .then(() => {
+      request("GET", `/users/${getUserID()}`, null)
+        .then((response) => {
+          setUser(response.data);
+        })
+    })
+  }
+
   // Species Chart
   useEffect(() => {
     const speciesCtx = document.getElementById('speciesChart')?.getContext('2d');
@@ -195,6 +228,7 @@ export default function UserHomePage() {
           labels: ['Cats', 'Dogs', 'Rabbits'],
           datasets: [{
             data: [
+              // grab the preference values from user attributes
               user.attributes.attributes[0],
               user.attributes.attributes[1],
               user.attributes.attributes[2]
@@ -346,6 +380,171 @@ export default function UserHomePage() {
     }
   }, [user.attributes?.attributes[6], user.attributes?.attributes[7]]);
 
+  // Cat Breeds Chart
+  useEffect(() => {
+    const catBreedsCtx = document.getElementById('catBreedsChart')?.getContext('2d');
+    
+    if (catBreedsCtx && user.attributes?.attributes) {
+      const catBreedsChart = new Chart(catBreedsCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Persian', 'Siamese', 'Other Cats'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[8],
+              user.attributes.attributes[9],
+              user.attributes.attributes[10]
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Cat Breed Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => catBreedsChart.destroy();
+    }
+  }, [user.attributes?.attributes[8], user.attributes?.attributes[9], user.attributes?.attributes[10]]);
+
+  // Dog Breeds Chart
+  useEffect(() => {
+    const dogBreedsCtx = document.getElementById('dogBreedsChart')?.getContext('2d');
+    
+    if (dogBreedsCtx && user.attributes?.attributes) {
+      const dogBreedsChart = new Chart(dogBreedsCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Labrador', 'German Shepherd', 'Other Dogs'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[11],
+              user.attributes.attributes[12],
+              user.attributes.attributes[13]
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Dog Breed Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => dogBreedsChart.destroy();
+    }
+  }, [user.attributes?.attributes[11], user.attributes?.attributes[12], user.attributes?.attributes[13]]);
+
+  // Rabbit Breeds Chart
+  useEffect(() => {
+    const rabbitBreedsCtx = document.getElementById('rabbitBreedsChart')?.getContext('2d');
+    
+    if (rabbitBreedsCtx && user.attributes?.attributes) {
+      const rabbitBreedsChart = new Chart(rabbitBreedsCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Holland Lop', 'Rex', 'Other Rabbits'],
+          datasets: [{
+            data: [
+              user.attributes.attributes[14],
+              user.attributes.attributes[15],
+              user.attributes.attributes[16]
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Rabbit Breed Preferences'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const dataset = context.dataset;
+                  const total = dataset.data.reduce((acc, data) => acc + data, 0);
+                  const value = dataset.data[context.dataIndex];
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return () => rabbitBreedsChart.destroy();
+    }
+  }, [user.attributes?.attributes[14], user.attributes?.attributes[15], user.attributes?.attributes[16]]);
+
   return (
     <>
       <Navbar user={user}/>
@@ -357,9 +556,10 @@ export default function UserHomePage() {
         sx={{ display: 'flex', justifyContent: 'center' }}
         >
         <Grid2 container spacing={3} justifyContent="center">
-          {/* Account Details Card */}
+          {/* account details Card */}
           <Grid2 xs={12} sm={8} md={5} sx={{ minWidth: '400px' }}>
             <Card elevation={2}>
+              {/* form for viewing/editing user details */}
               <CardContent component="form">
                 <Box variant="h5" align="center">
                   Account Details
@@ -432,6 +632,7 @@ export default function UserHomePage() {
                     </Grid2>
                   </label>
                 </Box>
+                {/* special buttons for adoption centers */}
                 {userType === "Adoption Center" && (
                   <Box paddingTop={1}>
                     <label>
@@ -463,10 +664,15 @@ export default function UserHomePage() {
                 )}
               </CardContent>
             </Card>
-            {userType === "Adoption Center" &&
-                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button> }
+            {userType === "Adoption Center" && (
+              <Box>
+                <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button>
+                <Button variant="contained" onClick={deleteAllPets}>Delete all pets</Button>
+              </Box>
+            )}
           </Grid2>
 
+          {/* notification stuff */}
           <SnackbarNoti
             open={snackbarOpen}
             onClose={handleSnackbarClose}
@@ -481,103 +687,277 @@ export default function UserHomePage() {
                   <Box variant="h5" align="center">
                     Pet Preferences
                   </Box>
-                  <Box variant="h5" align="center" color="text.secondary">
-                    (If a button is greyed out, it's at it's minimum value.)
-                  </Box>
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 xs={4} textAlign="right">
-                        Species:
-                      </Grid2>
-                      <Grid2 xs={4} textAlign="center">
-                        <Button variant="contained" onClick={() => onIncSpecies("cat")}>More Cats</Button>
-                        <Button variant="contained" onClick={() => onDecSpecies("cat")}
-                          disabled={user.attributes?.attributes[0] < 1}>Less Cats</Button>
-                        <Button variant="contained" onClick={() => onIncSpecies("dog")}>More Dogs</Button>
-                        <Button variant="contained" onClick={() => onDecSpecies("dog")}
-                          disabled={user.attributes?.attributes[1] < 1}>Less Dogs</Button>
-                        <Button variant="contained" onClick={() => onIncSpecies("rab")}>More Rabbits</Button>
-                        <Button variant="contained" onClick={() => onDecSpecies("rab")}
-                          disabled={user.attributes?.attributes[2] < 1}>Less Rabbits</Button>
-                      </Grid2>
-                    </Grid2>
-                  </Box>
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 xs={4} textAlign="right">
-                        Color:
-                      </Grid2>
-                      <Grid2 xs={4} textAlign="center">
-                        <Button variant="contained" onClick={() => onIncColor("white")}>More White</Button>
-                        <Button variant="contained" onClick={() => onDecColor("white")}
-                          disabled={user.attributes?.attributes[3] < 1}>Less White</Button>
-                        <Button variant="contained" onClick={() => onIncColor("black")}>More Black</Button>
-                        <Button variant="contained" onClick={() => onDecColor("black")}
-                          disabled={user.attributes?.attributes[4] < 1}>Less Black</Button>
-                        <Button variant="contained" onClick={() => onIncColor("brown")}>More Brown</Button>
-                        <Button variant="contained" onClick={() => onDecColor("brown")}
-                          disabled={user.attributes?.attributes[5] < 1}>Less Brown</Button>
-                      </Grid2>
-                    </Grid2>
-                  </Box>
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 xs={4} textAlign="right">
-                        Gender:
-                      </Grid2>
-                      <Grid2 xs={4} textAlign="center">
-                        <Button variant="contained" onClick={() => onChangeGender(true)}>More Male</Button>
-                        <Button variant="contained" onClick={() => onChangeGender(false)}>More Female</Button>
-                      </Grid2>
-                    </Grid2>
-                  </Box>
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 xs={4} textAlign="right">
-                        Age ({user.attributes?.attributes ? user.attributes.attributes[8] : "N/A"}):
-                      </Grid2>
-                      <Grid2 xs={4} textAlign="center">
-                      <Button variant="contained" onClick={() => onChangeAge(false)}
-                        disabled={user.attributes?.attributes[8] < 1}> Younger</Button>
-                      <Button variant="contained" onClick={() => onChangeAge(true)}>Older</Button>
-                      </Grid2>
-                    </Grid2>
-                  </Box>
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 xs={4} textAlign="center">
-                        <Button variant="contained" onClick={() => onResetPref()}>Reset Preferences</Button>
-                      </Grid2>
-                    </Grid2>
-                    
+                  <Box variant="subtitle1" align="center" color="text.secondary" mb={2}>
+                    Customize your pet matching preferences below
                   </Box>
 
-                  <Box paddingTop={1}>
-                    <Grid2 container spacing={2}>
-                      {/* <Grid2 xs={4} textAlign="right"> *FOR TESTING. REMOVE IN PROD.* Current Preferences: </Grid2>
-                      <Grid2 xs={8}>
-                        {user.attributes && JSON.stringify(user.attributes)}
-                      </Grid2> */}
-                      <Box paddingTop={1}>
-                        <Grid2 container spacing={2}>
-                          <Grid2 xs={12}>
-                            <Box sx={{ height: '150px' }}>
-                              <canvas id="speciesChart"></canvas>
-                            </Box>
-                          </Grid2>
-                          <Grid2 xs={12}>
-                            <Box sx={{ height: '150px' }}>
-                              <canvas id="colorChart"></canvas>
-                            </Box>
-                          </Grid2>
-                          <Grid2 xs={12}>
-                            <Box sx={{ height: '150px' }}>
-                              <canvas id="genderChart"></canvas>
-                            </Box>
-                          </Grid2>
-                        </Grid2>
-                      </Box>
+                  {/* species preferences */}
+                  <Box sx={{ mb: 4 }}>
+                    <Typography variant="h6" align="center" gutterBottom>Species Preferences</Typography>
+                    <Grid2 container spacing={2} justifyContent="center">
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>Cats</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onIncSpecies("cat")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onDecSpecies("cat")}
+                            disabled={user.attributes?.attributes[0] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>Dogs</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onIncSpecies("dog")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onDecSpecies("dog")}
+                            disabled={user.attributes?.attributes[1] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>Rabbits</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onIncSpecies("rab")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={() => onDecSpecies("rab")}
+                            disabled={user.attributes?.attributes[2] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
                     </Grid2>
+                  </Box>
+
+                  {/* color preferences */}
+                  <Box sx={{ mb: 4 }}>
+                    <Typography variant="h6" align="center" gutterBottom>Color Preferences</Typography>
+                    <Grid2 container spacing={2} justifyContent="center">
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>White</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(255, 255, 255, 1)', color: 'black' }} onClick={() => onIncColor("white")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(255, 255, 255, 1)', color: 'black' }} onClick={() => onDecColor("white")}
+                            disabled={user.attributes?.attributes[3] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>Black</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(0, 0, 0, 1)' }} onClick={() => onIncColor("black")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(0, 0, 0, 1)' }} onClick={() => onDecColor("black")}
+                            disabled={user.attributes?.attributes[4] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} sm={4}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>Brown</Typography>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(111, 78, 55, 1)' }} onClick={() => onIncColor("brown")}>+</Button>
+                          <Button variant="contained" size="small" sx={{ m: 0.5, bgcolor: 'rgba(111, 78, 55, 1)' }} onClick={() => onDecColor("brown")}
+                            disabled={user.attributes?.attributes[5] < 1}>-</Button>
+                        </Box>
+                      </Grid2>
+                    </Grid2>
+                  </Box>
+
+                  {/* gender/age Section */}
+                  <Box sx={{ mb: 4 }}>
+                    <Grid2 container direction="column" alignItems="center" spacing={3}>
+                      {/* gender preference */}
+                      <Grid2 xs={12}>
+                        <Typography variant="h6" align="center" gutterBottom>Gender Preference</Typography>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Button 
+                            variant="contained" 
+                            sx={{ 
+                              m: 0.5,
+                              minWidth: '120px'
+                            }} 
+                            onClick={() => onChangeGender(true)}
+                          >
+                            <span style={{ marginRight: '4px' }}>♂</span> Male
+                          </Button>
+                          <Button 
+                            variant="contained" 
+                            sx={{ 
+                              m: 0.5,
+                              minWidth: '120px'
+                            }} 
+                            onClick={() => onChangeGender(false)}
+                          >
+                            <span style={{ marginRight: '4px' }}>♀</span> Female
+                          </Button>
+                        </Box>
+                      </Grid2>
+
+                      {/* age preference */}
+                      <Grid2 xs={12}>
+                        <Typography variant="h6" align="center" gutterBottom>Age Preference</Typography>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Current: {user.attributes?.attributes[17] === 0 ? "(None)" : user.attributes?.attributes[17]}
+                          </Typography>
+                          <Button 
+                            variant="contained" 
+                            sx={{ 
+                              m: 0.5,
+                              minWidth: '120px'
+                            }} 
+                            onClick={() => onChangeAge(false)}
+                            disabled={user.attributes?.attributes[17] < 1}
+                          >
+                            Younger
+                          </Button>
+                          <Button 
+                            variant="contained" 
+                            sx={{ 
+                              m: 0.5,
+                              minWidth: '120px'
+                            }} 
+                            onClick={() => onChangeAge(true)}
+                          >
+                            Older
+                          </Button>
+                        </Box>
+                      </Grid2>
+                    </Grid2>
+                  </Box>
+
+                  {/* breed preferences */}
+                  <Box sx={{ mb: 4 }}>
+                    {/* cat breeds accordion */}
+                    <Accordion disableGutters>
+                      <AccordionSummary 
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{
+                          minHeight: '50px',
+                          '&.Mui-expanded': {
+                            minHeight: '50px',
+                          }
+                        }}
+                      >
+                        <Typography variant="h6">Cat Breeds</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ pt: 2, pb: 2 }}>
+                        <Grid2 container spacing={2} justifyContent="center">
+                          {[
+                            { label: 'Persian', inc: () => onIncBreed("persian"), dec: () => onDecBreed("persian"), value: 8 },
+                            { label: 'Siamese', inc: () => onIncBreed("siamese"), dec: () => onDecBreed("siamese"), value: 9 },
+                            { label: 'Other', inc: () => onIncBreed("cat other"), dec: () => onDecBreed("cat other"), value: 10 }
+                          ].map((breed) => (
+                            <Grid2 xs={12} sm={4} key={breed.label}>
+                              <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="subtitle2" gutterBottom>{breed.label}</Typography>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.inc}>+</Button>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.dec}
+                                  disabled={user.attributes?.attributes[breed.value] < 1}>-</Button>
+                              </Box>
+                            </Grid2>
+                          ))}
+                        </Grid2>
+                        <Box sx={{ height: 200, mt: 3 }}>
+                          <canvas id="catBreedsChart"></canvas>
+                        </Box>
+                      </AccordionDetails>
+                    </Accordion>
+
+                    {/* dog breeds accordion */}
+                    <Accordion disableGutters>
+                      <AccordionSummary 
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{
+                          minHeight: '50px',
+                          '&.Mui-expanded': {
+                            minHeight: '50px',
+                          }
+                        }}
+                      >
+                        <Typography variant="h6">Dog Breeds</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ pt: 2, pb: 2 }}>
+                        <Grid2 container spacing={2} justifyContent="center">
+                          {[
+                            { label: 'Labrador', inc: () => onIncBreed("labrador"), dec: () => onDecBreed("labrador"), value: 11 },
+                            { label: 'German Shepherd', inc: () => onIncBreed("german shepherd"), dec: () => onDecBreed("german shepherd"), value: 12 },
+                            { label: 'Other', inc: () => onIncBreed("dog other"), dec: () => onDecBreed("dog other"), value: 13 }
+                          ].map((breed) => (
+                            <Grid2 xs={12} sm={4} key={breed.label}>
+                              <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="subtitle2" gutterBottom>{breed.label}</Typography>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.inc}>+</Button>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.dec}
+                                  disabled={user.attributes?.attributes[breed.value] < 1}>-</Button>
+                              </Box>
+                            </Grid2>
+                          ))}
+                        </Grid2>
+                        <Box sx={{ height: 200, mt: 3 }}>
+                          <canvas id="dogBreedsChart"></canvas>
+                        </Box>
+                      </AccordionDetails>
+                    </Accordion>
+
+                    {/* rabbit breeds accordion */}
+                    <Accordion disableGutters>
+                      <AccordionSummary 
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{
+                          minHeight: '50px',
+                          '&.Mui-expanded': {
+                            minHeight: '50px',
+                          }
+                        }}
+                      >
+                        <Typography variant="h6">Rabbit Breeds</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ pt: 2, pb: 2 }}>
+                        <Grid2 container spacing={2} justifyContent="center">
+                          {[
+                            { label: 'Holland Lop', inc: () => onIncBreed("holland lop"), dec: () => onDecBreed("holland lop"), value: 14 },
+                            { label: 'Rex', inc: () => onIncBreed("rex"), dec: () => onDecBreed("rex"), value: 15 },
+                            { label: 'Other', inc: () => onIncBreed("rabbit other"), dec: () => onDecBreed("rabbit other"), value: 16 }
+                          ].map((breed) => (
+                            <Grid2 xs={12} sm={4} key={breed.label}>
+                              <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="subtitle2" gutterBottom>{breed.label}</Typography>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.inc}>+</Button>
+                                <Button variant="contained" size="small" sx={{ m: 0.5 }} onClick={breed.dec}
+                                  disabled={user.attributes?.attributes[breed.value] < 1}>-</Button>
+                              </Box>
+                            </Grid2>
+                          ))}
+                        </Grid2>
+                        <Box sx={{ height: 200, mt: 3 }}>
+                          <canvas id="rabbitBreedsChart"></canvas>
+                        </Box>
+                      </AccordionDetails>
+                    </Accordion>
+                  </Box>
+
+                  {/* overall preferences */}
+                  <Box sx={{ mt: 4 }}>
+                    <Typography variant="h6" align="center" gutterBottom>Overall Preferences</Typography>
+                    <Grid2 container spacing={3}>
+                      <Grid2 xs={12} md={6}>
+                        <Box sx={{ height: 200, mb: 3 }}>
+                          <canvas id="speciesChart"></canvas>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} md={6}>
+                        <Box sx={{ height: 200, mb: 3 }}>
+                          <canvas id="colorChart"></canvas>
+                        </Box>
+                      </Grid2>
+                      <Grid2 xs={12} md={6}>
+                        <Box sx={{ height: 200, mb: 3 }}>
+                          <canvas id="genderChart"></canvas>
+                        </Box>
+                      </Grid2>
+                    </Grid2>
+                  </Box>
+                  {/* reset button */}
+                  <Box sx={{ textAlign: 'center', mt: 3, mb: 4 }}>
+                    <Button 
+                      variant="contained" 
+                      color="warning" 
+                      onClick={() => onResetPref()}
+                      startIcon={<RefreshIcon />}
+                    >
+                      Reset All Preferences
+                    </Button>
                   </Box>
                 </CardContent>
               </Card>

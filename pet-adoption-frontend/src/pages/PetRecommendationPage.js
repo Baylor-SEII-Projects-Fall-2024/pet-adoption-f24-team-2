@@ -3,6 +3,7 @@ import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
 import PetCard from "@/components/PetCard";
 import { Typography, Box, Button, Pagination } from '@mui/material';
+import PetSearchSortBar from "@/components/PetSearchSortBar";
 
 function interpretAttributes(pet) {
   const temp = [];
@@ -42,7 +43,7 @@ function interpretAttributes(pet) {
     }
 
     // Age
-    temp.push(String(attributes[8]));
+    temp.push(String(attributes[17]));
   }
 
   return temp;
@@ -54,7 +55,13 @@ export default function PetRecommendationPage() {
   const [pets, setPets] = useState([]);
   const [interpretedAttributes, setInterpretedAttributes] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const petsPerPage = 49;
+  const petsPerPage = 25;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortMethod, setSortMethod] = useState('similarity');
+  const [filteredPets, setFilteredPets] = useState([]);
+  const [speciesFilter, setSpeciesFilter] = useState('all');
+  const [colorFilter, setColorFilter] = useState('all');
+  const [genderFilter, setGenderFilter] = useState('all');
 
   useEffect(() => {
     request("GET", `/petrec/${getUserID()}/all`, null)
@@ -80,15 +87,82 @@ export default function PetRecommendationPage() {
     }
   }, [pets]);
 
+  useEffect(() => {
+    let filtered = [...pets];
+    
+    // Apply name search
+    if (searchTerm) {
+      filtered = filtered.filter(pet => 
+        pet.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    // Apply species filter
+    if (speciesFilter !== 'all') {
+      filtered = filtered.filter(pet => 
+        interpretAttributes(pet)[0] === speciesFilter
+      );
+    }
+    
+    // Apply color filter
+    if (colorFilter !== 'all') {
+      filtered = filtered.filter(pet => 
+        interpretAttributes(pet)[1] === colorFilter
+      );
+    }
+    
+    // Apply gender filter
+    if (genderFilter !== 'all') {
+      filtered = filtered.filter(pet => 
+        interpretAttributes(pet)[2] === genderFilter
+      );
+    }
+    
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortMethod) {
+        case 'similarity':
+          return pets.indexOf(a) - pets.indexOf(b);
+        case 'nameAsc':
+          return a.name.localeCompare(b.name);
+        case 'nameDesc':
+          return b.name.localeCompare(a.name);
+        case 'ageAsc':
+          return a.age - b.age;
+        case 'ageDesc':
+          return b.age - a.age;
+        default:
+          return 0;
+      }
+    });
+    
+    setFilteredPets(filtered);
+  }, [pets, searchTerm, sortMethod, speciesFilter, colorFilter, genderFilter]);
+
   const handleReload = () => {
-    window.location.reload();
+    request("GET", `/petrec/${getUserID()}/all`, null)
+      .then((response) => {
+        setPets(response.data);
+        setCurrentPage(1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSortMethod('similarity');
+    setSpeciesFilter('all');
+    setColorFilter('all');
+    setGenderFilter('all');
   };
 
   // pagination
   const indexOfLastPet = currentPage * petsPerPage;
   const indexOfFirstPet = indexOfLastPet - petsPerPage;
-  const currentPets = pets.slice(indexOfFirstPet, indexOfLastPet);
-  const pageCount = Math.ceil(pets.length / petsPerPage);
+  const currentPets = filteredPets.slice(indexOfFirstPet, indexOfLastPet);
+  const pageCount = Math.ceil(filteredPets.length / petsPerPage);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -98,18 +172,33 @@ export default function PetRecommendationPage() {
   return (
     <>
       <Navbar user={user} />
-      <Box display="flex" justifyContent="space-between" alignItems="center" padding="0 16px">
-        <Button variant="contained" onClick={handleReload}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" padding="0 16px" sx={{ my: 4 }}>
+        <Button variant="contained" onClick={handleReload} sx={{ mr: 2 }}>
           Reload Recommendations
         </Button>
-        <Typography variant="h2" align="center" flexGrow={1}>
+        <Typography variant="h2" align="center" flexGrow={1} sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
           Pet Recommendations:
         </Typography>
       </Box>
+      
+      <PetSearchSortBar 
+        onSearchChange={setSearchTerm}
+        onSortChange={setSortMethod}
+        onSpeciesFilter={setSpeciesFilter}
+        onColorFilter={setColorFilter}
+        onGenderFilter={setGenderFilter}
+        onClearFilters={clearFilters}
+        searchTerm={searchTerm}
+        speciesValue={speciesFilter}
+        colorValue={colorFilter}
+        genderValue={genderFilter}
+        sortValue={sortMethod}
+      />
+      
       <div className="pet-list" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(7, 1fr)',
-        gap: '20px',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gap: '95px',
         padding: '20px'
       }}>
         {currentPets.map((pet) => (

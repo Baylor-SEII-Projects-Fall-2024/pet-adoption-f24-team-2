@@ -22,6 +22,7 @@ function PetCard({ id, name, attributes, bigattributes }) {
     const [ open, setOpen ] = useState(false);
     const attributeNames = [
         "Species",
+        "Breed",
         "Color",
         "Gender",
         "Age"
@@ -29,6 +30,40 @@ function PetCard({ id, name, attributes, bigattributes }) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+    // helper function to determine breed based on species and breed attributes
+    const getBreed = () => {
+        if (!bigattributes || !bigattributes.attributes) return "Unknown";
+        
+        const attrs = bigattributes.attributes;
+        
+        // check cat breeds (9-11)
+        if (attrs[0] > 0) {
+            if (attrs[8] > 0) return "Persian";
+            if (attrs[9] > 0) return "Siamese";
+            if (attrs[10] > 0) return "Other";
+        }
+        // check dog breeds (12-14)
+        else if (attrs[1] > 0) {
+            if (attrs[11] > 0) return "Labrador";
+            if (attrs[12] > 0) return "German Shepherd";
+            if (attrs[13] > 0) return "Other";
+        }
+        // check rabbit breeds (15-17)
+        else if (attrs[2] > 0) {
+            if (attrs[14] > 0) return "Holland Lop";
+            if (attrs[15] > 0) return "Rex";
+            if (attrs[16] > 0) return "Other";
+        }
+        return "Unknown";
+    };
+
+    // create new attributes array with breed after species
+    const displayAttributes = attributes ? [
+        attributes[0],  // species
+        getBreed(),    // breed
+        ...attributes.slice(1)  // rest of the attributes
+    ] : [];
 
     function onChangeMessage(e) {
       setMessage(e.target.value);
@@ -71,13 +106,24 @@ function PetCard({ id, name, attributes, bigattributes }) {
     }
 
     return (
-        <div className="petcard">
-            <img src="https://via.placeholder.com/150" alt="picture" />
-            <h2>{name}</h2>
-            <div>
-                <h3>Attributes:</h3>
-                {attributes && attributes.length > 0 ? (
-                    attributes.map((attribute, index) => (
+        <div className="petcard" style={{ 
+            width: '350px',  // Increased from default
+            margin: 'auto'
+        }}>
+            <img 
+                src="https://via.placeholder.com/250" // Increased from 150
+                alt="picture" 
+                style={{
+                    width: '100%',
+                    height: '250px',
+                    objectFit: 'cover'
+                }}
+            />
+            <h2 style={{ fontSize: '1.5rem', margin: '1rem 0' }}>{name}</h2>
+            <div style={{ padding: '0 1rem 1rem' }}>
+                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Attributes:</h3>
+                {displayAttributes && displayAttributes.length > 0 ? (
+                    displayAttributes.map((attribute, index) => (
                         <p key={index}>
                             <strong>{attributeNames[index]}:</strong> {attribute}
                         </p>
@@ -85,9 +131,9 @@ function PetCard({ id, name, attributes, bigattributes }) {
                 ) : (
                     <p>No attributes available</p>
                 )}
-                <Grid2 item xs={4} textAlign="center">
-                  <Button variant="contained" onClick={() => onLike(bigattributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity)}>Like</Button>
-                  <Button variant="contained" onClick={handleOpen}>Adopt</Button>
+                <Grid2 item xs={4} textAlign="center" sx={{ mt: 2 }}>
+                    <Button variant="contained" onClick={() => onLike(bigattributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity)} sx={{ mr: 1 }}>Like</Button>
+                    <Button variant="contained" onClick={handleOpen}>Adopt</Button>
                 </Grid2>
             </div>
             <Dialog
