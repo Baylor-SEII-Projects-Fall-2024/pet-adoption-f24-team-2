@@ -24,7 +24,10 @@ public class PetAdoptionApplication {
         }
 
         Map<String, String> envVariables = System.getenv();
-        System.out.println(envVariables.keySet().toString());
+
+        if (envVariables.containsKey("FRONTEND_URL")) {
+            System.setProperty("FRONTEND_URL", envVariables.get("FRONTEND_URL"));
+        }
 
         SpringApplication.run(PetAdoptionApplication.class, args);
     }

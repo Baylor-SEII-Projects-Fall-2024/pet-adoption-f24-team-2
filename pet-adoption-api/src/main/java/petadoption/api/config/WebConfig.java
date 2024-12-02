@@ -22,7 +22,7 @@ public class WebConfig {
         config.setAllowCredentials(true);
 
         // Read the allowed origin from the environment variable
-        String allowedOrigin = System.getenv("FRONTEND_URL");
+        String allowedOrigin = System.getProperty("FRONTEND_URL");
         if (allowedOrigin != null) {
             config.addAllowedOrigin(allowedOrigin);
         }
