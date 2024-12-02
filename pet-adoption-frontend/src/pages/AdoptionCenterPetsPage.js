@@ -182,6 +182,7 @@ export default function AdoptionCenterPetsPage() {
             rows={4} 
             value={description}
             onChange={onChangeDescription}
+            required
             />
           <DialogContentText>Gender</DialogContentText>
           <label>
