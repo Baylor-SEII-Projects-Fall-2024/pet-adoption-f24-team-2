@@ -21,6 +21,7 @@ public class PetAdoptionApplication {
         }
 
         System.out.println(System.getProperty("FRONTEND_URL"));
+        System.out.println(System.getProperty("SPRING_DATASOURCE_URL"));
 
         SpringApplication.run(PetAdoptionApplication.class, args);
     }
