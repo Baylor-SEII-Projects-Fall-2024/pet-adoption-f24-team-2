@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class PetController {
     private final PetService petService;
     private final PetMapper petMapper;
@@ -28,12 +28,11 @@ public class PetController {
     @PostMapping("/pets/{centerID}")
     public PetDto addPet(@PathVariable Long centerID, @RequestBody @Valid PetDto pet) {
         petAttributes attributes = new petAttributes(
-            pet.getSpecies(),
-            pet.getColor(), 
-            pet.getGender(), 
-            pet.getAge(),
-            pet.getBreed()
-        );
+                pet.getSpecies(),
+                pet.getColor(),
+                pet.getGender(),
+                pet.getAge(),
+                pet.getBreed());
 
         pet.setAttributes(attributes);
         return petService.savePet(pet, centerID);
@@ -71,11 +70,11 @@ public class PetController {
 
         return ResponseEntity.ok(newPet);
     }
-    
+
     @PostMapping("/pets/addTestPets/{id}")
     public void addTestPets(@PathVariable Long id) {
-        String[] speciesOptions = {"cat", "dog", "rabbit"};
-        String[] colorOptions = {"white", "black", "brown"};
+        String[] speciesOptions = { "cat", "dog", "rabbit" };
+        String[] colorOptions = { "white", "black", "brown" };
         String[] petNames = {
                 "Luna", "Max", "Bella", "Charlie", "Lucy", "Leo", "Milo", "Daisy", "Rocky", "Lily",
                 "Oliver", "Molly", "Buddy", "Lola", "Jack", "Sadie", "Zeus", "Ruby", "Duke", "Bailey",
@@ -131,10 +130,10 @@ public class PetController {
 
         // Add breed options for each species
         Map<String, String[]> breedOptions = new HashMap<>();
-        breedOptions.put("cat", new String[]{"persian", "siamese", "other"});
-        breedOptions.put("dog", new String[]{"labrador", "german shepherd", "other"});
-        breedOptions.put("rabbit", new String[]{"holland lop", "rex", "other"});
-        
+        breedOptions.put("cat", new String[] { "persian", "siamese", "other" });
+        breedOptions.put("dog", new String[] { "labrador", "german shepherd", "other" });
+        breedOptions.put("rabbit", new String[] { "holland lop", "rex", "other" });
+
         for (int i = 0; i < 500; i++) {
             Pet pet = new Pet();
             pet.setName(petNames[i]);
@@ -161,7 +160,8 @@ public class PetController {
             boolean randomGender = ThreadLocalRandom.current().nextBoolean();
             pet.setGender(randomGender);
 
-            petAttributes attributes = new petAttributes(randomSpecies, randomColor, randomGender, randomAge, randomBreed);
+            petAttributes attributes = new petAttributes(randomSpecies, randomColor, randomGender, randomAge,
+                    randomBreed);
             pet.setAttributes(attributes);
 
             pet.setAdoptionCenter(null);

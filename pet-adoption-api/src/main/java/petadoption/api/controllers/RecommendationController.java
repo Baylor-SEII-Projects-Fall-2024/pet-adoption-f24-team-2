@@ -18,7 +18,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class RecommendationController {
 
     private final UserService userService;
@@ -119,9 +119,9 @@ public class RecommendationController {
     public void incBreedPref(@PathVariable Long id, @PathVariable String breed) {
         UserDto udto = userService.findUser(id);
         User u = userMapper.userDtoToUser(udto);
-        
+
         u.getAttributes().incrementBreed(breed);
-        
+
         userService.updateUser(u.getId(), userMapper.toUserDto(u));
     }
 
@@ -129,9 +129,9 @@ public class RecommendationController {
     public void decBreedPref(@PathVariable Long id, @PathVariable String breed) {
         UserDto udto = userService.findUser(id);
         User u = userMapper.userDtoToUser(udto);
-        
+
         u.getAttributes().decrementBreed(breed);
-        
+
         userService.updateUser(u.getId(), userMapper.toUserDto(u));
     }
 }

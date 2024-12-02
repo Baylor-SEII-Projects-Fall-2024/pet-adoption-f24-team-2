@@ -77,7 +77,7 @@ export default function Navbar({ user }) {
         {drawerItems}
     </Box>
   )
-
+    
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -98,6 +98,9 @@ export default function Navbar({ user }) {
               <NotificationsDisplay/>
               </DialogContent>
             </Dialog>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
+                <img src="/doggo.png" style={{ width: '30px', height: '30px', marginRight: '10px'}}/>
+            </div>
             <Box sx={{ marginLeft: "auto" }}>
               <Button color="inherit" onClick={handleOpen}>Notifications</Button>
               <Button color="inherit" onClick={logout}>Logout</Button>
@@ -107,7 +110,7 @@ export default function Navbar({ user }) {
       </Box>
       <Drawer open={isNavOpen} onClose={() => toggleDrawer(false)}>
         {DrawerList}
-      </Drawer>
+          </Drawer>
     </div>
   )
 }
