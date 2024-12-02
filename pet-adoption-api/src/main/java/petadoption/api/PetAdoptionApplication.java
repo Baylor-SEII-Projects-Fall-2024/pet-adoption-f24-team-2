@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
+import java.util.Map;
+import java.util.Properties;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootApplication
@@ -20,8 +23,8 @@ public class PetAdoptionApplication {
             System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
         }
 
-        System.out.println(System.getProperty("FRONTEND_URL"));
-        System.out.println(System.getProperty("SPRING_DATASOURCE_URL"));
+        Map<String, String> envVariables = System.getenv();
+        System.out.println(envVariables.keySet().toString());
 
         SpringApplication.run(PetAdoptionApplication.class, args);
     }
