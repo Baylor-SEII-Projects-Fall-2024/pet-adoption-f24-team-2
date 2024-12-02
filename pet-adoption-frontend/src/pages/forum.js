@@ -11,7 +11,6 @@ export default function BlogPage() {
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-    // Fetch blogs
     useEffect(() => {
         fetchBlogs();
     }, []);
@@ -65,36 +64,10 @@ export default function BlogPage() {
         <div>
             <Navbar />
             <Box sx={{ padding: "20px" }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h3" gutterBottom>
                     Forum
                 </Typography>
 
-                {/* Blog form */}
-                <Box component="form" onSubmit={handleSubmit} sx={{ marginBottom: "20px" }}>
-                    <TextField
-                        label="Title"
-                        name="title"
-                        value={newBlog.title}
-                        onChange={handleInputChange}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Content"
-                        name="content"
-                        value={newBlog.content}
-                        onChange={handleInputChange}
-                        fullWidth
-                        multiline
-                        rows={4}
-                        margin="normal"
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                        Post
-                    </Button>
-                </Box>
-
-                {/* Blog list */}
                 <Grid container spacing={2}>
                     {blogs.map((blog) => (
                         <Grid item xs={12} md={6} key={blog.id}>
@@ -112,7 +85,32 @@ export default function BlogPage() {
                     ))}
                 </Grid>
 
-                {/* Snackbar notification */}
+                <Box component="form" onSubmit={handleSubmit} sx={{ margin: "20px 0px", padding: "20px", backgroundColor: 'rgba(0,0,255, 0.05)', borderRadius: "8px", border: "black 1px solid"}}>
+                    <TextField
+                        label="Title"
+                        name="title"
+                        value={newBlog.title}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="normal"
+                        style={{backgroundColor: 'white'}}
+                    />
+                    <TextField
+                        label="Content"
+                        name="content"
+                        value={newBlog.content}
+                        onChange={handleInputChange}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        margin="normal"
+                        style={{backgroundColor: 'white'}}
+                    />
+                    <Button type="submit" variant="contained" color="primary">
+                        Post
+                    </Button>
+                </Box>
+
                 <Snackbar
                     open={snackbarOpen}
                     autoHideDuration={6000}
