@@ -140,6 +140,7 @@ function PetDisplayCard(props) {
                 <input
                   value={name}
                   onChange={onChangeName}
+                  required
                 />
               ) : (
                 <span>{name}</span>
@@ -179,6 +180,7 @@ function PetDisplayCard(props) {
                 <input
                   value={species}
                   onChange={onChangeSpecies}
+                  required
                 />
               ) : (
                 <span>{species}</span>
@@ -193,6 +195,7 @@ function PetDisplayCard(props) {
                 <input
                   value={breed}
                   onChange={onChangeBreed}
+                  required
                 />
               ) : (
                 <span>{breed}</span>
@@ -207,6 +210,7 @@ function PetDisplayCard(props) {
                 <input
                   value={color}
                   onChange={onChangeColor}
+                  required
                 />
               ) : (
                 <span>{color}</span>
@@ -221,6 +225,7 @@ function PetDisplayCard(props) {
                 <input
                   value={furLength}
                   onChange={onChangeFurLength}
+                  required
                 />
               ) : (
                 <span>{furLength}</span>
@@ -235,6 +240,7 @@ function PetDisplayCard(props) {
                 <input
                   value={age}
                   onChange={onChangeAge}
+                  required
                 />
               ) : (
                 <span>{age}</span>
@@ -249,7 +255,8 @@ function PetDisplayCard(props) {
                 <textarea
                   rows={4} 
                   value={description}
-                  onChange={onChangeDescription}  
+                  onChange={onChangeDescription}
+                  required  
                 />
               ) : (
                 <span>{description}</span>

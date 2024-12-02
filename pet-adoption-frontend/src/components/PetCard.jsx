@@ -100,6 +100,7 @@ function PetCard({ id, name, attributes, bigattributes }) {
                 <textarea
                   value={message}
                   onChange={onChangeMessage}
+                  required
                 ></textarea>
               </DialogContent>
               <DialogActions>

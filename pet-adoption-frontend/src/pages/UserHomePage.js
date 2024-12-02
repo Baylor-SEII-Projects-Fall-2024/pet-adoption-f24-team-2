@@ -392,7 +392,9 @@ export default function UserHomePage() {
                       </Grid2>
                       <Grid2 size={6}>
                         {isEditing ? (
-                          <input value={name} onChange={onChangeName} required />
+                          <input value={name} 
+                            onChange={onChangeName} 
+                            required />
                         ) : (
                           <span>{name}</span>
                         )}
@@ -408,7 +410,11 @@ export default function UserHomePage() {
                       </Grid2>
                       <Grid2 size={6}>
                         {isEditing ? (
-                          <input value={phone} onChange={onChangePhone} required />
+                          <input value={phone} 
+                            onChange={onChangePhone} 
+                            required
+                            minLength={12}
+                            maxLength={12} />
                         ) : (
                           <span>{phone}</span>
                         )}
@@ -424,7 +430,9 @@ export default function UserHomePage() {
                       </Grid2>
                       <Grid2 size={6}>
                         {isEditing ? (
-                          <textarea rows={4} value={description} onChange={onChangeDescription} />
+                          <textarea rows={4} 
+                            value={description} 
+                            onChange={onChangeDescription} />
                         ) : (
                           <span>{description}</span>
                         )}
@@ -441,7 +449,10 @@ export default function UserHomePage() {
                         </Grid2>
                         <Grid2 size={6}>
                           {isEditing ? (
-                            <input value={address} onChange={onChangeAddress} />
+                            <input 
+                              value={address} 
+                              onChange={onChangeAddress} 
+                              required />
                           ) : (
                             <span>{address}</span>
                           )}
