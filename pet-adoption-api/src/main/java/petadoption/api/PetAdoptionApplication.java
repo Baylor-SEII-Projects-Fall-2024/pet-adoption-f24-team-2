@@ -20,6 +20,8 @@ public class PetAdoptionApplication {
             System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
         }
 
+        System.out.println(System.getProperty("FRONTEND_URL"));
+
         SpringApplication.run(PetAdoptionApplication.class, args);
     }
 }
