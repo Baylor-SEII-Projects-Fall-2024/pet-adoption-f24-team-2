@@ -7,6 +7,8 @@ services:
     restart: always
     ports:
       - '3000:3000'
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://104.198.233.250:8080
     networks:
       - internal-network
 
@@ -20,6 +22,8 @@ services:
       MYSQL_DATABASE: petadoption
       MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
       MYSQL_TCP_PORT: 3307
+    volumes:
+      - mysql-data:/var/lib/mysql
     networks:
       - internal-network
 
@@ -35,6 +39,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3307/petadoption
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 19ufni320fdn9f4n3nf40983nf89n9f843n9f043
+      FRONTEND_URL: http://104.198.233.250:3000
     networks:
       - internal-network
     depends_on:
@@ -42,5 +47,7 @@ services:
 
 networks:
   internal-network:
-    driver: 
-      bridge
+    driver: bridge
+
+volumes:
+  mysql-data:

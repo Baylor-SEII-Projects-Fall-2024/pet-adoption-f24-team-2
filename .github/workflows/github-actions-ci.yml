@@ -11,6 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Pre-prune
+        run: |
+          docker system prune -a -f
+          docker builder prune --all -f
+
+
       - name: Build Docker images
         run: |
           docker compose -f docker/production.docker-compose.yml build
@@ -24,3 +30,4 @@ jobs:
         run: |
           docker image prune -af
           docker builder prune
+          

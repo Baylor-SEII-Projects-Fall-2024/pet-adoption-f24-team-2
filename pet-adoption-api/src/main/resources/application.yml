@@ -6,3 +6,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+FRONTEND_URL: ${FRONTEND_URL}

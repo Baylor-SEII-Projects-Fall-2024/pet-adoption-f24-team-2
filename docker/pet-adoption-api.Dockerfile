@@ -1,4 +1,5 @@
 FROM gradle:8.9.0-jdk22 AS build
+ENV FRONTEND_URL=http://104.198.233.250:3000
 WORKDIR /build
 COPY . .
 RUN ./gradlew build --no-daemon -p .

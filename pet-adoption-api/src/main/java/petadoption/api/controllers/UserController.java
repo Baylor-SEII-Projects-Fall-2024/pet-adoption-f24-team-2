@@ -20,7 +20,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class UserController {
     // TODO: Refactor to use @AuthenticationPrincipal for userDetails instead of id
     private final UserService userService;
@@ -33,7 +33,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public UserDto updateUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid UserDto user) {
+    public UserDto updateUser(@AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody @Valid UserDto user) {
         Long id = userDetails.getUser().getId();
         return userService.updateUser(id, user);
     }
@@ -43,7 +44,8 @@ public class UserController {
         UserDto user = userService.login(credentialsDto);
 
         // Provide a fresh JWT token on login
-        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(user.getEmailAddress());
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService
+                .loadUserByUsername(user.getEmailAddress());
         String token = userAuthProvider.createToken(userDetails);
         user.setToken(token);
         return ResponseEntity.ok(user);
@@ -53,7 +55,8 @@ public class UserController {
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto signUpDto) {
         UserDto user = userService.register(signUpDto);
         // Return a fresh JWT token on registration
-        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(user.getEmailAddress());
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService
+                .loadUserByUsername(user.getEmailAddress());
         String token = userAuthProvider.createToken(userDetails);
         user.setToken(token);
 
@@ -72,8 +75,7 @@ public class UserController {
         UserDto adoptionCenter = userService.getSpecifiedAdoptionCenter(id);
         if (adoptionCenter != null) {
             return ResponseEntity.ok(adoptionCenter);
-        }
-        else {
+        } else {
             return ResponseEntity.notFound().build();
         }
     }

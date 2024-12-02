@@ -13,7 +13,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://104.198.233.250:3000")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 public class NotificationController {
     private final NotificationService notificationService;
 

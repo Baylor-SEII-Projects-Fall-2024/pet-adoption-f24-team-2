@@ -10,14 +10,15 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class PetAdoptionApplication {
     public static void main(String[] args) {
 
-		File dotenvFile = new File(".env");
+        File dotenvFile = new File(".env");
 
-		if (dotenvFile.exists()) {
-			Dotenv dotenv = Dotenv.load();
-			System.setProperty("SPRING_DATASOURCE_URL", dotenv.get("SPRING_DATASOURCE_URL"));
-			System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
-			System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
-		}
+        if (dotenvFile.exists()) {
+            Dotenv dotenv = Dotenv.load();
+            System.setProperty("SPRING_DATASOURCE_URL", dotenv.get("SPRING_DATASOURCE_URL"));
+            System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
+            System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
+            System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
+        }
 
         SpringApplication.run(PetAdoptionApplication.class, args);
     }

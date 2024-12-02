@@ -77,4 +77,8 @@ public class PetService {
 
         return petMapper.toPetDto(pet);
     }
+
+    public void deleteAllPets() {
+        petRepository.deleteAll();
+    }
 }
