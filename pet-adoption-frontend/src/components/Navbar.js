@@ -65,10 +65,15 @@ export default function Navbar({ user }) {
           <ListItemText primary="Adoption Centers"/>
         </ListItemButton>
       </ListItem>
+      <ListItem key="Forum">
+        <ListItemButton onClick={() => Router.push("/forum")}>
+          <ListItemText primary="Forum"/>
+        </ListItemButton>
+      </ListItem>
     </List>
   )
 
-  const drawerItems = (user.role === "ADOPTION_CENTER" ? 
+  const drawerItems = (user?.role === "ADOPTION_CENTER" ? 
     adoptionCenterList : userList);
   
 
