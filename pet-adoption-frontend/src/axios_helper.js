@@ -10,10 +10,8 @@ axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 
 export const request = (method, url, data) => {
-  let headers = {};
-  if( (url !== "/login" && url !== "/register") && getAuthToken() === undefined ) {
-    Router.push("/");
-  }
+
+    let headers = {};
 
   if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
     const cookie = cookies.get("jwt_authorization");

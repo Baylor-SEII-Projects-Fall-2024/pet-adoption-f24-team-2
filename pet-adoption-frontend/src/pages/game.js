@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import SnackbarNoti from "@/components/SnackbarNoti";
 import { Typography } from "@mui/material";
-import { width } from "@mui/system";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 export default function Game() {
     const [user, setUser] = useState({});
@@ -12,6 +14,7 @@ export default function Game() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const sketchRef = useRef();
     const birdImageRef = useRef();
+    const [highscore, setHighscore] = useState(0);
 
     useEffect(() => {
         request("GET", `/users/${getUserID()}`, null)
@@ -27,18 +30,20 @@ export default function Game() {
         const canvas = sketchRef.current;
         const ctx = canvas.getContext("2d");
 
+        setHighscore(getHighScore());
+
         // Load bird image
         const birdImage = new Image();
         birdImage.src = "/flap.png";
         birdImageRef.current = birdImage;
 
         // Game settings
-        const gravity = 0.4;
-        const lift = -10;
+        const gravity = 0.3;
+        const lift = -7;
         const pipeWidth = 100;
         const pipeGap = 200;
         const pipeSpacing = 500
-        const pipeSpeed = 4
+        const pipeSpeed = 3
 
         let bird = { x: 50, y: 150, radius: 20, velocity: 0 };
         let pipes = [];
@@ -53,7 +58,7 @@ export default function Game() {
             score = 0;
             gameOver = false;
             for (let i = 0; i < Math.floor(window.innerWidth / pipeSpacing); i++) {
-                addPipe(i * pipeSpacing + 300);
+                addPipe(i * pipeSpacing + pipeSpacing*2);
             }
         }
 
@@ -84,6 +89,14 @@ export default function Game() {
                     pipe.x = canvas.width;
                     pipe.topHeight = Math.random() * (canvas.height / 2);
                     score++;
+
+                    if (score > getHighScore()) {
+                        setSnackbarMessage("New high score! Your score: " + score);
+                        setSnackbarSeverity("success");
+                        setSnackbarOpen(true);
+                        cookies.set('highscore', score);
+                        setHighscore(score);
+                    }
                 }
 
                 // Collision detection
@@ -102,6 +115,10 @@ export default function Game() {
 
             render();
             animationFrame = requestAnimationFrame(update);
+        }
+
+        function getHighScore() {
+            return parseInt(cookies.get('highscore') || 0, 10);
         }
 
         // Render function
@@ -163,6 +180,7 @@ export default function Game() {
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100vh', backgroundColor: '#4EBAC4'}}>
             <Navbar user={user} />
             <Typography variant="h3" align="center">Flappy Dog</Typography>
+            {highscore > 0 && <Typography variant="h6" align="center">(Highscore: { highscore })</Typography>}
             <canvas ref={sketchRef}></canvas>
             <SnackbarNoti
                 open={snackbarOpen}
