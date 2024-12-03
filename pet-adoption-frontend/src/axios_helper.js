@@ -11,7 +11,9 @@ axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export const request = (method, url, data) => {
   let headers = {};
-  if( (url !== "/login" && url !== "/register") && getAuthToken() === undefined ) {
+  console.log(url)
+  if( (url !== "/login" && url !== "/register" && url !== "/forgot-password" && url !== "/reset-password") && getAuthToken() === undefined ) {
+    console.log("redirect");
     Router.push("/");
   }
 

@@ -1,10 +1,10 @@
 package petadoption.api.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import petadoption.api.dto.CredentialsDto;
 import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
@@ -150,6 +150,7 @@ public class UserService {
         tokenRepository.delete(resetToken);
     }
 
+    @Transactional
     public String generateResetToken(String email) {
         User user = userRepository.findByEmailAddress(email)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));

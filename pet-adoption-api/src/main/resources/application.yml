@@ -10,10 +10,15 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: furryfriendstestingemail@gmail.com
-    password: FindYourFriend159!
+    password: magr mslu krdv ylrt
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
+logging:
+  level:
+    org.springframework.mail: DEBUG
+    org.springframework.mail.javamail: DEBUG

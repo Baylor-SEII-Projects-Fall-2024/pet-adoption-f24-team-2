@@ -3,6 +3,7 @@ package petadoption.api.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,9 @@ public class UserController {
     private final UserAuthProvider userAuthProvider;
     private final UserDetailsService userDetailsService;
     private final EmailService emailService;
+
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
 
     @GetMapping("/users/{id}")
     public UserDto findByID(@PathVariable Long id) {
@@ -85,11 +89,15 @@ public class UserController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        System.out.println("Here 1");
         String email = request.get("email");
         String token = userService.generateResetToken(email);
 
-        String resetLink = "${FRONTEND_URL}/reset-password?token=" + token;
+        String resetLink = frontendUrl + "/ResetPasswordPage?token=" + token;
+        System.out.println("Here 2");
         emailService.sendResetEmail(email, resetLink);
+        System.out.println("Here Last");
+
 
         return ResponseEntity.ok("Password reset Link sent.");
     }

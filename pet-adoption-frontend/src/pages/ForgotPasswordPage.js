@@ -1,4 +1,7 @@
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, Box, Card, CardContent, Stack, Button, TextField } from "@mui/material";
+import { useState } from "react";
+import { request } from "@/axios_helper";
+import Head from 'next/head';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -29,7 +32,7 @@ export default function ForgotPasswordPage() {
       </Head>
 
       <main>
-        <Stack sx={{ paddingTop: 4 }} alignItems="center">
+        <Stack sx={{ paddingTop: 4, paddingBottom: 2 }} alignItems="center">
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h2" align="center" sx={{ paddingBottom: 2 }}>
@@ -41,13 +44,14 @@ export default function ForgotPasswordPage() {
                     <Typography>Email:</Typography>
                   </Grid2>
                   <Grid2 xs={12}>
-                    <input
+                    <TextField
+                      label="Email"
                       type="email"
                       id="email"
                       name="email"
                       onChange={onChangeEmail}
                       required
-                      style={{ width: "100%" }}
+                      fullWidth
                       />
                   </Grid2>
                   <Grid2 xs={12} textAlign="center">
