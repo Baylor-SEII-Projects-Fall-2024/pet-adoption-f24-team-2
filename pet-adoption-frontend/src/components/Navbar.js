@@ -45,6 +45,11 @@ export default function Navbar({ user }) {
           <ListItemText primary="Adoption Events"/>
         </ListItemButton>
       </ListItem>
+      <ListItem key="Game">
+        <ListItemButton onClick={() => Router.push("/game")}>
+          <ListItemText primary="Flappy Dog"/>
+        </ListItemButton>
+      </ListItem>
     </List>
   )
 
@@ -68,6 +73,11 @@ export default function Navbar({ user }) {
       <ListItem key="Forum">
         <ListItemButton onClick={() => Router.push("/forum")}>
           <ListItemText primary="Forum"/>
+        </ListItemButton>
+      </ListItem>
+      <ListItem key="Game">
+        <ListItemButton onClick={() => Router.push("/game")}>
+          <ListItemText primary="Flappy Dog"/>
         </ListItemButton>
       </ListItem>
     </List>

@@ -33,6 +33,10 @@ export default function Login() {
     setActive("Register");
   };
 
+  function navigateToForgotPassword() {
+    Router.push("/ForgotPasswordPage");
+  }
+
   function onChangeEmail(event) {
     setEmail(event.target.value);
   };
@@ -238,6 +242,9 @@ export default function Login() {
           <Button onClick={activateRegister}>Register</Button>
         </Stack>
       </Stack>
+      <Box textAlign="center" paddingTop={1}>
+        <Button variant="text" onClick={navigateToForgotPassword}>Forgot Password?</Button>
+      </Box>
     </main>
   </>)
 }

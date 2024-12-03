@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) ->
                         // Allow requests to login and register without authentication
-                        auth.requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                        auth.requestMatchers(HttpMethod.POST, "/login", "/register", "/forgot-password", "/reset-password").permitAll()
                                 .anyRequest().authenticated()
                 );
 
