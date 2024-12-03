@@ -104,7 +104,9 @@ export default function Navbar({ user }) {
               </DialogContent>
             </Dialog>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
-                <img src="/doggo.png" style={{ width: '30px', height: '30px', marginRight: '10px'}}/>
+                <button style={{ width: '35px', height: '35px', background: 'none', border: 'none' }} onClick={() => Router.push("/game")}>
+                    <img src="/doggo.png" width={'100%'} height={'100%'}/>
+                </button>
             </div>
             <Box sx={{ marginLeft: "auto" }}>
               <Button color="inherit" onClick={handleOpen}>Notifications</Button>
