@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Head from 'next/head'
 import {Button, Card, CardContent, Stack, Typography, Box} from '@mui/material'
-import { clearCookies, setAuthenticatedUser, request } from '@/axios_helper';
+import { clearCookies, setAuthenticatedUser, request, getAuthToken } from '@/axios_helper';
 import styles from '@/styles/Login.module.css';
 import Router from 'next/router';
 
@@ -14,6 +14,12 @@ export default function Login() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState(null);
+  
+    useEffect(() => { 
+        if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
+            Router.push('/UserHomePage');
+        }
+    }, []);
 
   function activateLogin() {
     setEmail("")
@@ -116,7 +122,8 @@ export default function Login() {
             <form onSubmit={onSubmitLogin}>
               <div className={styles.loginGrid}>
                 <label htmlFor="email"><Typography>Email:</Typography></label>
-                <input 
+                <input
+                  style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                   type="text"
                   id="email"
                   name="email"
@@ -124,6 +131,7 @@ export default function Login() {
                   />
                 <label htmlFor="pw"><Typography>Password:</Typography></label>
                 <input 
+                  style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}  
                   type="password"
                   id="pw"
                   name="password"
@@ -139,7 +147,8 @@ export default function Login() {
             <div className={styles.loginGrid}>
               <div className={styles.userTypeLabel}>User Type:</div>
                 <label>
-                  <input 
+                  <input
+                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                     type="radio"
                     value="Pet_Owner"
                     checked={userType === 'Pet_Owner'}
@@ -149,6 +158,7 @@ export default function Login() {
                 </label>
                 <label>
                   <input 
+                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                     type="radio"
                     value="Adoption_Center"
                     checked={userType === 'Adoption_Center'}
@@ -157,7 +167,8 @@ export default function Login() {
                   Adoption Center
                 </label>
               <label htmlFor="email"><Typography>Email:</Typography></label>
-              <input 
+              <input
+                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                 type="text"
                 id="email"
                 name="email"
@@ -166,6 +177,7 @@ export default function Login() {
                 />
               <label htmlFor="pw"><Typography>Password:</Typography></label>
               <input 
+                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                 type="password"
                 id="pw"
                 name="password"
@@ -175,6 +187,7 @@ export default function Login() {
                 />
               <label htmlFor="phone"><Typography>Phone:</Typography></label>
               <input 
+                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                 type="text"
                 id="phone"
                 name="phone"
@@ -186,6 +199,7 @@ export default function Login() {
                 />
               <label htmlFor="name"><Typography>Name:</Typography></label>
               <input 
+                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                 type="text"
                 id="name"
                 name="name"
@@ -202,6 +216,7 @@ export default function Login() {
                 <>
                   <label htmlFor="address"><Typography>Address:</Typography></label>
                   <input 
+                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                     type="text"
                     id="address"
                     name="address"
