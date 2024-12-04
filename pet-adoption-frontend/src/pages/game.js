@@ -32,34 +32,36 @@ export default function Game() {
 
         setHighscore(getHighScore());
 
-        // Load bird image
         const birdImage = new Image();
         birdImage.src = "/flap.png";
         birdImageRef.current = birdImage;
 
-        // Game settings
-        const gravity = 0.3;
-        const lift = -7;
+        const gravity = 10;
+        const lift = -500;
         const pipeWidth = 100;
         const pipeGap = 200;
-        const pipeSpacing = 500
-        const pipeSpeed = 3
+        const pipeSpacing = 500;
+
+        const pipeAcceleration = 5;
+        let pipeSpeed = 300;
 
         let bird = { x: 50, y: 150, radius: 20, velocity: 0 };
         let pipes = [];
         let score = 0;
         let animationFrame;
         let gameOver = false;
+        let lastTime = null; // Initialize as null
+        let deltaTime = 0;
 
-        // Initialize pipes
         function resetGame() {
             bird = { x: 50, y: 150, radius: 20, velocity: 0 };
             pipes = [];
             score = 0;
             gameOver = false;
             for (let i = 0; i < Math.floor(window.innerWidth / pipeSpacing); i++) {
-                addPipe(i * pipeSpacing + pipeSpacing*2);
+                addPipe(i * pipeSpacing + pipeSpacing * 2);
             }
+            pipeSpeed = 300;
         }
 
         function addPipe(x) {
@@ -67,13 +69,18 @@ export default function Game() {
             pipes.push({ x, topHeight });
         }
 
-        // Game loop
-        function update() {
+        function update(currentTime) {
+            if (!lastTime) {
+                lastTime = currentTime;
+            }
+
+            deltaTime = Math.max(currentTime - lastTime, 0) / 1000;
+            lastTime = currentTime; // Update lastTime
+
             if (gameOver) return;
 
-            // Update bird
             bird.velocity += gravity;
-            bird.y += bird.velocity;
+            bird.y += bird.velocity * deltaTime;
             if (bird.y > canvas.height || bird.y < 0) {
                 gameOver = true;
                 setSnackbarMessage("Game Over! Your score: " + score);
@@ -82,9 +89,8 @@ export default function Game() {
                 return;
             }
 
-            // Update pipes
             pipes.forEach((pipe) => {
-                pipe.x -= pipeSpeed;
+                pipe.x -= pipeSpeed * deltaTime; // Use deltaTime for movement
                 if (pipe.x + pipeWidth < 0) {
                     pipe.x = canvas.width;
                     pipe.topHeight = Math.random() * (canvas.height / 2);
@@ -99,7 +105,6 @@ export default function Game() {
                     }
                 }
 
-                // Collision detection
                 if (
                     bird.x + bird.radius > pipe.x &&
                     bird.x - bird.radius < pipe.x + pipeWidth &&
@@ -113,6 +118,8 @@ export default function Game() {
                 }
             });
 
+            pipeSpeed += pipeAcceleration * deltaTime;
+
             render();
             animationFrame = requestAnimationFrame(update);
         }
@@ -121,15 +128,17 @@ export default function Game() {
             return parseInt(cookies.get('highscore') || 0, 10);
         }
 
-        // Render function
         function render() {
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw bird
-            ctx.drawImage(birdImageRef.current, bird.x - bird.radius*2, bird.y - bird.radius*2, bird.radius * 4, bird.radius * 3);     
+            ctx.drawImage(
+                birdImageRef.current,
+                bird.x - bird.radius * 2,
+                bird.y - bird.radius * 2,
+                bird.radius * 4,
+                bird.radius * 3
+            );
 
-            // Draw pipes
             pipes.forEach((pipe) => {
                 ctx.fillStyle = "green";
                 ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
@@ -141,36 +150,34 @@ export default function Game() {
                 );
             });
 
-            // Draw score
             ctx.fillStyle = "black";
             ctx.font = "20px Arial";
             ctx.fillText("Score: " + score, 10, 20);
         }
 
-        // Handle user input
         function handleKeyDown(e) {
             if (e.code === "Space" && !gameOver) {
                 bird.velocity = lift;
             } else if (e.code === "Space" && gameOver) {
                 resetGame();
-                update();
+                lastTime = null; // Reset lastTime
+                update(performance.now());
             }
         }
 
-        // Set up canvas
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight - 200;
         resetGame();
-        update();
+        update(performance.now());
 
         window.addEventListener("keydown", handleKeyDown);
 
-        // Clean up
         return () => {
             cancelAnimationFrame(animationFrame);
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, []);
+
 
     function handleSnackbarClose() {
         setSnackbarOpen(false);
