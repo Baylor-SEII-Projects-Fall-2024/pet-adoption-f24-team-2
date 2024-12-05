@@ -58,7 +58,7 @@ export default function Game() {
             pipes = [];
             score = 0;
             gameOver = false;
-            for (let i = 0; i < Math.floor(window.innerWidth / pipeSpacing); i++) {
+            for (let i = 0; i < Math.floor(canvas.width / pipeSpacing) + 1; i++) {
                 addPipe(i * pipeSpacing + pipeSpacing * 2);
             }
             pipeSpeed = 300;
@@ -92,7 +92,7 @@ export default function Game() {
             pipes.forEach((pipe) => {
                 pipe.x -= pipeSpeed * deltaTime; // Use deltaTime for movement
                 if (pipe.x + pipeWidth < 0) {
-                    pipe.x = canvas.width;
+                    pipe.x = pipes.reduce((max, pipe) => Math.max(max, pipe.x), 0) + pipeSpacing;
                     pipe.topHeight = Math.random() * (canvas.height / 2);
                     score++;
 
