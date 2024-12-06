@@ -36,7 +36,7 @@ export default function Game() {
         birdImage.src = "/flap.png";
         birdImageRef.current = birdImage;
 
-        const gravity = 10;
+        const gravity = 30;
         const lift = -500;
         const pipeWidth = 100;
         const pipeGap = 200;
@@ -58,7 +58,7 @@ export default function Game() {
             pipes = [];
             score = 0;
             gameOver = false;
-            for (let i = 0; i < Math.floor(canvas.width / pipeSpacing) + 1; i++) {
+            for (let i = 0; i < Math.floor(canvas.width / pipeSpacing) + 2; i++) {
                 addPipe(i * pipeSpacing + pipeSpacing * 2);
             }
             pipeSpeed = 300;
