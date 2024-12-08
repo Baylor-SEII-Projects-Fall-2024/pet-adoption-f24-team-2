@@ -89,7 +89,6 @@ public class UserController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-        System.out.println("Here 1");
         String email = request.get("email");
         String token = userService.generateResetToken(email);
 

@@ -24,9 +24,9 @@ public class NotificationController {
         return ResponseEntity.ok(notificationDto1);
     }
 
-    @GetMapping("/notifications/{adoptionCenterId}")
-    public ResponseEntity<List<NotificationDto>> getUnreadNotifications(@PathVariable Long adoptionCenterId) {
-        List<NotificationDto> notifications = notificationService.getUnreadNotifications(adoptionCenterId);
+    @GetMapping("/notifications/{userID}")
+    public ResponseEntity<List<NotificationDto>> getUnreadNotifications(@PathVariable Long userID) {
+        List<NotificationDto> notifications = notificationService.getAllNotifications(userID);
         return ResponseEntity.ok(notifications);
     }
 

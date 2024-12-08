@@ -36,15 +36,11 @@ public class NotificationService {
         return notificationMapper.notificationToNotificationDto(saved);
     }
 
-    public List<NotificationDto> getUnreadNotifications(Long adoptionCenterId) {
-        List<NotificationDto> notifications = new ArrayList<NotificationDto>();
-        List<Notification> savedNotifications = notificationRepository.findByIsReadFalseAndPetAdoptionCenterId(adoptionCenterId);
+    public List<NotificationDto> getAllNotifications(Long userID) {
+        List<Notification> notifications = notificationRepository.findByPetAdoptionCenterId(userID);
+        System.out.println(notifications.size());
 
-        for(Notification n : savedNotifications) {
-            notifications.add(notificationMapper.notificationToNotificationDto(n));
-        }
-
-        return notifications;
+        return notifications.stream().map(notificationMapper::notificationToNotificationDto).toList();
     }
 
     public NotificationDto markAsRead(Long id) {

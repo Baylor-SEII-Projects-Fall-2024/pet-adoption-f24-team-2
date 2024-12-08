@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { request, getUserID } from "@/axios_helper";  
-import { Grid2, Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { Tab, Tabs, Grid, Card, CardContent, Typography, Button, Box } from "@mui/material";
 import SnackbarNoti from './SnackbarNoti';
 
 function NotificationDisplayCard({notif, onMarkAsRead}) {
@@ -41,8 +41,8 @@ function NotificationDisplayCard({notif, onMarkAsRead}) {
   }
 
   return (
-    !notif.read && 
-    (<Card elevation={3} >
+    
+    <Card elevation={3} >
       <CardContent >
         <Typography variant="h5" component="div">
           From: {user.name}
@@ -73,13 +73,13 @@ function NotificationDisplayCard({notif, onMarkAsRead}) {
             onClose={handleSnackbarClose}
       />
     </Card>)
-    )
 }
 
 export default function NotificationsDisplay(props) {
   const [notifications, setNotifications] = useState([]);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [tabIndex, setTabIndex] = useState(0);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   function handleSnackbarClose() {
@@ -90,8 +90,9 @@ export default function NotificationsDisplay(props) {
     request("GET", `/notifications/${getUserID()}`, null)
       .then((response) => {
         setNotifications(response.data)
+        console.log(response.data)
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       })
   }, []);
 
@@ -99,29 +100,55 @@ export default function NotificationsDisplay(props) {
     let index = notifications.findIndex(n => n.id === updatedNotif.id);
     console.log(index)
     console.log(updatedNotif);
-    let prevNotifications = [...notifications];
-    prevNotifications[index] = updatedNotif;
-    setNotifications(prevNotifications);
+    setNotifications((prev) => prev.map((n) => (n.id === updatedNotif.id ? updatedNotif : n)));
     setSnackbarMessage("Message marked as read");
     setSnackbarSeverity("info");
     setSnackbarOpen(true);
   };
 
+  function handleTabChange(_, newIndex) {
+    setTabIndex(newIndex);
+  }
+
+  const unreadNotifications = notifications.filter((n) => !n.read);
+  const readNotifications = notifications.filter((n) => n.read);
+
   return (
-    <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
-      {notifications.length > 0 ? notifications.map((notif) => {
-        return (
-          <Grid2 key={notif.id} size={{xs: 12}}>
+    <Box sx={{ width: "100%", padding: 2 }}>
+      {console.log(readNotifications)}
+      {console.log(unreadNotifications)}
+      <Tabs value={tabIndex} onChange={handleTabChange} centered>
+        <Tab label={`Unread (${unreadNotifications.length})`} />
+        <Tab label={`Read (${readNotifications.length})`} />
+      </Tabs>
+  
+      <Grid container spacing={2}>
+        {(tabIndex === 0 ? unreadNotifications : readNotifications).map((notif) => (
+          <Grid item xs={12} key={notif.id}>
             <NotificationDisplayCard notif={notif} onMarkAsRead={handleMarkAsRead} />
-            <SnackbarNoti
-              open={snackbarOpen}
-              severity={snackbarSeverity}
-              message={snackbarMessage}
-              onClose={handleSnackbarClose}
-            />
-          </Grid2>
-        );
-      }) : <div>No notifications found</div>}
-    </Grid2>
-  )
+          </Grid>
+        ))}
+  
+        {tabIndex === 0 && unreadNotifications.length === 0 && (
+          <Box textAlign="center" sx={{ marginTop: 3, width: "100%" }}>
+            <p>No unread notifications</p>
+          </Box>
+        )}
+  
+        {tabIndex === 1 && readNotifications.length === 0 && (
+          <Box textAlign="center" sx={{ marginTop: 3, width: "100%" }}>
+            <p>No read notifications</p>
+          </Box>
+        )}
+      </Grid>
+  
+      <SnackbarNoti
+        open={snackbarOpen}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+        onClose={handleSnackbarClose}
+      />
+    </Box>
+    );
+  
 }
