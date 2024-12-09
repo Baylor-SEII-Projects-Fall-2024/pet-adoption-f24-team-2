@@ -128,6 +128,7 @@ public class PetController {
                 "Sand", "Nia", "Tree", "Ora", "Urban", "Pia", "View", "Rae", "Wall", "Sky",
                 "Yard", "Tea", "Zone", "Uma", "Arch", "Via", "Bank", "Wya", "Cave", "Zea"
         };
+        FurLength[] furLengths = FurLength.values();
 
         // Add breed options for each species
         Map<String, String[]> breedOptions = new HashMap<>();
@@ -153,7 +154,6 @@ public class PetController {
             pet.setDescription("Randomly generated test pet.");
 
             // Random fur length
-            FurLength[] furLengths = FurLength.values();
             FurLength randomFurLength = furLengths[ThreadLocalRandom.current().nextInt(furLengths.length)];
             pet.setFurLength(randomFurLength);
 
