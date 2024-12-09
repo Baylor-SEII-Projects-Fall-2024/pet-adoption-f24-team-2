@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import petadoption.api.dto.PetDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
+import petadoption.api.enums.FurLength;
 import petadoption.api.enums.Role;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.PetMapper;
@@ -20,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@ActiveProfiles("testdb")  // make these tests use the H2 in-memory DB instead of your actual DB
-@Transactional             // make these tests revert their DB changes after the test is complete
+@ActiveProfiles("testdb") // make these tests use the H2 in-memory DB instead of your actual DB
+@Transactional // make these tests revert their DB changes after the test is complete
 public class PetTests {
     @Autowired
     private PetService petService;
@@ -46,7 +47,7 @@ public class PetTests {
                 .age(1)
                 .breed("Mutt")
                 .gender(true)
-                .furLength(3)
+                .furLength(FurLength.MEDIUM)
                 .species("Dog")
                 .description("Skittish")
                 .build();
@@ -57,7 +58,7 @@ public class PetTests {
         assertEquals(savedPet.getName(), "Thor");
         assertEquals(savedPet.getAge(), 1);
         assertEquals(savedPet.getBreed(), "Mutt");
-        assertEquals(savedPet.getFurLength(), 3);
+        assertEquals(savedPet.getFurLength(), FurLength.MEDIUM);
         assertEquals(savedPet.getSpecies(), "Dog");
         assertEquals(savedPet.getDescription(), "Skittish");
     }
@@ -91,7 +92,7 @@ public class PetTests {
                 .age(1)
                 .breed("Mutt")
                 .gender(true)
-                .furLength(3)
+                .furLength(FurLength.MEDIUM)
                 .species("Dog")
                 .description("Skittish")
                 .build();
@@ -125,7 +126,7 @@ public class PetTests {
                 .age(1)
                 .breed("Mutt")
                 .gender(true)
-                .furLength(3)
+                .furLength(FurLength.MEDIUM)
                 .species("Dog")
                 .description("Skittish")
                 .build();
@@ -150,7 +151,7 @@ public class PetTests {
                 .age(1)
                 .breed("Mutt")
                 .gender(true)
-                .furLength(3)
+                .furLength(FurLength.MEDIUM)
                 .species("Dog")
                 .description("Skittish")
                 .build();
