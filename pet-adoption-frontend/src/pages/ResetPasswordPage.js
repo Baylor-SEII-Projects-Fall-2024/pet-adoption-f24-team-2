@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
 
@@ -23,9 +24,17 @@ export default function ResetPassword() {
     setNewPassword(e.target.value);
   }
 
+  function onChangeConfirmPassword(e) {
+    setConfirmPassword(e.target.value);
+  }
+
   function onSubmitNewPassword(e) {
     e.preventDefault();
 
+    if(confirmPassword !== newPassword) {
+      setMessage("Passwords do not work.")
+      return;
+    }
     if(!token) {
       setMessage("Invalid token.");
       return;
@@ -70,6 +79,18 @@ export default function ResetPassword() {
                       id="password"
                       name="password"
                       onChange={onChangeNewPassword}
+                      required
+                      minLength={8}
+                      fullWidth
+                      />
+                  </Grid2>
+                  <Grid2 xs={12}>
+                    <TextField
+                      label="Confirm Password"
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      onChange={onChangeConfirmPassword}
                       required
                       minLength={8}
                       fullWidth
