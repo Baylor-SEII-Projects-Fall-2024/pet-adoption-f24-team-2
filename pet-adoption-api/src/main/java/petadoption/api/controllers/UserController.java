@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -109,6 +110,24 @@ public class UserController {
         userService.resetPassword(token, newPassword);
 
         return ResponseEntity.ok("Password reset successful.");
+    }
+
+    @PostMapping("/users/change-password")
+    public ResponseEntity<?> changePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                            @RequestBody Map<String, String> passwordData) {
+        String currPassword = passwordData.get("currPassword");
+        String newPassword = passwordData.get("newPassword");
+
+        if( currPassword == null || newPassword == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Missing required fields"));
+        }
+
+        boolean passwordChanged = userService.changePassword(userDetails.getUser().getEmailAddress(), currPassword, newPassword);
+        if (passwordChanged) {
+            return ResponseEntity.ok().body(Map.of("message", "Password change successful"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Current password incorrect."));
+        }
     }
 
 }

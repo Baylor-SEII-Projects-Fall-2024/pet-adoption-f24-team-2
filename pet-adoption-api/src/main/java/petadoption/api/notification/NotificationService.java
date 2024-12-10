@@ -38,7 +38,6 @@ public class NotificationService {
 
     public List<NotificationDto> getAllNotifications(Long userID) {
         List<Notification> notifications = notificationRepository.findByPetAdoptionCenterId(userID);
-        System.out.println(notifications.size());
 
         return notifications.stream().map(notificationMapper::notificationToNotificationDto).toList();
     }
@@ -47,7 +46,6 @@ public class NotificationService {
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new AppException("Notification not found", HttpStatus.NOT_FOUND));
         notification.setRead(true);
-        System.out.println(notification.isRead());
         return notificationMapper.notificationToNotificationDto(notificationRepository.save(notification));
     }
 }
