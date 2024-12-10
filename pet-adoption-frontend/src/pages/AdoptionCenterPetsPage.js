@@ -76,6 +76,33 @@ export default function AdoptionCenterPetsPage() {
     setCurrentPage(value);
   };
 
+  const onChangeIsMale = () => {
+    setIsMale(!isMale);
+  };
+  const onChangeName = (e) => {
+    setName(e.target.value);
+  };
+  const onChangeSpecies = (e) => {
+    setSpecies(e.target.value);
+  };
+  const onChangeBreed = (e) => {
+    setBreed(e.target.value);
+  };
+  const onChangeColor = (e) => {
+    setColor(e.target.value);
+  };
+  const onChangeFurLength = (e) => {
+    setFurLength(e.target.value)
+  };
+  const onChangeAge = (e) => {
+    setAge(e.target.value);
+  }
+
+  const onChangeDescription = (e) => {
+    setDescription(e.target.value);
+  }
+
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -115,71 +142,103 @@ export default function AdoptionCenterPetsPage() {
   const endIndex = startIndex + petsPerPage;
   const petsToDisplay = pets.slice(startIndex, endIndex);
 
-  return ( <
-    >
-        <
-            Navbar user = {
-          user
-        }
-        /> <
-          Typography variant = "h3"
-                     align = "center" > Welcome to your pets {
-        user.name
-      }! < /Typography> <
-          CardActions sx = {
-        {
-          justifyContent: "center"
-        }
-      } >
-        <
-            Button onClick = {
-          handleClickOpen
-        }
-                   size = "large" > Register Pet < /Button> <
-    /CardActions> <
-          Dialog open = {
-        open
-      }
-                 onClose = {
-                   handleClose
-                 }
-                 onSubmit = {
-                   handlePetRegistration
-                 }
-                 component = 'form' >
-        <
-            DialogContent >
-          {/* Pet Registration Form */ } <
-    /DialogContent> <
-          DialogActions >
-        <
-            Button onClick = {
-          handleClose
-        } > Cancel < /Button> <
-          Button type = "submit" > Register < /Button> <
-    /DialogActions> <
-    /Dialog> <
-          SnackbarNoti open = {
-        snackbarOpen
-      }
-                       onClose = {
-                         handleSnackbarClose
-                       }
-                       severity = {
-                         snackbarSeverity
-                       }
-                       message = {
-                         snackbarMessage
-                       }
-      /> <
-          PetDisplay pets = {
-        petsToDisplay
-      }
-                     setPets = {
-                       setPets
-                     }
-      /> <
-          Pagination count = {
+  return (
+    <>
+      <Navbar user={user}/>
+      <Typography variant="h3" align="center">Welcome to your pets {user.name}!</Typography>
+      <CardActions sx={{ justifyContent: "center" }}>
+        <Button onClick={handleClickOpen} size="large">Register Pet</Button>
+      </CardActions>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        onSubmit={handlePetRegistration}
+        component='form'
+        >
+        <DialogContent>
+          <DialogContentText>Name</DialogContentText>
+          <input 
+            type="text"
+            defaultValue={name}
+            onChange={onChangeName}
+            required
+            />
+          <DialogContentText>Species</DialogContentText>
+          <input 
+            type="text"
+            defaultValue={species}
+            onChange={onChangeSpecies}
+            required
+            />
+          <DialogContentText>Breed</DialogContentText>
+          <input 
+            type="text"
+            defaultValue={breed}
+            onChange={onChangeBreed}
+            required
+            />
+          <DialogContentText>Color</DialogContentText>
+          <input 
+            type="text"
+            defaultValue={color}
+            onChange={onChangeColor}
+            required
+            />
+          <DialogContentText>Fur Length</DialogContentText>
+          <input 
+            type="number"
+            defaultValue={furLength}
+            onChange={onChangeFurLength}
+            required
+            />
+          <DialogContentText>Age</DialogContentText>
+          <input 
+            type="number"
+            defaultValue={age}
+            onChange={onChangeAge}
+            required
+            />
+
+          <DialogContentText>Description</DialogContentText>
+          <textarea 
+            rows={4} 
+            value={description}
+            onChange={onChangeDescription}
+            required
+            />
+          <DialogContentText>Gender</DialogContentText>
+          <label>
+            <input 
+              type="radio"
+              value="Male"
+              checked={isMale}
+              onChange={onChangeIsMale}
+              />
+              Male{" "}
+          </label>
+          <label>
+            <input 
+              type="radio"
+              value="Female"
+              checked={!isMale}
+              onChange={onChangeIsMale}
+              />
+              Female
+          </label>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit">Register</Button>
+        </DialogActions>
+      </Dialog>
+      <SnackbarNoti
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
+      <PetDisplay pets={pets} setPets={setPets}/>
+      <Pagination count = {
         Math.ceil(pets.length / petsPerPage)
       }
                      page = {
@@ -195,7 +254,7 @@ export default function AdoptionCenterPetsPage() {
                          mt: 2
                        }
                      }
-      /> <
-    />
-  );
+      />
+    </>
+  )
 }

@@ -22,7 +22,7 @@ export const request = (method, url, data) => {
     if (cookie) {
       if( cookie.expires ) {
         const expirationDate = new Date(cookie.expires);
-        const now = new Date(); add
+        const now = new Date();
 
         if( now > expirationDate ) {
           Router.push("/");
