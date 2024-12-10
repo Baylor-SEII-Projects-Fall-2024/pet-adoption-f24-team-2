@@ -3,6 +3,7 @@ import { request, getUserID } from "@/axios_helper";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
 import SnackbarNoti from "./SnackbarNoti";
+import { getPetImage } from "@/utils/petImageHelper";
 
 function onLike(attributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity) {
     request("POST", `/petrec/${getUserID()}/likePet`, attributes)
@@ -105,14 +106,25 @@ function PetCard({ id, name, attributes, bigattributes }) {
       console.log(snackbarMessage, snackbarSeverity, snackbarOpen);
     }
 
+    console.log('Pet Details:', {
+        id,
+        species: attributes[0],
+        color: attributes[1],
+        allAttributes: attributes
+    });
+
+    // Use the string attributes directly since they're already in the correct format
+    const species = attributes[0];  // "Dog"
+    const color = attributes[1];    // "Brown"
+
     return (
         <div className="petcard" style={{ 
-            width: '350px',  // Increased from default
+            width: '350px',
             margin: 'auto'
         }}>
             <img 
-                src="https://via.placeholder.com/250" // Increased from 150
-                alt="picture" 
+                src={getPetImage(id, species, color)}
+                alt={`${color} ${species}`}
                 style={{
                     width: '100%',
                     height: '250px',
