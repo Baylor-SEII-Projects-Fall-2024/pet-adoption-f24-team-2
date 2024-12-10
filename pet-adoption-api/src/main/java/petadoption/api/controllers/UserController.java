@@ -13,6 +13,7 @@ import petadoption.api.config.UserAuthProvider;
 import petadoption.api.dto.CredentialsDto;
 import petadoption.api.dto.SignUpDto;
 import petadoption.api.dto.UserDto;
+import petadoption.api.exceptions.AppException;
 import petadoption.api.resetpassword.EmailService;
 import petadoption.api.user.CustomUserDetails;
 import petadoption.api.user.UserService;
@@ -61,6 +62,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto signUpDto) {
+        System.out.println(signUpDto.getRole().toString());
+        if( signUpDto.getRole().toString() == "ADOPTION_CENTER" &&
+                (signUpDto.getStreetAddress() == null || signUpDto.getCity() == null || signUpDto.getState() == null
+        || signUpDto.getStreetAddress().isEmpty() || signUpDto.getCity().isEmpty() || signUpDto.getState().isEmpty())) {
+            throw new AppException("City, State, and Street Address are required for Adoption Centers",
+                    HttpStatus.BAD_REQUEST);
+        }
         UserDto user = userService.register(signUpDto);
         // Return a fresh JWT token on registration
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService

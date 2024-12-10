@@ -1,5 +1,6 @@
 import React from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { useState } from "react";
+import { Card, CardContent, Typography, Button, Grid, TextField } from "@mui/material";
 
 function AdoptionCenterDisplayCard(props) {
     const center = props.center;
@@ -11,7 +12,7 @@ function AdoptionCenterDisplayCard(props) {
                     Adoption Center: {center.name}
                 </Typography>
                 <Typography>
-                    Address: {center.address}
+                    Address: {center.streetAddress}, {center.city}, {center.state}
                 </Typography>
                 <Typography>
                     Phone Number: {center.phone}
@@ -32,12 +33,57 @@ function AdoptionCenterDisplayCard(props) {
 
 export default function AdoptionCenterDisplay(props) {
     const centers = props.centers;
+    const [stateFilter, setStateFilter] = useState("");
+    const [cityFilter, setCityFilter] = useState("");
+    const [filteredCenters, setFilteredCenters] = useState(props.centers);
+
+    const filterCenters = () => {
+      const filtered = props.centers.filter((center) => {
+        const matchesState = stateFilter ? center.state.toLowerCase().includes(stateFilter.toLowerCase()) : true;
+        const matchesCity = cityFilter ? center.city.toLowerCase().includes(cityFilter.toLowerCase()) : true;
+        return matchesState && matchesCity;
+      });
+      setFilteredCenters(filtered);
+    }
 
     return (
         <>
-          {centers.map((center) => (
-            <AdoptionCenterDisplayCard key={center.id} center={center} onFindCenterEvents={props.onFindCenterEvents}/>
-          ))}
+          <Grid container spacing={2} justifyContent="center" marginBottom={2}>
+            <Grid item>
+              <TextField
+                label="State"
+                variant="outlined"
+                value={stateFilter}
+                onChange={(e) => setStateFilter(e.target.value)}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="City"
+                variant="outlined"
+                value={cityFilter}
+                onChange={(e) => setCityFilter(e.target.value)}
+              />
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={filterCenters}>
+                Filter
+              </Button>
+            </Grid>
+          </Grid>
+          {filteredCenters.length > 0 ? (
+            filteredCenters.map((center) => (
+            <AdoptionCenterDisplayCard 
+              key={center.id} 
+              center={center} 
+              onFindCenterEvents={props.onFindCenterEvents}
+              />
+            ))
+          ) : (
+            <Typography variant="h6">
+              No adoption centers found with the given filters
+            </Typography>
+          )}
         </>
     );
 }

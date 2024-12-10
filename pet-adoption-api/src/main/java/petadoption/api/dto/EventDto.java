@@ -14,8 +14,12 @@ public class EventDto {
     Long adoptionCenterId;
     @NotEmpty(message="Event name is required")
     String name;
-    @NotEmpty(message="Event location is required")
-    String location;
+    @NotEmpty(message = "Event address is required")
+    String streetAddress;
+    @NotEmpty(message="Event city is required")
+    String city;
+    @NotEmpty(message="Event state is required")
+    String state;
     @NotEmpty(message="Event description is required")
     String description;
     @NotNull(message="Event date is required")

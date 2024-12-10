@@ -17,7 +17,9 @@ export default function UserHomePage() {
   const [phone, setPhone] = useState();
   const [userType, setUserType] = useState();
   const [description, setDescription] = useState();
-  const [address, setAddress] = useState();
+  const [streetAddress, setStreetAddress] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -32,7 +34,9 @@ export default function UserHomePage() {
           setPhone(response.data.phone);
           setUserType(response.data.role === "PET_OWNER" ? "Pet Owner" : "Adoption Center");
           setDescription(response.data.description);
-          setAddress(response.data.address);
+          setStreetAddress(response.data.streetAddress);
+          setCity(response.data.city);
+          setState(response.data.state);
         }).catch((error) => {
           console.log(error);
         })
@@ -46,8 +50,10 @@ export default function UserHomePage() {
     setName(user.name);
     setPhone(user.phone);
     setDescription(user.description);
-    if( userType === "Pet Owner" ) {
-      setAddress(user.address);
+    if( userType === "Adoption Center" ) {
+      setStreetAddress(user.streetAddress);
+      setCity(user.city);
+      setState(user.state);
     }
     setSnackbarMessage("User information changes have been discarded!");
     setSnackbarSeverity("info");
@@ -62,7 +68,9 @@ export default function UserHomePage() {
       emailAddress: user.emailAddress,
       role: user.role,
       name: name,
-      address: address,
+      streetAddress: streetAddress,
+      city: city,
+      state: state,
       description: description,
       phone: phone,
     }
@@ -75,7 +83,9 @@ export default function UserHomePage() {
         setPhone(response.data.phone);
         setUserType(response.data.role === "PET_OWNER" ? "Pet Owner" : "Adoption Center");
         setDescription(response.data.description);
-        setAddress(response.data.address);
+        setStreetAddress(response.data.streetAddress);
+        setCity(response.data.city);
+        setState(response.data.state);
 
         setSnackbarMessage("User information updated!");
         setSnackbarSeverity("success");
@@ -102,10 +112,6 @@ export default function UserHomePage() {
 
   function onChangeDescription(event) {
     setDescription(event.target.value);
-  }
-
-  function onChangeAddress(event) {
-    setAddress(event.target.value);
   }
 
   // preference adjustment functions
@@ -647,22 +653,65 @@ export default function UserHomePage() {
                     <label>
                       <Grid2 container spacing={2}>
                         <Grid2 size={6}>
-                          Address:{" "}
+                          Street Address:{" "}
                         </Grid2>
                         <Grid2 size={6}>
                           {isEditing ? (
                             <input 
-                              value={address} 
-                              onChange={onChangeAddress} 
+                              value={streetAddress} 
+                              onChange={(e) => setStreetAddress(e.target.value)} 
                               required />
                           ) : (
-                            <span>{address}</span>
+                            <span>{streetAddress}</span>
                           )}
                         </Grid2>
                       </Grid2>
                     </label>
                   </Box>
                 )}
+                { userType === "Adoption Center" && (
+                  <Box paddingTop={1}>
+                      <label>
+                        <Grid2 container spacing={2}>
+                          <Grid2 size={6}>
+                            City:{" "}
+                          </Grid2>
+                          <Grid2 size={6}>
+                            {isEditing ? (
+                              <input 
+                                value={city} 
+                                onChange={(e) => setCity(e.target.value)} 
+                                required />
+                            ) : (
+                              <span>{city}</span>
+                            )}
+                          </Grid2>
+                        </Grid2>
+                      </label>
+                    </Box> 
+                )}
+                { userType === "Adoption Center" && (   
+                  <Box paddingTop={1}>
+                    <label>
+                      <Grid2 container spacing={2}>
+                        <Grid2 size={6}>
+                          State:{" "}
+                        </Grid2>
+                        <Grid2 size={6}>
+                          {isEditing ? (
+                            <input 
+                              value={state} 
+                              onChange={(e) => setState(e.target.value)} 
+                              required />
+                          ) : (
+                            <span>{state}</span>
+                          )}
+                        </Grid2>
+                      </Grid2>
+                    </label>
+                  </Box> 
+                )}
+                
   
                 {isEditing ? (
                   <Box textAlign="center">
