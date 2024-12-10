@@ -171,4 +171,18 @@ public class UserService {
     public boolean checkUserExists(String email) {
         return userRepository.findByEmailAddress(email).isPresent();
     }
+
+    public boolean changePassword(String emailAddress, String currPassword, String newPassword) {
+        User user = userRepository.findByEmailAddress(emailAddress).orElseThrow(
+                () -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        if(!passwordEncoder.matches(currPassword, user.getPassword())) {
+            return false;
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return true;
+    }
 }

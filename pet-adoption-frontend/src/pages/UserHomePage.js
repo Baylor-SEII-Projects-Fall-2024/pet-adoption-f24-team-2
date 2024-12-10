@@ -640,6 +640,11 @@ export default function UserHomePage() {
                     </Grid2>
                   </label>
                 </Box>
+                <Box paddingTop={2} textAlign="center">
+                  <Link href="/ChangePassword">
+                    <Button variant="contained">Change password</Button>
+                  </Link>
+                </Box>
                 {/* special buttons for adoption centers */}
                 {userType === "Adoption Center" && (
                   <Box paddingTop={1}>
