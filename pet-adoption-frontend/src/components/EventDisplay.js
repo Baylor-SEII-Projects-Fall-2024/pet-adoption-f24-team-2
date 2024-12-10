@@ -6,6 +6,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from 'dayjs';
 import SnackbarNoti from "./SnackbarNoti";
 
+
 function EventDisplayCard(props) {
   const event = props.event;
   let currEvents = props.currEvents;

@@ -9,6 +9,7 @@ import EventDisplay from "@/components/EventDisplay";
 import SnackbarNoti from "@/components/SnackbarNoti";
 
 
+
 export default function RegisterAdoptionEventPage() {
 
   const [ user, setUser ] = useState({});
@@ -134,7 +135,7 @@ export default function RegisterAdoptionEventPage() {
             required
             />
           <DialogContentText>Date</DialogContentText>
-          <DateTimePicker 
+          <DateTimePicker
            onChange={(newValue) => setDate(newValue)}
            />
         </DialogContent>

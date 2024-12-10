@@ -4,6 +4,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Carousel from 'react-bootstrap/Carousel';
 import StarIcon from '@mui/icons-material/Star';
 
+
 const DashboardPage = () => {
   const [pets, setPets] = useState([]);
   const [events, setEvents] = useState([]);
