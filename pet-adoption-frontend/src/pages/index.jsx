@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Card, CardMedia, CardContent, Button, AppBar, Toolbar } from '@mui/material';
 import Accordion from 'react-bootstrap/Accordion';
 import Carousel from 'react-bootstrap/Carousel';
+import StarIcon from '@mui/icons-material/Star';
 
 const DashboardPage = () => {
   const [pets, setPets] = useState([]);
@@ -129,7 +130,7 @@ const DashboardPage = () => {
         </Box>
         {/* Matching Pets Section */}
         <Box p={3}>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom style={{margin: '0 origin'}}>
             Adopt Pets
           </Typography>
           <Grid container spacing={3}>
@@ -193,12 +194,33 @@ const DashboardPage = () => {
           <Typography variant="h5" gutterBottom>
             Reviews
           </Typography>
-          <Carousel style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <Carousel
+              data-bs-theme="dark"
+              style={{ maxWidth: '500px', margin: '0 auto' }}
+              indicators
+              interval={3000}
+          >
             {reviews.map((review) => (
                 <Carousel.Item key={review.id}>
-                  <Box p={3}>
-                    <Typography variant="body1">"{review.description}"</Typography>
-                    <Typography variant="body2">- {review.reviewer}</Typography>
+                  <Box
+                      p={3}
+                      style={{
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        backgroundColor: '#f9f9f9',
+                      }}
+                  >
+                    <Typography variant="h6" style={{ fontSize: '1.5rem', fontStyle: 'italic', marginBottom: '10px' }}>
+                      "{review.description}"
+                    </Typography>
+                    <Typography variant="subtitle1" style={{ marginBottom: '10px' }}>
+                      - {review.reviewer}
+                    </Typography>
+                    <Box display="flex" justifyContent="center" alignItems="center" gap={0.5} style={{marginBottom: '20px'}}>
+                      {[...Array(5)].map((_, index) => (
+                          <StarIcon key={index} style={{ color: '#FFD700' }} />
+                      ))}
+                    </Box>
                   </Box>
                 </Carousel.Item>
             ))}

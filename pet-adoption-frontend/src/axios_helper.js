@@ -5,7 +5,8 @@ import Router from 'next/router';
 
 const cookies = new Cookies();
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+axios.defaults.baseURL = "http://localhost:8080"
+    //process.env.NEXT_PUBLIC_BACKEND_URL;
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 
@@ -22,7 +23,7 @@ export const request = (method, url, data) => {
     if (cookie) {
       if( cookie.expires ) {
         const expirationDate = new Date(cookie.expires);
-        const now = new Date();
+        const now = new Date(); add
 
         if( now > expirationDate ) {
           Router.push("/");
