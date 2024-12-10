@@ -5,9 +5,6 @@ import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
 import SnackbarNoti from "./SnackbarNoti";
 
-// Add a constant for fur length options
-const FUR_LENGTH_OPTIONS = ['NONE', 'SHORT', 'MEDIUM', 'LONG', 'EXTRA_LONG'];
-
 function PetDisplayCard(props) {
   const pet = props.pet;
   let currPets = props.currPets;
@@ -47,7 +44,7 @@ function PetDisplayCard(props) {
   function handleRemove() {
     request("DELETE", `/pets/${pet.id}`, null)
       .then((response) => {
-        if (response.status === 204) {
+        if( response.status === 204 ) {
           let index = currPets.findIndex(p => p.id === pet.id);
           currPets = [
             ...currPets.slice(0, index), // Elements before the one to delete
@@ -85,7 +82,7 @@ function PetDisplayCard(props) {
     request("PUT", `/pets/${getUserID()}`, updatedPet)
       .then((response) => {
         let index = currPets.findIndex(p => p.id === updatedPet.id);
-        if (index !== -1) {
+        if( index !== -1) {
           currPets[index] = response.data;
           props.setPets(currPets);
         }
@@ -95,8 +92,8 @@ function PetDisplayCard(props) {
       }).catch((error) => {
         console.log(error);
       });
-
-    setIsEditing(false);
+    
+      setIsEditing(false);
   }
 
   function onChangeGender() {
@@ -140,45 +137,45 @@ function PetDisplayCard(props) {
       <CardContent component="form">
         <Typography variant="h5" component="div">
           {isEditing ? (
-            <input
-              value={name}
-              onChange={onChangeName}
-              required
-            />
-          ) : (
-            <span>{name}</span>
-          )}
+                <input
+                  value={name}
+                  onChange={onChangeName}
+                  required
+                />
+              ) : (
+                <span>{name}</span>
+              )}
         </Typography>
         <Typography variant="body">
           <div>
             {isEditing ?
-              <>
-                <label>
-                  <input
-                    type="radio"
-                    value="Male"
-                    checked={gender}
-                    onChange={onChangeGender}
+            <>
+              <label>
+                <input 
+                  type="radio"
+                  value="Male"
+                  checked={gender}
+                  onChange={onChangeGender}
                   />
                   Male{" "}
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Female"
-                    checked={!gender}
-                    onChange={onChangeGender}
+              </label>
+              <label>
+                <input 
+                  type="radio"
+                  value="Female"
+                  checked={!gender}
+                  onChange={onChangeGender}
                   />
                   Female
-                </label>
-              </> :
-              <>
-                gender: {gender ? "Male" : "Female"}
-              </>}
+              </label>
+            </> :
+            <>
+              gender: {gender ? "Male" : "Female" }
+            </> }
           </div>
           <div>
             <label>
-              Species:{" "}
+              Species:{" "} 
               {isEditing ? (
                 <input
                   value={species}
@@ -193,7 +190,7 @@ function PetDisplayCard(props) {
           </div>
           <div>
             <label>
-              Breed:{" "}
+              Breed:{" "} 
               {isEditing ? (
                 <input
                   value={breed}
@@ -208,7 +205,7 @@ function PetDisplayCard(props) {
           </div>
           <div>
             <label>
-              Color:{" "}
+              Color:{" "} 
               {isEditing ? (
                 <input
                   value={color}
@@ -223,27 +220,22 @@ function PetDisplayCard(props) {
           </div>
           <div>
             <label>
-              Fur Length:{" "}
+              Fur Length:{" "} 
               {isEditing ? (
-                <select
+                <input
                   value={furLength}
                   onChange={onChangeFurLength}
                   required
-                >
-                  {FUR_LENGTH_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option.charAt(0) + option.slice(1).toLowerCase()}
-                    </option>
-                  ))}
-                </select>
+                />
               ) : (
-                <span>{furLength.charAt(0) + furLength.slice(1).toLowerCase()}</span>
+                <span>{furLength}</span>
               )}
+
             </label>
           </div>
           <div>
             <label>
-              Age:{" "}
+              Age:{" "} 
               {isEditing ? (
                 <input
                   value={age}
@@ -258,13 +250,13 @@ function PetDisplayCard(props) {
           </div>
           <div>
             <label>
-              Description:{" "}
+              Description:{" "} 
               {isEditing ? (
                 <textarea
-                  rows={4}
+                  rows={4} 
                   value={description}
                   onChange={onChangeDescription}
-                  required
+                  required  
                 />
               ) : (
                 <span>{description}</span>
@@ -274,16 +266,16 @@ function PetDisplayCard(props) {
           </div>
         </Typography>
 
-        {isEditing ?
-          <>
-            <Button variant="outlined" onClick={savePetChanges}>Confirm</Button>
-            <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
-          </>
-          :
-          <>
-            <Button variant="outlined" onClick={handleEdit}>Edit</Button>
-            <Button variant="outlined" onClick={handleRemove}>Remove</Button>
-          </>}
+        {isEditing ? 
+        <>
+          <Button variant="outlined" onClick={savePetChanges}>Confirm</Button>
+          <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
+        </>
+        :
+        <>
+          <Button variant="outlined" onClick={handleEdit}>Edit</Button>
+          <Button variant="outlined" onClick={handleRemove}>Remove</Button>
+        </> }
       </CardContent>
       <SnackbarNoti
         open={snackbarOpen}
@@ -297,16 +289,16 @@ function PetDisplayCard(props) {
 }
 
 export default function PetDisplay(props) {
-  const petsCopy = [...props.pets];
+  const petsCopy  = [...props.pets];
   return (
     <Grid2 container spacing={2} paddingBottom={2} paddingLeft={2} paddingRight={2}>
       {props.pets.map((pet) => {
         return (
-          <Grid2 item key={pet.id} size={{ xs: 12, sm: 6 }}>
-            <PetDisplayCard pet={pet} currPets={petsCopy} setPets={props.setPets} />
+          <Grid2 item key={pet.id} size={{xs: 12, sm: 6 }}>
+            <PetDisplayCard pet={pet} currPets={petsCopy} setPets={props.setPets}/>
           </Grid2>
         );
-      })}
+      }) }
     </Grid2>
   )
 }

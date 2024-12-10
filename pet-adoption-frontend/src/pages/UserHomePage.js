@@ -865,7 +865,7 @@ export default function UserHomePage() {
                             onClick={() => onChangeAge(false)}
                             disabled={user.attributes?.attributes[17] < 1}
                           >
-                            Younger
+                            -
                           </Button>
                           <Button 
                             variant="contained" 
@@ -875,7 +875,7 @@ export default function UserHomePage() {
                             }} 
                             onClick={() => onChangeAge(true)}
                           >
-                            Older
+                            +
                           </Button>
                         </Box>
                       </Grid2>

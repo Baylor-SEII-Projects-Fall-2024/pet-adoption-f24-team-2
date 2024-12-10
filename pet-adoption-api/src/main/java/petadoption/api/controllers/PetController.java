@@ -10,7 +10,6 @@ import petadoption.api.mappers.PetMapper;
 import petadoption.api.pet.Pet;
 import petadoption.api.pet.PetService;
 import petadoption.api.recommendation.petAttributes;
-import petadoption.api.enums.FurLength;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +127,6 @@ public class PetController {
                 "Sand", "Nia", "Tree", "Ora", "Urban", "Pia", "View", "Rae", "Wall", "Sky",
                 "Yard", "Tea", "Zone", "Uma", "Arch", "Via", "Bank", "Wya", "Cave", "Zea"
         };
-        FurLength[] furLengths = FurLength.values();
 
         // Add breed options for each species
         Map<String, String[]> breedOptions = new HashMap<>();
@@ -152,10 +150,7 @@ public class PetController {
             String randomBreed = availableBreeds[ThreadLocalRandom.current().nextInt(availableBreeds.length)];
             pet.setBreed(randomBreed);
             pet.setDescription("Randomly generated test pet.");
-
-            // Random fur length
-            FurLength randomFurLength = furLengths[ThreadLocalRandom.current().nextInt(furLengths.length)];
-            pet.setFurLength(randomFurLength);
+            pet.setFurLength(0);
 
             // Random age between 1 and 15
             int randomAge = ThreadLocalRandom.current().nextInt(1, 16);
