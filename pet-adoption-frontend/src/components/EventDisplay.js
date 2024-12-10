@@ -20,8 +20,6 @@ function EventDisplayCard(props) {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [selectedPetId, setSelectedPetId] = useState("");
-  const [pets, setPets] = useState([]);
 
   useEffect(() => {
     request("GET", "/pets")
@@ -69,7 +67,9 @@ function EventDisplayCard(props) {
       name: name,
       description: description,
       date: epochTime,
-      location: location,
+      city: user.city,
+      state: user.state,
+      streetAddress: user.streetAddress,
     };
 
     request("PUT", `/events/${getUserID()}`, newEvent)
@@ -85,23 +85,6 @@ function EventDisplayCard(props) {
         })
         .catch((error) => console.log(error));
     setIsEditing(false);
-  }
-
-  function handleAddPet() {
-    if (!selectedPetId) {
-      setSnackbarMessage("Please select a pet.");
-      setSnackbarSeverity("warning");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    useEffect(() => {
-      request("GET", `/pets/${getUserID()}`, null)
-          .then((response) => setPets(response.data))
-          .catch((error) => console.log(error));
-    }, []);
-
-    handleClose();
   }
 
   function onChangeName(e) {
@@ -163,15 +146,7 @@ function EventDisplayCard(props) {
 
           <Typography>
             <label>
-              Location:{" "}
-              {isEditing ? (
-                  <input
-                      value={location}
-                      onChange={onChangeLocation}
-                  />
-              ) : (
-                  <span>{location}</span>
-              )}
+              Location:{" "} {event.streetAddress}, {event.city}, {event.state}
             </label>
           </Typography>
 
@@ -188,24 +163,6 @@ function EventDisplayCard(props) {
                       <Button variant="outlined" onClick={handleRemove}>Remove</Button>
                     </>
                 )}
-                <Typography>Add a Pet to this Event:</Typography>
-                <select defaultValue="" onChange={(e) => console.log(e.target.value)}>
-                  <option value="" disabled>
-                    Select a Pet
-                  </option>
-                  {pets.length > 0 ? (
-                      pets.map((pet) => (
-                          <option key={pet.id} value={pet.id}>
-                            {pet.name}
-                          </option>
-                      ))
-                  ) : (
-                      <option disabled>No Pets Available</option>
-                  )}
-                </select>
-                <Button variant="outlined" onClick={handleAddPet}>
-                  Add Pet
-                </Button>
               </>
           )}
         </CardContent>
