@@ -1,10 +1,10 @@
 package petadoption.api.pet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import petadoption.api.recommendation.petAttributes;
 import petadoption.api.user.User;
+import petadoption.api.enums.FurLength;
 
 import java.util.Arrays;
 
@@ -16,10 +16,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
-    @SequenceGenerator(
-            name = TABLE_NAME + "_GENERATOR",
-            sequenceName = TABLE_NAME + "_SEQUENCE"
-    )
+    @SequenceGenerator(name = TABLE_NAME + "_GENERATOR", sequenceName = TABLE_NAME + "_SEQUENCE")
     @Column(name = "PET_ID")
     Long id;
 
@@ -42,7 +39,8 @@ public class Pet {
     String description;
 
     @Column(name = "FUR_LENGTH")
-    Integer furLength;
+    @Enumerated(EnumType.STRING)
+    FurLength furLength;
 
     @Column(name = "AGE")
     Integer age;
