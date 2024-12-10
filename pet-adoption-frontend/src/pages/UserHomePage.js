@@ -3,6 +3,7 @@ import { request, getUserID } from "@/axios_helper";
 import Navbar from "@/components/Navbar";
 import { Typography, Card, CardContent, Button, Grid2, Box, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import SnackbarNoti from "@/components/SnackbarNoti";
+import Link from "next/link";
 import Chart from 'chart.js/auto';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -640,11 +641,6 @@ export default function UserHomePage() {
                     </Grid2>
                   </label>
                 </Box>
-                <Box paddingTop={2} textAlign="center">
-                  <Link href="/ChangePassword">
-                    <Button variant="contained">Change password</Button>
-                  </Link>
-                </Box>
                 {/* special buttons for adoption centers */}
                 {userType === "Adoption Center" && (
                   <Box paddingTop={1}>
@@ -680,6 +676,11 @@ export default function UserHomePage() {
                 )}
               </CardContent>
             </Card>
+            <Box paddingTop={2} textAlign="center">
+              <Link href="/ChangePassword">
+                <Button variant="contained">Change password</Button>
+              </Link>
+            </Box>
             {userType === "Adoption Center" && (
               <Box>
                 <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button>

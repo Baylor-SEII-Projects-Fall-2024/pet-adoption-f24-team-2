@@ -5,11 +5,11 @@ import { TextField, Button, Box, Typography, Snackbar } from '@mui/material';
 export default function ChangePassword() {
   const [ currPassword, setCurrPassword ] = useState("");
   const [ newPassword, setNewPassword ] = useState("");
-  const [ confirmPassword, setConfirmedPassword ] = UseState("");
+  const [ confirmPassword, setConfirmedPassword ] = useState("");
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ successMessage, setSuccessMessage ] = useState("");
-  const [ snackBarMessage, setSnackbarMessage ] = useState("");
-  const [ snackBarSeverity, setSnackbarSeverity ] = useState("success");
+  const [ snackbarMessage, setSnackbarMessage ] = useState("");
+  const [ snackbarSeverity, setSnackbarSeverity ] = useState("success");
   const [ snackbarOpen, setSnackbarOpen ] = useState(false);
 
   function handleSubmit(e) {
@@ -57,7 +57,6 @@ export default function ChangePassword() {
         <TextField
           label="Current Password"
           type="password"
-          fullWidth
           required
           value={currPassword}
           onChange={onChangeCurrPassword}
@@ -65,7 +64,6 @@ export default function ChangePassword() {
         <TextField
           label="New Password"
           type="password"
-          fullWidth
           required
           value={newPassword}
           onChange={onChangeNewPassword}
@@ -73,7 +71,6 @@ export default function ChangePassword() {
         <TextField
           label="Confirm New Password"
           type="password"
-          fullWidth
           required
           value={confirmPassword}
           onChange={onChangeConfirmPassword}
