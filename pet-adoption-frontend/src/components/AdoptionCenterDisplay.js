@@ -11,7 +11,7 @@ function AdoptionCenterDisplayCard(props) {
                     Adoption Center: {center.name}
                 </Typography>
                 <Typography>
-                    Address: {center.address}
+                    Address: {center.streetAddress}, {center.city}, {center.state}
                 </Typography>
                 <Typography>
                     Phone Number: {center.phone}

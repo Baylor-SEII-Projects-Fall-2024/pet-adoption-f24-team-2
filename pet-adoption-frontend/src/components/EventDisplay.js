@@ -15,7 +15,6 @@ function EventDisplayCard(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(event.name);
   const [description, setDescription] = useState(event.description);
-  const [location, setLocation] = useState(event.location);
   const [date, setDate] = useState(dayjs(event.date));
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -29,7 +28,6 @@ function EventDisplayCard(props) {
     setIsEditing(false);
     setName(event.name);
     setDescription(event.description)
-    setLocation(event.location)
     setDate(event.date)
     setSnackbarMessage("Event edit canceled");
     setSnackbarSeverity("info");
@@ -63,7 +61,9 @@ function EventDisplayCard(props) {
       name: name,
       description: description,
       date: epochTime,
-      location: location,
+      streetAddress: event.streetAddress,
+      state: event.state,
+      city: event.city,
     }
 
     request("PUT", `/events/${getUserID()}`, newEvent)
@@ -141,15 +141,7 @@ function EventDisplayCard(props) {
         
         <Typography>
           <label>
-            Location:{" "} 
-            {isEditing ? (
-              <input
-                value={location}
-                onChange={onChangeLocation}  
-              />
-            ) : (
-              <span>{location}</span>
-            )}
+            Location:{" "} {event.streetAddress}, {event.city}, {event.state}
 
           </label>
         </Typography>

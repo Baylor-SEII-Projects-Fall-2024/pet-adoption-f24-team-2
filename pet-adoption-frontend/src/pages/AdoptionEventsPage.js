@@ -72,7 +72,9 @@ export default function RegisterAdoptionEventPage() {
       name: name,
       description: description,
       date: epochTime,
-      location: user.address,
+      streetAddress: user.streetAddress,
+      city: user.city,
+      state: user.state,
     }
     console.log(newEvent);
     request("POST", `/register/${getUserID()}`, newEvent)
@@ -85,6 +87,7 @@ export default function RegisterAdoptionEventPage() {
         setSnackbarMessage("Event registered!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
+        setErrorMessage(null);
       }).catch((error) => {
         if (error.response && error.response.status === 400) {
           const errorMessages = error.response.data.messages;

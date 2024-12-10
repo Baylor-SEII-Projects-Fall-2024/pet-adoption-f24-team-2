@@ -13,7 +13,9 @@ export default function Login() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [address, setAddress] = useState(null);
+    const [streetAddress, setStreetAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
 
     useEffect(() => {
         if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
@@ -61,10 +63,6 @@ export default function Login() {
         setDescription(event.target.value);
     }
 
-    function onChangeAddress(event) {
-        setAddress(event.target.value);
-    }
-
     function onSubmitLogin(e) {
         e.preventDefault();
         submitLogin(email, password);
@@ -96,7 +94,9 @@ export default function Login() {
             phone: phoneNumber,
             name: name,
             description: description,
-            address: address
+            streetAddress: userType === "Adoption_Center" ? streetAddress : null,
+            city: userType === "Adoption_Center" ? city : null,
+            state: userType === "Adoption_Center" ? state : null,
         }
 
         request("POST",
@@ -218,13 +218,32 @@ export default function Login() {
                                         />
                                         {userType === "Adoption_Center" &&
                                             <>
-                                                <label htmlFor="address"><Typography>Address:</Typography></label>
+                                                <label htmlFor="streetAddress"><Typography>Street Address:</Typography></label>
                                                 <input
                                                     style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
                                                     type="text"
-                                                    id="address"
+                                                    id="streetAddress"
                                                     name="address"
-                                                    onChange={onChangeAddress}
+                                                    onChange={(e) => setStreetAddress(e.target.value)}
+                                                    required
+                                                />
+                                                <label htmlFor="city"><Typography>City:</Typography></label>
+                                                <input
+                                                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
+                                                    type="text"
+                                                    id="city"
+                                                    name="city"
+                                                    onChange={(e) => setCity(e.target.value)}
+                                                    required
+                                                />
+                                                <label htmlFor="state"><Typography>State:</Typography></label>
+                                                <input
+                                                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
+                                                    type="text"
+                                                    id="state"
+                                                    name="state"
+                                                    onChange={(e) => setState(e.target.value)}
+                                                    required
                                                 />
                                             </>
                                         }
