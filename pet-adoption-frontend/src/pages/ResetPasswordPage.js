@@ -109,7 +109,7 @@ export default function ResetPassword() {
                 </Box>
               )}
               <Typography mt={2} align="center">
-                <Link href="/">
+                <Link href="/LoginPage">
                   <Button variant="outlined">Go to Login Page</Button>
                 </Link>
               </Typography>
