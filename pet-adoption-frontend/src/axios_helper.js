@@ -5,8 +5,7 @@ import Router from 'next/router';
 
 const cookies = new Cookies();
 
-axios.defaults.baseURL = "http://localhost:8080"
-    //process.env.NEXT_PUBLIC_BACKEND_URL;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 
