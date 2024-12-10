@@ -5,37 +5,39 @@ import PetDisplay from "@/components/PetDisplay";
 import Navbar from "@/components/Navbar";
 import SnackbarNoti from "@/components/SnackbarNoti";
 
-export default function AdoptionCenterPetsPage() {
-  const [ open, setOpen ] = useState(false);
-  const [ isMale, setIsMale ] = useState(true);
-  const [ name, setName ] = useState("");
-  const [ species, setSpecies ] = useState("");
-  const [ breed, setBreed ] = useState("");
-  const [ color, setColor ] = useState("");
-  const [ furLength, setFurLength ] = useState(0);
-  const [ age, setAge ] = useState(0);
-  const [ description, setDescription] = useState("");
-  const [ user, setUser ] = useState({});
-  const [ pets, setPets ] = useState([]);
-  const [ snackbarMessage, setSnackbarMessage ] = useState("");
-  const [ snackbarSeverity, setSnackbarSeverity ] = useState("");
-  const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+const FUR_LENGTH_OPTIONS = ['NONE', 'SHORT', 'MEDIUM', 'LONG', 'EXTRA_LONG'];
 
-  useEffect( () => {
+export default function AdoptionCenterPetsPage() {
+  const [open, setOpen] = useState(false);
+  const [isMale, setIsMale] = useState(true);
+  const [name, setName] = useState("");
+  const [species, setSpecies] = useState("");
+  const [breed, setBreed] = useState("");
+  const [color, setColor] = useState("");
+  const [furLength, setFurLength] = useState(FUR_LENGTH_OPTIONS[0]);
+  const [age, setAge] = useState(0);
+  const [description, setDescription] = useState("");
+  const [user, setUser] = useState({});
+  const [pets, setPets] = useState([]);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
     request("GET", `/users/${getUserID()}`, null)
       .then((response) => {
         setUser(response.data)
       }).catch((error) => {
         console.log(error);
       })
-    
+
     request("GET", `/pets/${getUserID()}`, null)
       .then((response) => {
         setPets(response.data)
       }).catch((error) => {
         console.log(error);
       })
-  
+
   }, []);
 
   const handleClickOpen = () => {
@@ -48,7 +50,7 @@ export default function AdoptionCenterPetsPage() {
     setSpecies("");
     setBreed("");
     setColor("");
-    setFurLength(0);
+    setFurLength(FUR_LENGTH_OPTIONS[0]);
     setAge(0);
     setDescription("");
     setOpen(false);
@@ -122,7 +124,7 @@ export default function AdoptionCenterPetsPage() {
 
   return (
     <>
-      <Navbar user={user}/>
+      <Navbar user={user} />
       <Typography variant="h3" align="center">Welcome to your pets {user.name}!</Typography>
       <CardActions sx={{ justifyContent: "center" }}>
         <Button onClick={handleClickOpen} size="large">Register Pet</Button>
@@ -132,76 +134,81 @@ export default function AdoptionCenterPetsPage() {
         onClose={handleClose}
         onSubmit={handlePetRegistration}
         component='form'
-        >
+      >
         <DialogContent>
           <DialogContentText>Name</DialogContentText>
-          <input 
+          <input
             type="text"
             defaultValue={name}
             onChange={onChangeName}
             required
-            />
+          />
           <DialogContentText>Species</DialogContentText>
-          <input 
+          <input
             type="text"
             defaultValue={species}
             onChange={onChangeSpecies}
             required
-            />
+          />
           <DialogContentText>Breed</DialogContentText>
-          <input 
+          <input
             type="text"
             defaultValue={breed}
             onChange={onChangeBreed}
             required
-            />
+          />
           <DialogContentText>Color</DialogContentText>
-          <input 
+          <input
             type="text"
             defaultValue={color}
             onChange={onChangeColor}
             required
-            />
+          />
           <DialogContentText>Fur Length</DialogContentText>
-          <input 
-            type="number"
-            defaultValue={furLength}
+          <select
+            value={furLength}
             onChange={onChangeFurLength}
             required
-            />
+          >
+            {FUR_LENGTH_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option.charAt(0) + option.slice(1).toLowerCase()}
+              </option>
+            ))}
+          </select>
           <DialogContentText>Age</DialogContentText>
-          <input 
+          <input
             type="number"
             defaultValue={age}
             onChange={onChangeAge}
             required
-            />
+          />
 
           <DialogContentText>Description</DialogContentText>
-          <textarea 
-            rows={4} 
+          <textarea
+            rows={4}
             value={description}
             onChange={onChangeDescription}
             required
-            />
+          />
           <DialogContentText>Gender</DialogContentText>
           <label>
-            <input 
+            <input
               type="radio"
               value="Male"
               checked={isMale}
               onChange={onChangeIsMale}
-              />
-              Male{" "}
+            />
+            Male{" "}
           </label>
           <label>
-            <input 
+            <input
               type="radio"
               value="Female"
               checked={!isMale}
               onChange={onChangeIsMale}
-              />
-              Female
+            />
+            Female
           </label>
         </DialogContent>
         <DialogActions>
@@ -215,7 +222,7 @@ export default function AdoptionCenterPetsPage() {
         severity={snackbarSeverity}
         message={snackbarMessage}
       />
-      <PetDisplay pets={pets} setPets={setPets}/>
+      <PetDisplay pets={pets} setPets={setPets} />
     </>
   )
 }
