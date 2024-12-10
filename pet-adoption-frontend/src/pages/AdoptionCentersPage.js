@@ -22,7 +22,6 @@ export default function AdoptionCentersPage() {
 
     request("GET", `/users/adoption-centers`, null)
       .then((response) => {
-        console.log(response.data)
         setCenters(response.data);
       })
       .catch((error) => {

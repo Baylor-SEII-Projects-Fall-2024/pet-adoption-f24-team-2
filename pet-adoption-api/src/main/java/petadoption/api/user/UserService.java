@@ -101,10 +101,6 @@ public class UserService {
 
     public List<UserDto> getAdoptionCenters() {
         List<User> adoptionCenters = userRepository.findByRole(Role.ADOPTION_CENTER);
-        System.out.println(adoptionCenters.size());
-        for( User u : adoptionCenters) {
-            System.out.println(u.getId());
-        }
         List<UserDto> adoptionCenterDto = adoptionCenters.stream()
                 .map(userMapper::toUserDto)
                 .collect(Collectors.toList());
