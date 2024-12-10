@@ -42,8 +42,14 @@ public class User {
     @Column(name = "NAME")
     String name;
 
-    @Column(name = "ADDRESS")
-    String address;
+    @Column(name = "CITY")
+    String city;
+
+    @Column(name="STATE")
+    String state;
+
+    @Column(name = "STREET_ADDRESS")
+    String streetAddress;
 
     @Column(name = "DESCRIPTION")
     String description;

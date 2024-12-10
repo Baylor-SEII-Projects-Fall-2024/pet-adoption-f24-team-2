@@ -16,7 +16,9 @@ public class UserDto {
     private String emailAddress;
     @NotBlank(message = "Name is required")
     private String name;
-    private String address;
+    private String streetAddress;
+    private String city;
+    private String state;
     private String description;
     @NotBlank(message = "Phone is required")
     private String phone;

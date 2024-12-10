@@ -27,11 +27,17 @@ public class Event {
     @Column(name = "DESCRIPTION")
     String description;
 
-    @Column(name = "LOCATION")
-    String location;
-
     @Column(name = "DATE")
     Date date;
+
+    @Column(name = "STREET_ADDRESS")
+    String streetAddress;
+
+    @Column(name = "CITY")
+    String city;
+
+    @Column(name = "STATE")
+    String state;
 
     @ManyToOne
     @JoinColumn(name = "ADOPTION_CENTER_ID")

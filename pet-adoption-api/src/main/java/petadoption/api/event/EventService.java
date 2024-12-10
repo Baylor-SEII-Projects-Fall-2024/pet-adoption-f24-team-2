@@ -56,7 +56,9 @@ public class EventService {
             e.setDate(new Date(newEvent.getDate()));
         }
         e.setName(newEvent.getName());
-        e.setLocation(newEvent.getLocation());
+        e.setStreetAddress(newEvent.getStreetAddress());
+        e.setState(newEvent.getState());
+        e.setCity(newEvent.getCity());
         e.setDescription(newEvent.getDescription());
         e.setAdoptionCenter(adoptionCenter);
 

@@ -18,7 +18,9 @@ public class SignUpDto {
     private char[] password;
     @NotBlank(message = "Name is required")
     private String name;
-    private String address;
+    private String city;
+    private String streetAddress;
+    private String state;
     private String description;
     @NotBlank(message = "Phone is required")
     private String phone;
