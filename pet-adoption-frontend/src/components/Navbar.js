@@ -113,6 +113,16 @@ export default function Navbar({ user }) {
               <NotificationsDisplay/>
               </DialogContent>
             </Dialog>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "",
+                alignItems: "center",
+              }}
+              >
+                <img src={"/Logo.png"} alt="App Logo" style={{ height: "50px", cursor: "pointer" }} onClick={() => Router.push("/UserHomePage")}/>
+              </Box>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'end'}}>
                 <button style={{ width: '35px', height: '35px', background: 'none', border: 'none' }} onClick={() => Router.push("/game")}>
                     <img src="/doggo.png" width={'100%'} height={'100%'}/>

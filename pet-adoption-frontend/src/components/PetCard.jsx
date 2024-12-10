@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { request, getUserID } from "@/axios_helper";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Typography, Card, CardContent, Button, Grid2, Box } from "@mui/material";
+import Router from "next/router";
 import SnackbarNoti from "./SnackbarNoti";
 
 function onLike(attributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity) {
@@ -133,7 +134,11 @@ function PetCard({ id, name, attributes, bigattributes }) {
                 )}
                 <Grid2 item xs={4} textAlign="center" sx={{ mt: 2 }}>
                     <Button variant="contained" onClick={() => onLike(bigattributes, setSnackbarMessage, setSnackbarOpen, setSnackbarSeverity)} sx={{ mr: 1 }}>Like</Button>
-                    <Button variant="contained" onClick={handleOpen}>Adopt</Button>
+                    <Button variant="contained" onClick={(e) => Router.push({pathname: "/AdoptionApplicationPage",
+                      query: {
+                        petId: id 
+                      }
+                    })}>Adopt</Button>
                 </Grid2>
             </div>
             <Dialog
