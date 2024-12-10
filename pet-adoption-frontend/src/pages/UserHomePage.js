@@ -62,6 +62,16 @@ export default function UserHomePage() {
 
   function saveChanges(e) {
     e.preventDefault();
+    if( userType == "Adoption Center" && 
+      (city == "" || state == "" || streetAddress == "")) {
+      setSnackbarMessage("Please ensure all fields are filled out!");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true)
+      setCity(user.city)
+      setState(user.state)
+      setStreetAddress(user.streetAddress)
+      return
+    }
     setIsEditing(false);
     
     const newUserInfo = {
