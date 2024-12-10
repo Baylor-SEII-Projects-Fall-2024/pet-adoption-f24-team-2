@@ -682,7 +682,7 @@ export default function UserHomePage() {
               </Link>
             </Box>
             {userType === "Adoption Center" && (
-              <Box>
+              <Box paddingTop={2} textAlign="center">
                 <Button variant="contained" onClick={addRandomPets}>Add 500 Random Test Pets</Button>
                 <Button variant="contained" onClick={deleteAllPets}>Delete all pets</Button>
               </Box>

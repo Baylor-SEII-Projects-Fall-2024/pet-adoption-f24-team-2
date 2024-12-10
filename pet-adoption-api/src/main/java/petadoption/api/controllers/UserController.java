@@ -112,7 +112,7 @@ public class UserController {
         return ResponseEntity.ok("Password reset successful.");
     }
 
-    @PostMapping("/change-password")
+    @PostMapping("/users/change-password")
     public ResponseEntity<?> changePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
                                             @RequestBody Map<String, String> passwordData) {
         String currPassword = passwordData.get("currPassword");
