@@ -12,6 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import '@/styles/globals.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Initialize Redux
 let initialState = {};

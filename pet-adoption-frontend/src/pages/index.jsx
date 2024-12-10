@@ -1,250 +1,211 @@
-import React, {useEffect, useState} from 'react';
-import Head from 'next/head'
-import {Button, Card, CardContent, Stack, Typography, Box} from '@mui/material'
-import { clearCookies, setAuthenticatedUser, request, getAuthToken } from '@/axios_helper';
-import styles from '@/styles/Login.module.css';
-import Router from 'next/router';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Grid, Card, CardMedia, CardContent, Button, AppBar, Toolbar } from '@mui/material';
+import Accordion from 'react-bootstrap/Accordion';
+import Carousel from 'react-bootstrap/Carousel';
 
-export default function Login() {
-  const [active, setActive] = useState("Login");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("Pet_Owner")
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [address, setAddress] = useState(null);
-  
-    useEffect(() => { 
-        if (getAuthToken() !== undefined && getAuthToken() !== "undefined") {
-            Router.push('/UserHomePage');
-        }
-    }, []);
+const DashboardPage = () => {
+  const [pets, setPets] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
-  function activateLogin() {
-    setEmail("")
-    setPassword("")
-    setActive("Login");
-  };
+  useEffect(() => {
+    setPets([
+      {
+        id: 1,
+        gender: 'Male',
+        name: 'Jeff',
+        breed: 'German Shepard',
+        color: 'Brown',
+        fur: '2',
+        age: 5,
+        image: '/german-shepard.jpg',
+      },
+      {
+        id: 2,
+        gender: 'Female',
+        name: 'Katie',
+        breed: 'Tabby',
+        color: 'Orange',
+        fur: '1',
+        age: 3,
+        image: '/tabby.jpg',
+      },
+      {
+        id: 3,
+        gender: 'Male',
+        name: 'Bruce',
+        breed: 'Clydesdale',
+        color: 'Brown',
+        fur: 'Short',
+        age: 4,
+        image: '/horse.png',
+      },
+    ]);
 
-  function activateRegister() {
-    setEmail("")
-    setPassword("")
-    setActive("Register");
-  };
+    setEvents([
+      {
+        id: 1,
+        name: 'Waco Pet Party',
+        description: 'Dogs, cats, birds...we have them all!',
+        date: 'Thu, 05 Dec 2024 06:00:00 GMT',
+        location: '19345 Baylor Ln, Waco TX',
+      },
+      {
+        id: 2,
+        name: 'Holiday Pet Party',
+        description: 'Celebrate the holidays with our furry friends!',
+        date: 'Fri, 20 Dec 2024 18:00:00 GMT',
+        location: '3452 Alamo Dr, Dallas, TX',
+      },
+      {
+        id: 3,
+        name: 'Weekend Adoption Fair',
+        description: 'Find your perfect pet companion!',
+        date: 'Sat, 10 Dec 2024 10:00:00 GMT',
+        location: '789 Maple Ln, Houston, TX',
+      },
+    ]);
 
-  function navigateToForgotPassword() {
-    Router.push("/ForgotPasswordPage");
-  }
-
-  function onChangeEmail(event) {
-    setEmail(event.target.value);
-  };
-
-  function onChangePassword(event) {
-    setPassword(event.target.value);
-  };
-
-  function onChangeUserType(event) {
-    setUserType(event.target.value);
-  }
-
-  function onChangePhone(event) {
-    setPhoneNumber(event.target.value);
-  }
-
-  function onChangeName(event) {
-    setName(event.target.value);
-  }
-
-  function onChangeDescription(event) {
-    setDescription(event.target.value);
-  }
-
-  function onChangeAddress(event) {
-    setAddress(event.target.value);
-  }
-
-  function onSubmitLogin(e) {
-    e.preventDefault();
-    submitLogin(email, password);
-  };
-
-  function submitLogin(email, password) {
-    clearCookies()
-    request("POST",
-            "/login",
-            {emailAddress: email, password: password}
-    ).then((response) => {
-      setAuthenticatedUser(response.data);
-      Router.push('/UserHomePage')
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-  function onSubmitRegister(e) {
-    e.preventDefault()
-    submitRegister(email, password, userType)
-  }
-
-  function submitRegister(email, password, userType) {
-    clearCookies();
-    let user = {emailAddress: email, 
-                password: password, 
-                role: userType.toUpperCase(),
-                phone: phoneNumber,
-                name: name,
-                description: description,
-                address: address
-              }
-
-    request("POST",
-      "/register",
-      user
-    ).then((response) => {
-      setAuthenticatedUser(response.data)
-      Router.push('/UserHomePage');
-    }).catch((error) => {
-      console.log(error);
-    });
-
-  }
+    setReviews([
+      {
+        id: 1,
+        description: 'Amazing experience! The team was so helpful, and I found my perfect companion.',
+        reviewer: 'Carter Collins',
+      },
+      {
+        id: 2,
+        description: 'Great service and so many adorable pets to choose from!',
+        reviewer: 'Luke Heard',
+      },
+      {
+        id: 3,
+        description: 'The process was smooth, and the staff was very supportive.',
+        reviewer: 'Kyle Sumners',
+      },
+      {
+        id: 4,
+        description: 'I highly recommend Furry Friends for anyone looking for a pet!',
+        reviewer: 'Oliver Liu',
+      },
+      {
+        id: 5,
+        description: 'An incredible organization with lots of love for the animals.',
+        reviewer: 'Wesley Goyette',
+      },
+      {
+        id: 6,
+        description: 'I found my perfect pet thanks to the amazing team at Furry Friends.',
+        reviewer: 'Afraz Iqbal',
+      },
+    ]);
+  }, []);
 
   return (
-  <>
-    <Head>
-      <title>Furry Friends</title>
-    </Head>
-
-    <main>
-      <Stack sx={{ paddingTop: 6 }} alignItems='center'>
-        <Card elevation={3}>
-          <CardContent>
-            <Typography variant='h3' align='center' sx={{paddingBottom: 2}}>{active}</Typography>
-            { active === "Login" && 
-            <form onSubmit={onSubmitLogin}>
-              <div className={styles.loginGrid}>
-                <label htmlFor="email"><Typography>Email:</Typography></label>
-                <input
-                  style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                  type="text"
-                  id="email"
-                  name="email"
-                  onChange={onChangeEmail}
-                  />
-                <label htmlFor="pw"><Typography>Password:</Typography></label>
-                <input 
-                  style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}  
-                  type="password"
-                  id="pw"
-                  name="password"
-                  onChange={onChangePassword}
-                  />
-                </div>
-                <Box textAlign="center" paddingTop={2}>
-                  <Button variant="contained" type="submit" align="center">Sign in</Button>
-                </Box>
-            </form> }
-            { active === "Register" && 
-            <form onSubmit={onSubmitRegister}>
-            <div className={styles.loginGrid}>
-              <div className={styles.userTypeLabel}>User Type:</div>
-                <label>
-                  <input
-                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                    type="radio"
-                    value="Pet_Owner"
-                    checked={userType === 'Pet_Owner'}
-                    onChange={onChangeUserType}
+      <Box>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" style={{ flexGrow: 1 }}>
+              Furry Friends, Inc.
+            </Typography>
+            <Button color="inherit" href="/LoginPage">
+              Login
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Box textAlign="center" mt={3}>
+          <img
+              src="/logo.png"
+              alt="Furry Friends Logo"
+              style={{ width: '300px', height: '300px', objectFit: 'contain' }}
+          />
+        </Box>
+        <Box p={3} textAlign="center">
+          <Typography variant="h4" gutterBottom>
+            Welcome to Furry Friends!
+          </Typography>
+          <Typography variant="body1">
+            Find your perfect furry friend and explore adoption events near you!
+          </Typography>
+        </Box>
+        {/* Matching Pets Section */}
+        <Box p={3}>
+          <Typography variant="h5" gutterBottom>
+            Adopt Pets
+          </Typography>
+          <Grid container spacing={3}>
+            {pets.map((pet) => (
+                <Grid item xs={12} sm={6} md={4} key={pet.id}>
+                  <Card>
+                    <CardMedia
+                        component="img"
+                        height="150"
+                        image={pet.image}
+                        alt={pet.name}
                     />
-                  Pet Owner
-                </label>
-                <label>
-                  <input 
-                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                    type="radio"
-                    value="Adoption_Center"
-                    checked={userType === 'Adoption_Center'}
-                    onChange={onChangeUserType}
-                    />
-                  Adoption Center
-                </label>
-              <label htmlFor="email"><Typography>Email:</Typography></label>
-              <input
-                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                type="text"
-                id="email"
-                name="email"
-                onChange={onChangeEmail}
-                required
-                />
-              <label htmlFor="pw"><Typography>Password:</Typography></label>
-              <input 
-                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                type="password"
-                id="pw"
-                name="password"
-                onChange={onChangePassword}
-                required
-                minLength={8}
-                />
-              <label htmlFor="phone"><Typography>Phone:</Typography></label>
-              <input 
-                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                type="text"
-                id="phone"
-                name="phone"
-                onChange={onChangePhone}
-                placeholder="888-888-8888"
-                minLength={12}
-                maxLength={12}
-                required
-                />
-              <label htmlFor="name"><Typography>Name:</Typography></label>
-              <input 
-                style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                type="text"
-                id="name"
-                name="name"
-                onChange={onChangeName}
-                required
-                />
-              <label htmlFor="description"><Typography>Description:</Typography></label>
-              <textarea
-                onChange={onChangeDescription}
-                name="description"
-                rows={4}
-                />
-              {userType === "Adoption_Center" &&
-                <>
-                  <label htmlFor="address"><Typography>Address:</Typography></label>
-                  <input 
-                    style={{backgroundColor: 'white', border: 'lightgray solid 2px', color: 'black'}}
-                    type="text"
-                    id="address"
-                    name="address"
-                    onChange={onChangeAddress}
-                    />
-                </>
-              }
-                
-                
-            </div>
-            <Box textAlign="center" paddingTop={2}>
-              <Button variant="contained" type="submit">Register</Button>
-            </Box>
-          </form>}
-          </CardContent>
-        </Card>
-        <Stack direction="row">
-          <Button onClick={activateLogin}>Login</Button>
-          <Button onClick={activateRegister}>Register</Button>
-        </Stack>
-      </Stack>
-      <Box textAlign="center" paddingTop={1}>
-        <Button variant="text" onClick={navigateToForgotPassword}>Forgot Password?</Button>
+                    <CardContent>
+                      <Typography variant="h6">{pet.name}</Typography>
+                      <Typography variant="body2">Gender: {pet.gender}</Typography>
+                      <Typography variant="body2">Breed: {pet.breed}</Typography>
+                      <Typography variant="body2">Color: {pet.color}</Typography>
+                      <Typography variant="body2">Fur: {pet.fur}</Typography>
+                      <Typography variant="body2">Age: {pet.age} years</Typography>
+                      <Button
+                          variant="contained"
+                          color="primary"
+                          fullWidth
+                          style={{ marginTop: '10px' }}
+                          href="/LoginPage"
+                      >
+                        Adopt Me
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/* Upcoming Events Section */}
+        <Box p={3}>
+          <Typography variant="h5" gutterBottom>
+            Upcoming Adoption Events
+          </Typography>
+          <Accordion>
+            {events.map((event) => (
+                <Accordion.Item eventKey={event.id.toString()} key={event.id}>
+                  <Accordion.Header>{event.name}</Accordion.Header>
+                  <Accordion.Body>
+                    <Typography variant="body1">
+                      <strong>Description:</strong> {event.description}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Date:</strong> {event.date}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Location:</strong> {event.location}
+                    </Typography>
+                  </Accordion.Body>
+                </Accordion.Item>
+            ))}
+          </Accordion>
+        </Box>
+        {/* Reviews Section */}
+        <Box p={3} textAlign="center">
+          <Typography variant="h5" gutterBottom>
+            Reviews
+          </Typography>
+          <Carousel style={{ maxWidth: '600px', margin: '0 auto' }}>
+            {reviews.map((review) => (
+                <Carousel.Item key={review.id}>
+                  <Box p={3}>
+                    <Typography variant="body1">"{review.description}"</Typography>
+                    <Typography variant="body2">- {review.reviewer}</Typography>
+                  </Box>
+                </Carousel.Item>
+            ))}
+          </Carousel>
+        </Box>
       </Box>
-    </main>
-  </>)
-}
+  );
+};
+
+export default DashboardPage;
