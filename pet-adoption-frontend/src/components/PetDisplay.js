@@ -1,9 +1,10 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Grid2 } from "@mui/material";
+import { Card, CardContent, Typography, Button, Grid2, Box } from "@mui/material";
 import { useState } from "react";
 import { request } from "@/axios_helper";
 import { getUserID } from "@/axios_helper";
 import SnackbarNoti from "./SnackbarNoti";
+import { getPetImage } from "@/utils/petImageHelper";
 
 function PetDisplayCard(props) {
   const pet = props.pet;
@@ -21,6 +22,13 @@ function PetDisplayCard(props) {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  console.log('Pet Display Details:', {
+    id: pet.id,
+    species: pet.species,
+    color: pet.color,
+    fullPet: pet
+  });
 
   function handleEdit() {
     setIsEditing(true);
@@ -132,150 +140,169 @@ function PetDisplayCard(props) {
     setSnackbarOpen(false);
   }
 
+  // Capitalize first letter for species and color
+  const capitalizedSpecies = pet.species.charAt(0).toUpperCase() + pet.species.slice(1);
+  const capitalizedColor = pet.color.charAt(0).toUpperCase() + pet.color.slice(1);
+
   return (
-    <Card elevation={3} >
-      <CardContent component="form">
-        <Typography variant="h5" component="div">
-          {isEditing ? (
-                <input
-                  value={name}
-                  onChange={onChangeName}
-                  required
-                />
-              ) : (
-                <span>{name}</span>
-              )}
-        </Typography>
-        <Typography variant="body">
-          <div>
-            {isEditing ?
-            <>
+    <Card elevation={3}>
+      <CardContent component="form" sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h5" component="div">
+            {isEditing ? (
+              <input
+                value={name}
+                onChange={onChangeName}
+                required
+              />
+            ) : (
+              <span>{name}</span>
+            )}
+          </Typography>
+          <Typography variant="body">
+            <div>
+              {isEditing ?
+              <>
+                <label>
+                  <input 
+                    type="radio"
+                    value="Male"
+                    checked={gender}
+                    onChange={onChangeGender}
+                    />
+                    Male{" "}
+                </label>
+                <label>
+                  <input 
+                    type="radio"
+                    value="Female"
+                    checked={!gender}
+                    onChange={onChangeGender}
+                    />
+                    Female
+                </label>
+              </> :
+              <>
+                gender: {gender ? "Male" : "Female" }
+              </> }
+            </div>
+            <div>
               <label>
-                <input 
-                  type="radio"
-                  value="Male"
-                  checked={gender}
-                  onChange={onChangeGender}
+                Species:{" "} 
+                {isEditing ? (
+                  <input
+                    value={species}
+                    onChange={onChangeSpecies}
+                    required
                   />
-                  Male{" "}
+                ) : (
+                  <span>{species}</span>
+                )}
+
               </label>
+            </div>
+            <div>
               <label>
-                <input 
-                  type="radio"
-                  value="Female"
-                  checked={!gender}
-                  onChange={onChangeGender}
+                Breed:{" "} 
+                {isEditing ? (
+                  <input
+                    value={breed}
+                    onChange={onChangeBreed}
+                    required
                   />
-                  Female
+                ) : (
+                  <span>{breed}</span>
+                )}
+
               </label>
-            </> :
-            <>
-              gender: {gender ? "Male" : "Female" }
-            </> }
-          </div>
-          <div>
-            <label>
-              Species:{" "} 
-              {isEditing ? (
-                <input
-                  value={species}
-                  onChange={onChangeSpecies}
-                  required
-                />
-              ) : (
-                <span>{species}</span>
-              )}
+            </div>
+            <div>
+              <label>
+                Color:{" "} 
+                {isEditing ? (
+                  <input
+                    value={color}
+                    onChange={onChangeColor}
+                    required
+                  />
+                ) : (
+                  <span>{color}</span>
+                )}
 
-            </label>
-          </div>
-          <div>
-            <label>
-              Breed:{" "} 
-              {isEditing ? (
-                <input
-                  value={breed}
-                  onChange={onChangeBreed}
-                  required
-                />
-              ) : (
-                <span>{breed}</span>
-              )}
+              </label>
+            </div>
+            <div>
+              <label>
+                Fur Length:{" "} 
+                {isEditing ? (
+                  <input
+                    value={furLength}
+                    onChange={onChangeFurLength}
+                    required
+                  />
+                ) : (
+                  <span>{furLength}</span>
+                )}
 
-            </label>
-          </div>
-          <div>
-            <label>
-              Color:{" "} 
-              {isEditing ? (
-                <input
-                  value={color}
-                  onChange={onChangeColor}
-                  required
-                />
-              ) : (
-                <span>{color}</span>
-              )}
+              </label>
+            </div>
+            <div>
+              <label>
+                Age:{" "} 
+                {isEditing ? (
+                  <input
+                    value={age}
+                    onChange={onChangeAge}
+                    required
+                  />
+                ) : (
+                  <span>{age}</span>
+                )}
 
-            </label>
-          </div>
-          <div>
-            <label>
-              Fur Length:{" "} 
-              {isEditing ? (
-                <input
-                  value={furLength}
-                  onChange={onChangeFurLength}
-                  required
-                />
-              ) : (
-                <span>{furLength}</span>
-              )}
+              </label>
+            </div>
+            <div>
+              <label>
+                Description:{" "} 
+                {isEditing ? (
+                  <textarea
+                    rows={4} 
+                    value={description}
+                    onChange={onChangeDescription}
+                    required  
+                  />
+                ) : (
+                  <span>{description}</span>
+                )}
 
-            </label>
-          </div>
-          <div>
-            <label>
-              Age:{" "} 
-              {isEditing ? (
-                <input
-                  value={age}
-                  onChange={onChangeAge}
-                  required
-                />
-              ) : (
-                <span>{age}</span>
-              )}
+              </label>
+            </div>
+          </Typography>
 
-            </label>
-          </div>
-          <div>
-            <label>
-              Description:{" "} 
-              {isEditing ? (
-                <textarea
-                  rows={4} 
-                  value={description}
-                  onChange={onChangeDescription}
-                  required  
-                />
-              ) : (
-                <span>{description}</span>
-              )}
-
-            </label>
-          </div>
-        </Typography>
-
-        {isEditing ? 
-        <>
-          <Button variant="outlined" onClick={savePetChanges}>Confirm</Button>
-          <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
-        </>
-        :
-        <>
-          <Button variant="outlined" onClick={handleEdit}>Edit</Button>
-          <Button variant="outlined" onClick={handleRemove}>Remove</Button>
-        </> }
+          {isEditing ? 
+          <>
+            <Button variant="outlined" onClick={savePetChanges}>Confirm</Button>
+            <Button variant="outlined" onClick={cancelEdit}>Cancel</Button>
+          </>
+          :
+          <>
+            <Button variant="outlined" onClick={handleEdit}>Edit</Button>
+            <Button variant="outlined" onClick={handleRemove}>Remove</Button>
+          </> }
+        </Box>
+        
+        <Box sx={{ width: '300px', flexShrink: 0 }}>
+          <img 
+            src={getPetImage(pet.id, capitalizedSpecies, capitalizedColor)}
+            alt={`${pet.color} ${pet.species}`}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '4px'
+            }}
+          />
+        </Box>
       </CardContent>
       <SnackbarNoti
         open={snackbarOpen}
@@ -283,7 +310,6 @@ function PetDisplayCard(props) {
         message={snackbarMessage}
         onClose={handleSnackbarClose}
       />
-
     </Card>
   )
 }

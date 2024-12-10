@@ -20,6 +20,15 @@ export default function AdoptionCenterPetsPage() {
   const [ snackbarMessage, setSnackbarMessage ] = useState("");
   const [ snackbarSeverity, setSnackbarSeverity ] = useState("");
   const [ snackbarOpen, setSnackbarOpen ] = useState(false);
+  const [breedOptions, setBreedOptions] = useState([]);
+
+  const SPECIES_OPTIONS = ["Dog", "Cat", "Rabbit"];
+  const COLOR_OPTIONS = ["Black", "Brown", "White"];
+  const BREED_MAP = {
+    Cat: ["Persian", "Siamese", "Other"],
+    Dog: ["Labrador", "German Shepherd", "Other"],
+    Rabbit: ["Holland Lop", "Rex", "Other"]
+  };
 
   useEffect( () => {
     request("GET", `/users/${getUserID()}`, null)
@@ -63,7 +72,10 @@ export default function AdoptionCenterPetsPage() {
   };
 
   const onChangeSpecies = (e) => {
-    setSpecies(e.target.value);
+    const selectedSpecies = e.target.value;
+    setSpecies(selectedSpecies);
+    setBreed("");
+    setBreedOptions(BREED_MAP[selectedSpecies] || []);
   };
 
   const onChangeBreed = (e) => {
@@ -142,26 +154,42 @@ export default function AdoptionCenterPetsPage() {
             required
             />
           <DialogContentText>Species</DialogContentText>
-          <input 
-            type="text"
-            defaultValue={species}
+          <select
+            value={species}
             onChange={onChangeSpecies}
             required
-            />
+          >
+            <option value="">Select Species</option>
+            {SPECIES_OPTIONS.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+
           <DialogContentText>Breed</DialogContentText>
-          <input 
-            type="text"
-            defaultValue={breed}
+          <select
+            value={breed}
             onChange={onChangeBreed}
             required
-            />
+            disabled={!species}
+          >
+            <option value="">Select Breed</option>
+            {breedOptions.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+
           <DialogContentText>Color</DialogContentText>
-          <input 
-            type="text"
-            defaultValue={color}
+          <select
+            value={color}
             onChange={onChangeColor}
             required
-            />
+          >
+            <option value="">Select Color</option>
+            {COLOR_OPTIONS.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+
           <DialogContentText>Fur Length</DialogContentText>
           <input 
             type="number"
