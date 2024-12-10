@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Button, Grid, TextField } from "@mui/material";
 
 function AdoptionCenterDisplayCard(props) {
@@ -37,14 +37,14 @@ export default function AdoptionCenterDisplay(props) {
     const [cityFilter, setCityFilter] = useState("");
     const [filteredCenters, setFilteredCenters] = useState(props.centers);
 
-    const filterCenters = () => {
+    useEffect( () => {
       const filtered = props.centers.filter((center) => {
         const matchesState = stateFilter ? center.state.toLowerCase().includes(stateFilter.toLowerCase()) : true;
         const matchesCity = cityFilter ? center.city.toLowerCase().includes(cityFilter.toLowerCase()) : true;
         return matchesState && matchesCity;
       });
       setFilteredCenters(filtered);
-    }
+    }, [stateFilter, cityFilter, props.centers])
 
     return (
         <>
@@ -64,11 +64,6 @@ export default function AdoptionCenterDisplay(props) {
                 value={cityFilter}
                 onChange={(e) => setCityFilter(e.target.value)}
               />
-            </Grid>
-            <Grid item>
-              <Button variant="contained" onClick={filterCenters}>
-                Filter
-              </Button>
             </Grid>
           </Grid>
           {filteredCenters.length > 0 ? (

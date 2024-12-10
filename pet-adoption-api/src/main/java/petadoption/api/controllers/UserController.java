@@ -83,6 +83,7 @@ public class UserController {
 
     @GetMapping("/users/adoption-centers")
     public ResponseEntity<List<UserDto>> showCenters() {
+        System.out.println("Here");
         return ResponseEntity.ok(userService.getAdoptionCenters());
     }
 
