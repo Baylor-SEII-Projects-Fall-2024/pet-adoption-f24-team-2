@@ -129,67 +129,6 @@ const DashboardPage = () => {
             Find your perfect furry friend and explore adoption events near you!
           </Typography>
         </Box>
-        {/* Matching Pets Section */}
-        <Box p={3}>
-          <Typography variant="h5" gutterBottom style={{margin: '0 origin'}}>
-            Adopt Pets
-          </Typography>
-          <Grid container spacing={3}>
-            {pets.map((pet) => (
-                <Grid item xs={12} sm={6} md={4} key={pet.id}>
-                  <Card>
-                    <CardMedia
-                        component="img"
-                        height="150"
-                        image={pet.image}
-                        alt={pet.name}
-                    />
-                    <CardContent>
-                      <Typography variant="h6">{pet.name}</Typography>
-                      <Typography variant="body2">Gender: {pet.gender}</Typography>
-                      <Typography variant="body2">Breed: {pet.breed}</Typography>
-                      <Typography variant="body2">Color: {pet.color}</Typography>
-                      <Typography variant="body2">Fur: {pet.fur}</Typography>
-                      <Typography variant="body2">Age: {pet.age} years</Typography>
-                      <Button
-                          variant="contained"
-                          color="primary"
-                          fullWidth
-                          style={{ marginTop: '10px' }}
-                          href="/LoginPage"
-                      >
-                        Adopt Me
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grid>
-            ))}
-          </Grid>
-        </Box>
-        {/* Upcoming Events Section */}
-        <Box p={3}>
-          <Typography variant="h5" gutterBottom>
-            Upcoming Adoption Events
-          </Typography>
-          <Accordion>
-            {events.map((event) => (
-                <Accordion.Item eventKey={event.id.toString()} key={event.id}>
-                  <Accordion.Header>{event.name}</Accordion.Header>
-                  <Accordion.Body>
-                    <Typography variant="body1">
-                      <strong>Description:</strong> {event.description}
-                    </Typography>
-                    <Typography variant="body2">
-                      <strong>Date:</strong> {event.date}
-                    </Typography>
-                    <Typography variant="body2">
-                      <strong>Location:</strong> {event.location}
-                    </Typography>
-                  </Accordion.Body>
-                </Accordion.Item>
-            ))}
-          </Accordion>
-        </Box>
         {/* Reviews Section */}
         <Box p={3} textAlign="center">
           <Typography variant="h5" gutterBottom>
