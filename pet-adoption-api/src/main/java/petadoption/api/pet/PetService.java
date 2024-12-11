@@ -13,6 +13,7 @@ import petadoption.api.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class PetService {
         List<PetDto> pets = new ArrayList<PetDto>();
         List<Pet> savedPets = petRepository.findAllByAdoptionCenterId(centerID);
 
-        for (Pet pet : savedPets) {
+        for( Pet pet : savedPets) {
             pets.add(petMapper.toPetDto(pet));
         }
         return pets;
@@ -49,7 +50,7 @@ public class PetService {
         List<PetDto> pets = new ArrayList<PetDto>();
         List<Pet> savedPets = petRepository.findAll();
 
-        for (Pet pet : savedPets) {
+        for( Pet pet : savedPets) {
             pets.add(petMapper.toPetDto(pet));
         }
         return pets;

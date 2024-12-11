@@ -1,7 +1,11 @@
 package petadoption.api.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+import petadoption.api.dto.PetDto;
 import petadoption.api.enums.Role;
 import petadoption.api.event.Event;
 import petadoption.api.pet.Pet;
@@ -18,7 +22,10 @@ public class User {
 
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
-    @SequenceGenerator(name = TABLE_NAME + "_GENERATOR", sequenceName = TABLE_NAME + "_SEQUENCE")
+    @SequenceGenerator(
+            name = TABLE_NAME + "_GENERATOR",
+            sequenceName = TABLE_NAME + "_SEQUENCE"
+    )
 
     @Column(name = "USER_ID")
     Long id;
@@ -38,7 +45,7 @@ public class User {
     @Column(name = "CITY")
     String city;
 
-    @Column(name = "STATE")
+    @Column(name="STATE")
     String state;
 
     @Column(name = "STREET_ADDRESS")
@@ -73,16 +80,14 @@ public class User {
 
     public double[] generateUserProfile() {
         int temp = numLikedPets;
-        if (numLikedPets == 0) {
-            temp = 1;
-        }
+        if (numLikedPets == 0) {temp = 1;}
         double[] profile = new double[petAttributes.getNumAttributes()];
         if (attributes == null) {
             attributes = new petAttributes();
         }
         double[] userAttributes = attributes.getAttributes();
 
-        for (int i = 0; i < profile.length - 1; i++) {
+        for (int i = 0; i < profile.length-1; i++) {
             int overrideOffset = 0;
             if (i < 3) {
                 overrideOffset = attributes.getSpeciesOverrideCount();
@@ -93,7 +98,7 @@ public class User {
             } else if (i < 17) {
                 overrideOffset = attributes.getBreedOverrideCount();
             }
-            profile[i] = userAttributes[i] / (temp + overrideOffset);
+            profile[i] = userAttributes[i]/(temp+overrideOffset);
         }
         profile[17] = userAttributes[17];
 
@@ -105,12 +110,10 @@ public class User {
         numLikedPets++;
     }
 
-    public void incrementNumLikedPets() {
-        numLikedPets++;
-    }
+    public void incrementNumLikedPets() {numLikedPets++;}
 
     public void resetPreferences() {
-        this.numLikedPets = 0;
+        this.numLikedPets=0;
         this.attributes = new petAttributes();
     }
 }

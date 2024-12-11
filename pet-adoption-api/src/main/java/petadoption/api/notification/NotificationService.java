@@ -11,6 +11,8 @@ import petadoption.api.pet.Pet;
 import petadoption.api.pet.PetRepository;
 import petadoption.api.user.User;
 import petadoption.api.user.UserRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,9 +25,9 @@ public class NotificationService {
 
     public NotificationDto save(NotificationDto notificationDto) {
         User user = userRepository.findByIdAndRole(notificationDto.getUserId(), Role.PET_OWNER)
-                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+                .orElseThrow( () -> new AppException("User not found", HttpStatus.NOT_FOUND));
         Pet pet = petRepository.findById(notificationDto.getPetId())
-                .orElseThrow(() -> new AppException("Pet not found", HttpStatus.NOT_FOUND));
+                .orElseThrow( () -> new AppException("Pet not found", HttpStatus.NOT_FOUND));
         Notification notification = notificationMapper.notificatioDtoToNotification(notificationDto);
         notification.setPet(pet);
         notification.setUser(user);

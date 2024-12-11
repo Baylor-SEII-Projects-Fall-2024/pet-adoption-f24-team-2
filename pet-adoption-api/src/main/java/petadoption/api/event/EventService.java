@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import petadoption.api.dto.EventDto;
+import petadoption.api.dto.PetDto;
 import petadoption.api.exceptions.AppException;
 import petadoption.api.mappers.EventMapper;
 import petadoption.api.user.User;
@@ -35,7 +36,7 @@ public class EventService {
 
         List<Event> savedEvents = eventRepository.findAllByAdoptionCenterId(centerID);
 
-        for (Event e : savedEvents) {
+        for( Event e : savedEvents) {
             events.add(eventMapper.eventToEventDto(e));
         }
 
@@ -51,7 +52,7 @@ public class EventService {
                 newEvent.getId()).orElseThrow(() -> new AppException("Event not found", HttpStatus.NOT_FOUND));
         User adoptionCenter = userRepository.findById(centerID)
                 .orElseThrow(() -> new AppException("Adoption center not found", HttpStatus.NOT_FOUND));
-        if (newEvent.getDate() != null) {
+        if( newEvent.getDate() != null) {
             e.setDate(new Date(newEvent.getDate()));
         }
         e.setName(newEvent.getName());

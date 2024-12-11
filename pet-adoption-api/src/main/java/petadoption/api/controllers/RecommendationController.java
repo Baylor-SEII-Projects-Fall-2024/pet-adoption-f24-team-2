@@ -31,6 +31,8 @@ public class RecommendationController {
         UserDto udto = userService.findUser(id);
         User u = userMapper.userDtoToUser(udto);
 
+        double[] userProfile = u.generateUserProfile();
+
         List<PetDto> allPets = petService.getAllPets();
         return allPets.stream().sorted((pet1, pet2) -> Double.compare(
                 PetRecommendation.calcPetSimilarity(u, petMapper.toPet(pet2)),

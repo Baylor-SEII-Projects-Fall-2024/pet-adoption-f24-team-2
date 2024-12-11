@@ -27,6 +27,5 @@ public class UserDto {
     private Role role;
 
     private petAttributes attributes;
-    @Builder.Default
     private Integer numLikedPets = 0;
 }

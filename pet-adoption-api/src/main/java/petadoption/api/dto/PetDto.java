@@ -14,25 +14,24 @@ public class PetDto {
     Long id;
     Long adoptionCenterID;
     Long ownerID;
-    @NotBlank(message = "Pet name is required")
+    @NotBlank(message="Pet name is required")
     String name;
-    @NotBlank(message = "Pet species is required")
+    @NotBlank(message="Pet species is required")
     String species;
-    @NotBlank(message = "Pet breed is required")
+    @NotBlank(message="Pet breed is required")
     String breed;
     String photoUrl;
-    @NotBlank(message = "Pet color is required")
+    @NotBlank(message="Pet color is required")
     String color;
-    @NotBlank(message = "Pet description is required")
+    @NotBlank(message="Pet description is required")
     String description;
-    @NotNull(message = "Pet fur length is required")
+    @NotNull(message="Pet fur length is required")
     Integer furLength;
-    @NotNull(message = "Pet age is required")
+    @NotNull(message="Pet age is required")
     Integer age;
-    @NotNull(message = "Pet gender is required")
+    @NotNull(message="Pet gender is required")
     Boolean gender;
 
-    @Builder.Default
     @JsonProperty("attributes")
     petAttributes attributes = new petAttributes();
 
