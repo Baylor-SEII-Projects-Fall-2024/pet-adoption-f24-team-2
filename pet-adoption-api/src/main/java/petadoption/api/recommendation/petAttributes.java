@@ -1,12 +1,9 @@
 package petadoption.api.recommendation;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Arrays;
-import java.util.Objects;
 
 /*
 
@@ -18,14 +15,17 @@ Basically a fancy array class with some functions
 
 @Embeddable
 public class petAttributes {
-    @Getter @Setter
-    static int numAttributes=18;
+    @Getter
+    @Setter
+    static int numAttributes = 18;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     double[] attributes = new double[numAttributes];
 
-    @Getter @Setter
-    Integer speciesOverrideCount=0, colorOverrideCount=0, genderOverrideCount=0, breedOverrideCount=0;
+    @Getter
+    @Setter
+    Integer speciesOverrideCount = 0, colorOverrideCount = 0, genderOverrideCount = 0, breedOverrideCount = 0;
 
     // default constructor
     public petAttributes() {
@@ -93,15 +93,15 @@ public class petAttributes {
     // used to add pets to a user's liked pets
     public void combine(petAttributes other) {
         // Handle species-specific breed combinations
-        if (other.attributes[0] > 0) {  // Cat
+        if (other.attributes[0] > 0) { // Cat
             for (int i = 8; i <= 10; i++) {
                 attributes[i] += other.attributes[i];
             }
-        } else if (other.attributes[1] > 0) {  // Dog
+        } else if (other.attributes[1] > 0) { // Dog
             for (int i = 11; i <= 13; i++) {
                 attributes[i] += other.attributes[i];
             }
-        } else if (other.attributes[2] > 0) {  // Rabbit
+        } else if (other.attributes[2] > 0) { // Rabbit
             for (int i = 14; i <= 16; i++) {
                 attributes[i] += other.attributes[i];
             }
@@ -114,7 +114,7 @@ public class petAttributes {
         if (attributes[17] == 0) {
             attributes[17] = other.attributes[17];
         } else {
-            attributes[17] = Math.round((attributes[17] + other.attributes[17])/2);
+            attributes[17] = Math.round((attributes[17] + other.attributes[17]) / 2);
         }
     }
 
@@ -127,9 +127,8 @@ public class petAttributes {
         return str.toString();
     }
 
-
     /*
-    functions used in manually changing a user's preferences
+     * functions used in manually changing a user's preferences
      */
 
     // function to change species values
@@ -149,18 +148,25 @@ public class petAttributes {
                 break;
         }
     }
+
     public void decrementSpecies(String species) {
         switch (species.toLowerCase()) {
             case "cat":
-                if (attributes[0] < 1.0) {return;}
+                if (attributes[0] < 1.0) {
+                    return;
+                }
                 attributes[0] -= 1.0;
                 break;
             case "dog":
-                if (attributes[1] < 1.0) {return;}
+                if (attributes[1] < 1.0) {
+                    return;
+                }
                 attributes[1] -= 1.0;
                 break;
             case "rab", "rabbit":
-                if (attributes[2] < 1.0) {return;}
+                if (attributes[2] < 1.0) {
+                    return;
+                }
                 attributes[2] -= 1.0;
                 break;
             default:
@@ -186,18 +192,25 @@ public class petAttributes {
                 break;
         }
     }
+
     public void decrementColor(String color) {
         switch (color.toLowerCase()) {
             case "white":
-                if (attributes[3] < 1.0) {return;}
+                if (attributes[3] < 1.0) {
+                    return;
+                }
                 attributes[3] -= 1.0;
                 break;
             case "black":
-                if (attributes[4] < 1.0) {return;}
+                if (attributes[4] < 1.0) {
+                    return;
+                }
                 attributes[4] -= 1.0;
                 break;
             case "brown":
-                if (attributes[5] < 1.0) {return;}
+                if (attributes[5] < 1.0) {
+                    return;
+                }
                 attributes[5] -= 1.0;
                 break;
             default:
@@ -221,7 +234,9 @@ public class petAttributes {
         if (opt) {
             attributes[17] += 1.0;
         } else {
-            if (attributes[17] < 1.0) {return;}
+            if (attributes[17] < 1.0) {
+                return;
+            }
             attributes[17] -= 1.0;
         }
     }
@@ -252,39 +267,48 @@ public class petAttributes {
     public void decrementBreed(String breed) {
         switch (breed.toLowerCase()) {
             case "persian" -> {
-                if (attributes[8] < 1.0) return;
+                if (attributes[8] < 1.0)
+                    return;
                 attributes[8] -= 1.0;
             }
             case "siamese" -> {
-                if (attributes[9] < 1.0) return;
+                if (attributes[9] < 1.0)
+                    return;
                 attributes[9] -= 1.0;
             }
             case "cat other" -> {
-                if (attributes[10] < 1.0) return;
+                if (attributes[10] < 1.0)
+                    return;
                 attributes[10] -= 1.0;
-            }   
+            }
             case "labrador" -> {
-                if (attributes[11] < 1.0) return;
+                if (attributes[11] < 1.0)
+                    return;
                 attributes[11] -= 1.0;
             }
             case "german shepherd" -> {
-                if (attributes[12] < 1.0) return;
+                if (attributes[12] < 1.0)
+                    return;
                 attributes[12] -= 1.0;
             }
             case "dog other" -> {
-                if (attributes[13] < 1.0) return;
+                if (attributes[13] < 1.0)
+                    return;
                 attributes[13] -= 1.0;
             }
             case "holland lop" -> {
-                if (attributes[14] < 1.0) return;
+                if (attributes[14] < 1.0)
+                    return;
                 attributes[14] -= 1.0;
             }
             case "rex" -> {
-                if (attributes[15] < 1.0) return;
+                if (attributes[15] < 1.0)
+                    return;
                 attributes[15] -= 1.0;
             }
             case "rabbit other" -> {
-                if (attributes[16] < 1.0) return;
+                if (attributes[16] < 1.0)
+                    return;
                 attributes[16] -= 1.0;
             }
         }

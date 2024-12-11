@@ -10,8 +10,6 @@ import petadoption.api.mappers.PetMapper;
 import petadoption.api.pet.Pet;
 import petadoption.api.pet.PetService;
 import petadoption.api.recommendation.petAttributes;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

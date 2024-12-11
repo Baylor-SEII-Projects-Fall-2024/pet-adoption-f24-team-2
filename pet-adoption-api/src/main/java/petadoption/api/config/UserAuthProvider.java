@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import petadoption.api.user.UserService;
 
 import java.util.Base64;
 import java.util.Date;
@@ -20,8 +19,6 @@ public class UserAuthProvider {
     // Need a secret key, generated in the application.yml
     @Value("${security.jwt.token.secret-key:secret-value}")
     private String secretKey;
-
-    private final UserService userService;
 
     @PostConstruct
     protected void init() {

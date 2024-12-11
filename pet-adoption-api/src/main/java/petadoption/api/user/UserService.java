@@ -38,7 +38,7 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
-    public User findAUser(Long userId){
+    public User findAUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         return user;
@@ -52,7 +52,7 @@ public class UserService {
         User user = userRepository.findByEmailAddress(credentialsDto.getEmailAddress())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-        if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword() )) {
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
 
@@ -69,7 +69,7 @@ public class UserService {
     public UserDto register(SignUpDto registration) {
         Optional<User> optionalUser = userRepository.findByEmailAddress(registration.getEmailAddress());
 
-        if( optionalUser.isPresent() ) {
+        if (optionalUser.isPresent()) {
             throw new AppException("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
@@ -77,15 +77,12 @@ public class UserService {
         // Mapping ignores the password, so add the hashed password
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registration.getPassword())));
 
-        User savedUser = userRepository.save(user);
-
-
         return userMapper.toUserDto(user);
     }
 
     public UserDto updateUser(Long id, UserDto user) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if( optionalUser.isEmpty() ) {
+        if (optionalUser.isEmpty()) {
             throw new AppException("Account not found", HttpStatus.BAD_REQUEST);
         }
 
@@ -121,7 +118,7 @@ public class UserService {
 
     public UserDto resetUserPreferences(Long id, UserDto user) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if( optionalUser.isEmpty() ) {
+        if (optionalUser.isEmpty()) {
             throw new AppException("Account not found", HttpStatus.BAD_REQUEST);
         }
 
@@ -161,8 +158,7 @@ public class UserService {
         PasswordResetToken resetToken = new PasswordResetToken(
                 token,
                 LocalDateTime.now().plusHours(1),
-                user
-        );
+                user);
 
         tokenRepository.save(resetToken);
         return token;
@@ -176,7 +172,7 @@ public class UserService {
         User user = userRepository.findByEmailAddress(emailAddress).orElseThrow(
                 () -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
-        if(!passwordEncoder.matches(currPassword, user.getPassword())) {
+        if (!passwordEncoder.matches(currPassword, user.getPassword())) {
             return false;
         }
 

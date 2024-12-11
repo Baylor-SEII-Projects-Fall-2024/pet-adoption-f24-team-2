@@ -1,6 +1,5 @@
 package petadoption.api.pet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import petadoption.api.recommendation.petAttributes;
@@ -16,10 +15,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
-    @SequenceGenerator(
-            name = TABLE_NAME + "_GENERATOR",
-            sequenceName = TABLE_NAME + "_SEQUENCE"
-    )
+    @SequenceGenerator(name = TABLE_NAME + "_GENERATOR", sequenceName = TABLE_NAME + "_SEQUENCE")
     @Column(name = "PET_ID")
     Long id;
 
